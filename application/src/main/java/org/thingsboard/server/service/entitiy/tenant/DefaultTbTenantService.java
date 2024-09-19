@@ -72,4 +72,14 @@ public class DefaultTbTenantService extends AbstractTbEntityService implements T
         tenantProfileCache.evict(tenantId);
         versionControlService.deleteVersionControlSettings(tenantId).get(1, TimeUnit.MINUTES);
     }
+
+    @Override
+    public boolean findTenantByEmail(String email) {
+        Tenant tenant = tenantService.findTenantByEmail(email);
+
+        // Return true if the tenant object is not null, otherwise return false
+        return tenant != null;
+    }
+
+
 }

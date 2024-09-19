@@ -17,6 +17,8 @@ package org.thingsboard.server.service.entitiy;
 
 import org.thingsboard.server.common.data.User;
 
+import java.util.Optional;
+
 public interface SimpleTbEntityService<T> {
 
     default T save(T entity) throws Exception {

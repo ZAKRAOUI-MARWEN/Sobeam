@@ -19,26 +19,58 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.After;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
 import org.thingsboard.common.util.JacksonUtil;
+import org.thingsboard.server.common.data.Tenant;
+import org.thingsboard.server.common.data.User;
+import org.thingsboard.server.common.data.id.TenantId;
+import org.thingsboard.server.common.data.id.UserCredentialsId;
+import org.thingsboard.server.common.data.id.UserId;
 import org.thingsboard.server.common.data.security.Authority;
+import org.thingsboard.server.common.data.security.UserCredentials;
 import org.thingsboard.server.common.data.security.model.SecuritySettings;
 import org.thingsboard.server.dao.service.DaoSqlTest;
+import org.thingsboard.server.dao.user.UserService;
+import org.thingsboard.server.service.entitiy.tenant.TbTenantService;
 import org.thingsboard.server.service.security.auth.rest.LoginRequest;
 import org.thingsboard.server.service.security.model.ChangePasswordRequest;
+import org.thingsboard.server.service.security.model.SignUpRequest;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.fasterxml.jackson.databind.ObjectMapper;  // Pour convertir les objets en JSON
+import org.springframework.beans.factory.annotation.Autowired;  // Pour l'injection des dépendances
+import org.springframework.http.MediaType;  // Pour spécifier le type de contenu JSON dans les requêtes
+import org.springframework.test.web.servlet.MockMvc;  // Pour les tests avec MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;  // Pour construire des requêtes MockMvc
+
+// Imports statiques pour MockMvc
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;  // Pour la méthode POST
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;  // Pour vérifier les statuts de la réponse
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;  // Pour vérifier les valeurs JSON dans la réponse
+
+// Pour les assertions avec Hamcrest (optionnel si vous avez besoin de matcher des valeurs spécifiques dans la réponse JSON)
+import static org.hamcrest.Matchers.is;
 
 @DaoSqlTest
 public class AuthControllerTest extends AbstractControllerTest {
+    @Autowired
+    UserService userService;
+    @Autowired
 
+    TbTenantService tbTenantService;
+    @Autowired
+    private ObjectMapper objectMapper;  // Injecte l'instance d'ObjectMapper
     @After
     public void tearDown() throws Exception {
         loginSysAdmin();

@@ -35,6 +35,7 @@ export const Constants = {
   },
   entryPoints: {
     login: '/api/auth/login',
+    signup: '/api/noauth/signup',
     tokenRefresh: '/api/auth/token',
     nonTokenBased: '/api/noauth'
   }

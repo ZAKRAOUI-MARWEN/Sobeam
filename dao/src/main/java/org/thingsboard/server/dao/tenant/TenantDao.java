@@ -15,8 +15,10 @@
  */
 package org.thingsboard.server.dao.tenant;
 
+import jakarta.validation.constraints.Email;
 import org.thingsboard.server.common.data.Tenant;
 import org.thingsboard.server.common.data.TenantInfo;
+import org.thingsboard.server.common.data.User;
 import org.thingsboard.server.common.data.id.TenantId;
 import org.thingsboard.server.common.data.id.TenantProfileId;
 import org.thingsboard.server.common.data.page.PageData;
@@ -29,6 +31,16 @@ import java.util.UUID;
 public interface TenantDao extends Dao<Tenant> {
 
     TenantInfo findTenantInfoById(TenantId tenantId, UUID id);
+
+
+    /**
+     * Find tenant by email.
+     *
+     * @param email the email
+     * @return the tenant entity
+     */
+    Tenant findByEmail(String email);
+
 
     /**
      * Save or update tenant object

@@ -23,10 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.thingsboard.server.cache.TbTransactionalCache;
-import org.thingsboard.server.common.data.EntityType;
-import org.thingsboard.server.common.data.Tenant;
-import org.thingsboard.server.common.data.TenantInfo;
-import org.thingsboard.server.common.data.TenantProfile;
+import org.thingsboard.server.common.data.*;
 import org.thingsboard.server.common.data.id.EntityId;
 import org.thingsboard.server.common.data.id.HasId;
 import org.thingsboard.server.common.data.id.TenantId;
@@ -52,6 +49,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import static org.thingsboard.server.dao.service.Validator.validateId;
+import static org.thingsboard.server.dao.service.Validator.validateString;
 
 @Service("TenantDaoService")
 @Slf4j
@@ -108,6 +106,14 @@ public class TenantServiceImpl extends AbstractCachedEntityService<TenantId, Ten
         log.trace("Executing findTenantInfoById [{}]", tenantId);
         validateId(tenantId, id -> INCORRECT_TENANT_ID + id);
         return tenantDao.findTenantInfoById(tenantId, tenantId.getId());
+    }
+
+       @Override
+       public Tenant findTenantByEmail(String email) {
+        log.trace("Executing findTenantByEmail [{}]", email);
+        validateString(email, e -> "Incorrect email " + e);
+          return tenantDao.findByEmail(email);
+
     }
 
     @Override

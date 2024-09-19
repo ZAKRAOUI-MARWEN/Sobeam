@@ -35,6 +35,7 @@
           </mat-progress-bar> -->
           <!-- <span style="height: 4px;" *ngIf="!(isLoading$ | async)"></span> -->
           <div tb-toast fxLayout="column" class="layout-padding" *ngIf="start">
+            
             <div class="oauth-container tb-default " fxLayout="column" fxLayoutGap="16px" *ngIf="oauth2Clients?.length">
               <ng-container *ngFor="let oauth2Client of oauth2Clients">
                 <a mat-raised-button class="login-with-button" href="{{ getOAuth2Uri(oauth2Client) }}">
@@ -48,6 +49,7 @@
                 <div class="line"><mat-divider></mat-divider></div>
               </div>
             </div>
+
             <mat-form-field class="tb-appearance-transparent">
               <mat-label translate>login.username</mat-label>
               <input id="username-input" matInput type="email" autofocus formControlName="username" email required/>
@@ -56,12 +58,14 @@
                 {{ 'login.invalid-email-format' | translate }}
               </mat-error>
             </mat-form-field>
+
             <mat-form-field class="tb-appearance-transparent">
               <mat-label translate>common.password</mat-label>
               <input id="password-input" matInput type="password" formControlName="password"/>
               <tb-toggle-password matSuffix></tb-toggle-password>
               <mat-icon matPrefix>lock</mat-icon>
             </mat-form-field>
+
             <div fxLayoutAlign="end center" class="forgot-password">
               <button class="tb-reset-password" mat-button type="button" routerLink="/login/resetPasswordRequest">
                 {{ (passwordViolation ? 'login.reset-password' : 'login.forgot-password') | translate }}
@@ -71,8 +75,10 @@
               <button mat-raised-button color="accent" [disabled]="(isLoading$ | async)"
                       type="submit">{{ 'login.login' | translate }}</button>
             </div>
+            <div>{{ 'login.question' | translate }}?<a routerLink="/signup"> {{ 'signup.signup' | translate }} </a>
+            </div>
           </div>
-        </fieldset>
+         </fieldset>
       </form>
     </mat-card-content>
   </mat-card>

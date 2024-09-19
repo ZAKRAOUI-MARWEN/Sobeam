@@ -22,6 +22,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.thingsboard.server.dao.model.sql.TenantEntity;
 import org.thingsboard.server.dao.model.sql.TenantInfoEntity;
+import org.thingsboard.server.dao.model.sql.UserEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,13 +32,14 @@ import java.util.UUID;
  */
 public interface TenantRepository extends JpaRepository<TenantEntity, UUID> {
 
+    TenantEntity findByEmail(String email);
+
     @Query("SELECT new org.thingsboard.server.dao.model.sql.TenantInfoEntity(t, p.name) " +
             "FROM TenantEntity t " +
             "LEFT JOIN TenantProfileEntity p on p.id = t.tenantProfileId " +
             "WHERE t.id = :tenantId")
     TenantInfoEntity findTenantInfoById(@Param("tenantId") UUID tenantId);
-
-    @Query("SELECT t FROM TenantEntity t WHERE (:textSearch IS NULL OR ilike(t.title, CONCAT('%', :textSearch, '%')) = true)")
+       @Query("SELECT t FROM TenantEntity t WHERE (:textSearch IS NULL OR ilike(t.title, CONCAT('%', :textSearch, '%')) = true)")
     Page<TenantEntity> findTenantsNextPage(@Param("textSearch") String textSearch,
                                            Pageable pageable);
 
@@ -53,4 +55,6 @@ public interface TenantRepository extends JpaRepository<TenantEntity, UUID> {
 
     @Query("SELECT t.id FROM TenantEntity t where t.tenantProfileId = :tenantProfileId")
     List<UUID> findTenantIdsByTenantProfileId(@Param("tenantProfileId") UUID tenantProfileId);
+
+
 }

@@ -570,6 +570,65 @@
         "type-timeseries-updated": "Telemetrie mise à jour",
         "type-timeseries-deleted": "Telemetrie supprimée"
     },
+    
+    "signup": {
+        "firstname": "Prénom",
+        "lastname": "Nom de famille",
+        "email": "E-mail",
+        "signup": "S'inscrire",
+        "create-password": "Créer un mot de passe",
+        "repeat-password": "Répétez votre mot de passe",
+        "confirm-password":"Confirmez le mot de passe",
+        "have-account": "Vous avez déjà un compte ?",
+        "signin": "Se connecter",
+        "no-captcha-message": "Vous devez confirmer que vous n'êtes pas un robot",
+        "password-length-message": "Votre mot de passe doit comporter au moins 6 caractères",
+        "email-verification": "Vérification de l'e-mail",
+        "email-verification-message": "Un e-mail contenant les instructions de vérification a été envoyé à l'adresse e-mail indiquée.<br>Suivez les instructions dans l'e-mail pour compléter la procédure d'inscription.<br>Remarque : Si vous ne voyez pas l'e-mail après un certain temps, vérifiez votre dossier 'spam' ou essayez de renvoyer l'e-mail en cliquant sur le bouton 'Renvoyer'.",
+        "account-activation-title": "Activation du compte",
+        "account-activated": "Le compte a été activé !",
+        "account-activated-text": "Félicitations !<br>Votre compte a été activé.",
+        "resend": "Renvoyer",
+        "inactive-user-exists-title": "Un utilisateur inactif existe déjà",
+        "inactive-user-exists-text": "Un utilisateur avec une adresse e-mail non vérifiée est déjà enregistré.<br>Cliquez sur le bouton \"Renvoyer\" si vous souhaitez renvoyer l'e-mail de vérification.",
+        "activating-account": "Activation du compte...",
+        "activating-account-text": "Votre compte est en cours d'activation. Veuillez patienter...",
+        "accept-privacy-policy": "Acceptez la politique de confidentialité",
+        "accept": "Accepter",
+        "privacy-policy": "Politique de confidentialité",
+        "password": "Mot de passe",
+        "question": "Vous avez déjà un compte",
+        "required": "Le champ est requis",
+        "password-minlength": "Le mot de passe doit contenir au moins 6 caractères",
+        "passwords-mismatch": "Les mots de passe ne correspondent pas",
+        "success-message": "Inscription réussie !",
+        "error-message": "Une erreur est survenue, veuillez réessayer.",
+        "invalid-data-error": "Les données saisies sont invalides. Veuillez vérifier et réessayer.",
+        "email-taken-error": "Cette adresse email est déjà utilisée. Veuillez en choisir une autre.",
+        "password-mismatch-message": "Les mots de passe ne correspondent pas. Veuillez les vérifier.",
+        "form-invalid-message": "Le formulaire contient des erreurs. Veuillez corriger les champs invalides.",
+        "email-error": "Un utilisateur avec cet e-mail existe déjà.",
+        "info":"validation"
+
+
+      },
+      
+        "validation": {
+          "titre": "Email Verification",
+          "line-1": "An email with verification details has been sent to the specified email address.",
+          "line-2": "Please follow the instructions provided in the email to complete your sign-up procedure.",
+          "line-3": "Note: If you haven't received the email, please check your 'spam' folder or try resending the email by clicking the 'Resend' button below.",
+          "button": "Resend",
+          "invalid-address":"Invalid email address",
+          "email-resend-error": "Échec de l'envoi de l'email de vérification.",
+          "email-not-found": "L'adresse email fournie n'est pas reconnue.",
+          "credentials-missing": "Les informations de connexion de l'utilisateur sont manquantes.",
+          "account-already-active": "Le compte est déjà activé.",
+          "server-error": "Erreur de serveur.",
+          "general-error": "Une erreur inconnue s'est produite."
+        }
+    ,
+      
     "common": {
         "enter-password": "Entrez le mot de passe",
         "enter-search": "Entrez la recherche",
@@ -1773,7 +1832,9 @@
         "sign-in": "Veuillez vous connecter",
         "username": "Nom d'utilisateur (courriel)",
         "login-with": "Se connecter avec {{name}}",
-        "or": "ou"
+        "or": "ou",
+        "question" :"Vous n'avez pas de compte"
+
     },
     "position": {
         "bottom": "Bas",

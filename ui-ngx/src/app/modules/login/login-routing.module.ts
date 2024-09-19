@@ -24,6 +24,8 @@ import { ResetPasswordComponent } from '@modules/login/pages/login/reset-passwor
 import { CreatePasswordComponent } from '@modules/login/pages/login/create-password.component';
 import { TwoFactorAuthLoginComponent } from '@modules/login/pages/login/two-factor-auth-login.component';
 import { Authority } from '@shared/models/authority.enum';
+import { SignupComponent } from './pages/login/signup/signup.component';
+import { MessageComponent } from './pages/login/message/message.component';
 
 const routes: Routes = [
   {
@@ -31,6 +33,24 @@ const routes: Routes = [
     component: LoginComponent,
     data: {
       title: 'login.login',
+      module: 'public'
+    },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'signup',
+    component: SignupComponent,
+    data: {
+      title: 'signup.signup',
+      module: 'public'
+    },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'signup/emailVerification',
+    component: MessageComponent,
+    data: {
+      title: 'signup.info',
       module: 'public'
     },
     canActivate: [AuthGuard]

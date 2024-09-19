@@ -1,0 +1,20 @@
+<img src="../../../../../assets/sobeam.gif" id="myVideo">
+
+<div class="tb-login-content mat-app-background tb-dark" fxFlex fxLayoutAlign="center center" fxLayout="column">
+    <mat-card appearance="raised" style="max-height: 80vh; overflow-y: auto;">
+        <mat-card-content>
+
+            <h5>
+                {{ 'validation.titre' | translate }}
+            </h5>
+            <p>{{ 'validation.line-1' | translate }}</p>
+            <p>{{'validation.line-2' | translate }}</p>
+            <p>{{'validation.line-3' | translate }}</p>
+            <div fxLayout="row" fxLayoutAlign="start end" tb-toast></div>
+            <div fxLayout="row" fxLayoutAlign="end centre" style="margin-top: 16px;">
+                <button mat-raised-button color="primary" (click)="resendVerificationEmail()">{{'validation.button' | translate }}</button>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+</div>

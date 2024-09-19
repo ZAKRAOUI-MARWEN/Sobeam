@@ -13,16 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.thingsboard.server.service.entitiy.tenant;
+@import '../../../../../../scss/constants';
+@import '../../../../../../theme';
 
-import org.thingsboard.server.common.data.Tenant;
 
-public interface TbTenantService {
+:host {
 
-    Tenant save(Tenant tenant) throws Exception;
+    #myVideo {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
-    void delete(Tenant tenant) throws Exception;
+    .mat-mdc-card {
+        box-shadow: 0px rgba(255, 255, 255, 0.2), 0px rgba(255, 255, 255, 0.14), 0px 0px 0px 0px rgba(255, 255, 255, 0.12) !important;
+        border: 1px solid #202637;
+        --mdc-elevated-card-container-color: #0c162d !important;
+    }
 
-    boolean findTenantByEmail (String email);
+    p {
+        font-size: 14px;
+    }
+
+    h5{
+        color: white;
+    }
+    display: flex;
+    flex: 1 1 0;
 
 }

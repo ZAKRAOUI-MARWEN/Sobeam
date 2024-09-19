@@ -1280,7 +1280,7 @@ device:
       # Host of mqtt transport service. If empty, the base url host will be used.
       host: "${DEVICE_CONNECTIVITY_MQTT_HOST:}"
       # Port of mqtt transport service
-      port: "${DEVICE_CONNECTIVITY_MQTT_PORT:1883}"
+      port: "${DEVICE_CONNECTIVITY_MQTT_PORT:1880}"
     mqtts:
       # If true mosquito command will be included in the list of all test commands using DEVICE_CONNECTIVITY_MQTTS_HOST and DEVICE_CONNECTIVITY_MQTTS_PORT<
       enabled: "${DEVICE_CONNECTIVITY_MQTTS_ENABLED:false}"

@@ -21,7 +21,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, ReplaySubject, throwError } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
-import { LoginRequest, LoginResponse, PublicLoginRequest } from '@shared/models/login.models';
+import { LoginRequest, LoginResponse, PublicLoginRequest, SignupRequest } from '@shared/models/login.models';
 import { Router, UrlTree } from '@angular/router';
 import { defaultHttpOptions, defaultHttpOptionsFromConfig, RequestConfig } from '../http/http-utils';
 import { UserService } from '../http/user.service';
@@ -46,6 +46,7 @@ import { OAuth2ClientInfo, PlatformType } from '@shared/models/oauth2.models';
 import { isMobileApp } from '@core/utils';
 import { TwoFactorAuthProviderType, TwoFaProviderInfo } from '@shared/models/two-factor-auth.models';
 import { UserPasswordPolicy } from '@shared/models/settings.models';
+import { Customer, Tenant } from '@app/shared/public-api';
 
 @Injectable({
     providedIn: 'root'
@@ -121,7 +122,14 @@ export class AuthService {
       ));
   }
 
-  public checkTwoFaVerificationCode(providerType: TwoFactorAuthProviderType, verificationCode: number): Observable<LoginResponse> {
+  public signUp(signupRequest: SignupRequest): Observable<SignupRequest> {
+    return this.http.post<SignupRequest>('/api/noauth/signup', signupRequest, defaultHttpOptions());
+  }
+  resendVerificationEmail(email: string) {
+    return this.http.post<any>('/api/noauth/renvoyerEmail', email, defaultHttpOptions());
+  }
+
+    public checkTwoFaVerificationCode(providerType: TwoFactorAuthProviderType, verificationCode: number): Observable<LoginResponse> {
     return this.http.post<LoginResponse>
     (`/api/auth/2fa/verification/check?providerType=${providerType}&verificationCode=${verificationCode}`,
       null, defaultHttpOptions(false, true)).pipe(

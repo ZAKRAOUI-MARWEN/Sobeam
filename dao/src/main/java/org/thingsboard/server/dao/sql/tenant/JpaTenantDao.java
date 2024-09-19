@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.thingsboard.server.common.data.EntityType;
 import org.thingsboard.server.common.data.Tenant;
 import org.thingsboard.server.common.data.TenantInfo;
+import org.thingsboard.server.common.data.User;
 import org.thingsboard.server.common.data.id.TenantId;
 import org.thingsboard.server.common.data.id.TenantProfileId;
 import org.thingsboard.server.common.data.page.PageData;
@@ -62,6 +63,12 @@ public class JpaTenantDao extends JpaAbstractDao<TenantEntity, Tenant> implement
     public TenantInfo findTenantInfoById(TenantId tenantId, UUID id) {
         return DaoUtil.getData(tenantRepository.findTenantInfoById(id));
     }
+
+    @Override
+    public Tenant findByEmail( String email) {
+        return DaoUtil.getData(tenantRepository.findByEmail(email));
+    }
+
 
     @Override
     public PageData<Tenant> findTenants(TenantId tenantId, PageLink pageLink) {

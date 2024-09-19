@@ -30,3 +30,11 @@ export interface LoginResponse {
   refreshToken: string;
   scope?: Authority;
 }
+
+
+export interface SignupRequest {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+}

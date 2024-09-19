@@ -35,12 +35,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.thingsboard.rule.engine.api.MailService;
 import org.thingsboard.server.cache.limits.RateLimitService;
+import org.thingsboard.server.common.data.Customer;
+import org.thingsboard.server.common.data.Tenant;
+import org.thingsboard.server.common.data.TenantProfile;
 import org.thingsboard.server.common.data.User;
 import org.thingsboard.server.common.data.audit.ActionType;
 import org.thingsboard.server.common.data.exception.ThingsboardErrorCode;
 import org.thingsboard.server.common.data.exception.ThingsboardException;
+import org.thingsboard.server.common.data.id.CustomerId;
+import org.thingsboard.server.common.data.id.EntityId;
 import org.thingsboard.server.common.data.id.TenantId;
+import org.thingsboard.server.common.data.id.TenantProfileId;
 import org.thingsboard.server.common.data.limit.LimitedApi;
+import org.thingsboard.server.common.data.security.Authority;
 import org.thingsboard.server.common.data.security.UserCredentials;
 import org.thingsboard.server.common.data.security.event.UserCredentialsInvalidationEvent;
 import org.thingsboard.server.common.data.security.event.UserSessionInvalidationEvent;
@@ -48,19 +55,28 @@ import org.thingsboard.server.common.data.security.model.JwtPair;
 import org.thingsboard.server.common.data.security.model.SecuritySettings;
 import org.thingsboard.server.common.data.security.model.UserPasswordPolicy;
 import org.thingsboard.server.config.annotations.ApiOperation;
+import org.thingsboard.server.dao.tenant.TbTenantProfileCache;
+import org.thingsboard.server.dao.user.UserService;
 import org.thingsboard.server.queue.util.TbCoreComponent;
+import org.thingsboard.server.service.entitiy.customer.TbCustomerService;
+import org.thingsboard.server.service.entitiy.tenant.TbTenantService;
+import org.thingsboard.server.service.entitiy.tenant.profile.TbTenantProfileService;
+import org.thingsboard.server.service.entitiy.user.TbUserService;
+import org.thingsboard.server.service.entitiy.user.TbUserSettingsService;
 import org.thingsboard.server.service.security.auth.rest.RestAuthenticationDetails;
-import org.thingsboard.server.service.security.model.ActivateUserRequest;
-import org.thingsboard.server.service.security.model.ChangePasswordRequest;
-import org.thingsboard.server.service.security.model.ResetPasswordEmailRequest;
-import org.thingsboard.server.service.security.model.ResetPasswordRequest;
-import org.thingsboard.server.service.security.model.SecurityUser;
-import org.thingsboard.server.service.security.model.UserPrincipal;
+import org.thingsboard.server.service.security.model.*;
 import org.thingsboard.server.service.security.model.token.JwtTokenFactory;
+import org.thingsboard.server.service.security.permission.Resource;
 import org.thingsboard.server.service.security.system.SystemSecurityService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.thingsboard.server.common.data.StringUtils.generateSafeToken;
+import static org.thingsboard.server.common.data.id.EntityId.NULL_UUID;
+import static org.thingsboard.server.controller.UserController.ACTIVATE_URL_PATTERN;
 
 @RestController
 @TbCoreComponent
@@ -77,6 +93,11 @@ public class AuthController extends BaseController {
     private final SystemSecurityService systemSecurityService;
     private final RateLimitService rateLimitService;
     private final ApplicationEventPublisher eventPublisher;
+    private final TbTenantService tbTenantService;
+    private final TbTenantProfileService tbTenantProfileService;
+    private final TbUserService tbUserService;
+    private final UserService userService;
+    private static final int DEFAULT_TOKEN_LENGTH = 30;
 
 
     @ApiOperation(value = "Get current User (getUser)",
@@ -300,4 +321,134 @@ public class AuthController extends BaseController {
         eventPublisher.publishEvent(new UserSessionInvalidationEvent(user.getSessionId()));
     }
 
+
+    @ApiOperation(value = "Sign up a new Tenant (signup)",
+            notes = "Creates a new tenant with the provided title and returns the details of the newly created tenant.")
+    @RequestMapping(value = "/noauth/signup", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Tenant> signUp(
+            @Parameter(description = "Sign up request")
+            @RequestBody SignUpRequest signUpRequest,
+            HttpServletRequest request) throws Exception {
+
+        // Vérifier si un utilisateur avec cet email existe déjà
+        if (tbTenantService.findTenantByEmail(signUpRequest.getEmail())) {
+            throw new Exception("User with this email already exists.");
+        }
+
+        // Valider le mot de passe
+        systemSecurityService.validatePassword(signUpRequest.getPassword(), null);
+
+        // Créer un nouveau Tenant
+        Tenant tenant = new Tenant();
+        tenant.setTitle("New Tenant"); // Définir le titre du tenant
+        tenant.setEmail(signUpRequest.getEmail());
+        Tenant savedTenant = tbTenantService.save(tenant);
+
+        // Créer un utilisateur tenant associé
+        User tenantUser = new User();
+        tenantUser.setEmail(signUpRequest.getEmail());
+        tenantUser.setTenantId(savedTenant.getTenantId());
+        tenantUser.setAuthority(Authority.TENANT_ADMIN); // Rôle d'administrateur tenant
+        tenantUser.setTenantId(savedTenant.getId());
+        User savedTenantUser = userService.saveUser(TenantId.SYS_TENANT_ID, tenantUser);
+
+        // Créer un UserCredentials  associé
+        UserCredentials userCredentials = userService.findUserCredentialsByUserId(TenantId.SYS_TENANT_ID, savedTenantUser.getId());
+        userCredentials.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+        userCredentials.setActivateToken(generateSafeToken(DEFAULT_TOKEN_LENGTH));
+        userCredentials.setEnabled(false);
+        userService.saveUserCredentials(TenantId.SYS_TENANT_ID, userCredentials);
+
+
+        String baseUrl = systemSecurityService.getBaseUrl(savedTenantUser.getTenantId(),null, request);
+        UserCredentials userCredentialsToken = userService.findUserCredentialsByUserId(TenantId.SYS_TENANT_ID, savedTenantUser.getId());
+
+        String activateUrl = String.format("%s/api/noauth/activateUser?activateToken=%s", baseUrl,userCredentialsToken.getActivateToken());
+        mailService.sendAccountActivatedEmail(activateUrl,savedTenantUser.getEmail());
+
+        // Retourner une réponse avec le tenant créé
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedTenant);
+    }
+    @ApiOperation(
+            value = "Activate User",
+            notes = "Activates a user's account using the provided activation token. " +
+                    "The token must be valid and associated with a user with a non-null password. " +
+                    "Upon successful activation, the user is redirected to the login page."
+    )
+    @RequestMapping(value = "/noauth/activateUser",params = {"activateToken"},method = RequestMethod.GET)
+    public ResponseEntity<?> userActivateToken(
+            @Parameter(description = "The activation token string used to activate the user's account.")
+            @RequestParam(value = "activateToken") String activateToken) {
+
+        // Find user credentials by activation token
+        UserCredentials userCredentials = userService.findUserCredentialsByActivateToken(TenantId.SYS_TENANT_ID, activateToken);
+
+        if (userCredentials == null || userCredentials.getPassword() == null || !userCredentials.getActivateToken().equals(activateToken)) {
+            // If the token is invalid, return a conflict response
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Invalid activation token.");
+        }
+
+        // Validate password
+        String password = userCredentials.getPassword();
+
+        // Encode the password and activate user credentials
+        userService.activateUserCredentials(TenantId.SYS_TENANT_ID, activateToken, password);
+
+        // Redirect to the login page with a 303 See Other response
+        HttpHeaders headers = new HttpHeaders();
+        String loginUrl = String.format("/login");
+        headers.setLocation(URI.create(loginUrl));
+
+        return new ResponseEntity<>(headers, HttpStatus.SEE_OTHER);
+    }
+    @ApiOperation(
+            value = "Renvoyer l'email",
+            notes = "Reverifie si l'email est enregistré et renvoie un message en conséquence."
+    )
+    @RequestMapping(value = "/noauth/renvoyerEmail", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity<?> renvoyerEmailSignUp(
+            @RequestBody String email, HttpServletRequest request) throws Exception {
+
+        // Vérifiez si l'email est non nul et valide
+        if (email == null || email.trim().isEmpty()) {
+            throw new Exception("L'email ne peut pas être nul ou vide.");
+
+       }
+
+        // Trouvez l'utilisateur par email
+        User user = userService.findUserByEmail(TenantId.SYS_TENANT_ID, email);
+
+        // Si l'utilisateur n'est pas trouvé, retournez un message d'email non existant
+        if (user == null) {
+            throw new Exception("L'email n'existe pas.");
+
+        }
+
+        // Trouvez les informations de connexion de l'utilisateur
+        UserCredentials userCredentials = userService.findUserCredentialsByUserId(TenantId.SYS_TENANT_ID, user.getId());
+
+        // Si les informations de connexion ne sont pas trouvées, retournez un message indiquant que l'utilisateur n'est pas enregistré
+        if (userCredentials == null) {
+            throw new Exception("Les informations de connexion de l'utilisateur sont manquantes.");
+
+        }
+
+        // Vérifiez si l'utilisateur est activé ou non
+        if (userCredentials.isEnabled()) {
+            throw new Exception("Le compte avec cet email est déjà actif.");
+
+        } else {
+            // Générer l'URL d'activation
+            String baseUrl = systemSecurityService.getBaseUrl(TenantId.SYS_TENANT_ID, null, request);
+            String activateUrl = String.format("%s/api/noauth/activateUser?activateToken=%s", baseUrl, userCredentials.getActivateToken());
+
+            // Envoyer l'email avec le lien d'activation
+            mailService.sendAccountActivatedEmail(activateUrl, email);
+
+            // Retourner une réponse réussie
+            return ResponseEntity.ok("L'email d'activation a été renvoyé.");
+        }
+    }
 }

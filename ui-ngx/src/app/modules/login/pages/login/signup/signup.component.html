@@ -1,0 +1,88 @@
+<img src="../../../../../assets/sobeam.gif" id="myVideo">
+
+<div class="tb-login-content mat-app-background tb-dark" fxFlex fxLayoutAlign="center center" fxLayout="column">
+  <mat-card appearance="raised" style="max-height: 80vh; overflow-y: auto;">
+    <!-- <mat-card-title>
+      <h1>{{ 'signup.title' | translate }}</h1>
+    </mat-card-title> -->
+    <mat-card-content>
+      <div tb-toast></div>
+      <form class="tb-login-form" [formGroup]="signUpFormGroup" (ngSubmit)="onSignUp()">
+        <fieldset fxLayout="column">
+          <div fxLayout.gt-xs="row" fxLayout="column" style="justify-content: space-between;">
+            <div  fxLayout.gt-xs="row" fxLayout="column" class="layout-padding">
+              <mat-form-field class="tb-appearance-transparent">
+                <mat-label translate>signup.firstname</mat-label>
+                <input id="firstname-input" matInput formControlName="firstname" />
+                <mat-error *ngIf="signUpFormGroup.get('firstname').hasError('required') && signUpFormGroup.get('firstname').touched">
+                  {{ 'signup.required' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div  fxLayout.gt-xs="row" fxLayout="column" class="layout-padding">
+              <mat-form-field class="tb-appearance-transparent">
+                <mat-label translate>signup.lastname</mat-label>
+                <input id="lastname-input" matInput formControlName="lastname" />
+                <mat-error *ngIf="signUpFormGroup.get('lastname').hasError('required') && signUpFormGroup.get('lastname').touched">
+                  {{ 'signup.required' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div  fxLayout="column" class="layout-padding">
+            <mat-form-field class="tb-appearance-transparent">
+              <mat-label translate>signup.email</mat-label>
+              <input id="email-input" matInput type="email" formControlName="email" />
+              <mat-icon matPrefix>email</mat-icon>
+              <mat-error *ngIf="signUpFormGroup.get('email').hasError('required') && signUpFormGroup.get('email').touched">
+                {{ 'signup.required' | translate }}
+              </mat-error>
+              <mat-error *ngIf="signUpFormGroup.get('email').hasError('email') && signUpFormGroup.get('email').touched">
+                {{ 'login.invalid-email-format' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div  fxLayout="column" class="layout-padding">
+            <mat-form-field class="tb-appearance-transparent">
+              <mat-label translate>signup.password</mat-label>
+              <input id="password-input" matInput type="password" formControlName="password" />
+              <tb-toggle-password matSuffix></tb-toggle-password>
+              <mat-icon matPrefix>lock</mat-icon>
+              <mat-error *ngIf="signUpFormGroup.get('password').hasError('required') && signUpFormGroup.get('password').touched">
+                {{ 'signup.required' | translate }}
+              </mat-error>
+              <mat-error *ngIf="signUpFormGroup.get('password').hasError('minlength') && signUpFormGroup.get('password').touched">
+                {{ 'signup.password-minlength' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Confirm Password -->
+          <div  fxLayout="column" class="layout-padding">
+            <mat-form-field class="tb-appearance-transparent">
+              <mat-label translate>signup.confirm-password</mat-label>
+              <input id="confirm-password-input" matInput type="password" formControlName="confirmPassword" />
+              <tb-toggle-password matSuffix></tb-toggle-password>
+              <mat-icon matPrefix>lock</mat-icon>
+              <mat-error *ngIf="signUpFormGroup.get('confirmPassword').hasError('mismatch')">
+                {{ 'signup.passwords-mismatch' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxLayout="column" class="tb-action-button">
+            <button mat-raised-button color="accent" [disabled]="isSubmitting || signUpFormGroup.invalid" type="submit">
+              {{ 'signup.signup' | translate }}
+            </button>
+          </div>
+          <div>
+            {{ 'signup.question' | translate }}? <a routerLink="/login">  {{ 'signup.signin' | translate }} </a>
+          </div>
+        </fieldset>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

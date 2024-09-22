@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright © 2016-2024 The Thingsboard Authors
+# Copyright © 2024 The Sobeam Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ echo "Starting '${project.name}' ..."
 
 cd ${pkg.installFolder}/bin
 
-exec java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.thingsboard.server.snmp.ThingsboardSnmpTransportApplication \
+exec java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.sobeam.server.snmp.SobeamSnmpTransportApplication \
                     -Dspring.jpa.hibernate.ddl-auto=none \
                     -Dlogging.config=/config/logback.xml \
                     org.springframework.boot.loader.launch.PropertiesLauncher

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright © 2016-2024 The Thingsboard Authors
+# Copyright © 2024 The Sobeam Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ done
 
 if [ ! -f ${firstlaunch} ]; then
     echo "Creating database..."
-    psql -U ${pkg.user} -d postgres -c "CREATE DATABASE thingsboard"
+    psql -U ${pkg.user} -d postgres -c "CREATE DATABASE sobeam"
 fi
 
 echo "Postgresql is ready"

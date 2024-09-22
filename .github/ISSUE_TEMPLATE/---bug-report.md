@@ -12,12 +12,12 @@ A clear and concise description of what the bug is.
 
 **Your Server Environment**
 <!-- 🔅🔅🔅🔅🔅🔅🔅 Choose one of the following or write your own 🔅🔅🔅🔅🔅🔅🔅-->
-* [Live Demo](https://demo.thingsboard.io)
-* [ThingsBoard Cloud](https://thingsboard.cloud)
+* [Live Demo](https://demo.sobeam.io)
+* [SoBeam Cloud](https://sobeam.cloud)
 * own setup
   * Deployment: monolith or microservices
   * Deployment type: deb, rpm, exe, docker-compose, k8s, ami
-  * ThingsBoard Version
+  * SoBeam Version
   * Community or Professional Edition
   * OS Name and Version
 

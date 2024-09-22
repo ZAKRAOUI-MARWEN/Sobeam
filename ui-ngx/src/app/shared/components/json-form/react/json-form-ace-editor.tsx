@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2024 The Thingsboard Authors
+ * Copyright © 2024 The Sobeam Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import ThingsboardBaseComponent from './json-form-base-component';
+import SobeamBaseComponent from './json-form-base-component';
 import reactCSS from 'reactcss';
 import Button from '@material-ui/core/Button';
 import { JsonFormFieldProps, JsonFormFieldState } from '@shared/components/json-form/react/json-form.models';
@@ -36,12 +36,12 @@ const ReactAce = React.lazy(() => {
   ).toPromise();
 });
 
-interface ThingsboardAceEditorProps extends JsonFormFieldProps {
+interface SobeamAceEditorProps extends JsonFormFieldProps {
   mode: string;
   onTidy: (value: string) => Observable<string>;
 }
 
-interface ThingsboardAceEditorState extends JsonFormFieldState {
+interface SobeamAceEditorState extends JsonFormFieldState {
   isFull: boolean;
   fullscreenContainerElement: Element;
   helpVisible: boolean;
@@ -49,7 +49,7 @@ interface ThingsboardAceEditorState extends JsonFormFieldState {
   focused: boolean;
 }
 
-class ThingsboardAceEditor extends React.Component<ThingsboardAceEditorProps, ThingsboardAceEditorState> {
+class SobeamAceEditor extends React.Component<SobeamAceEditorProps, SobeamAceEditorState> {
 
     private aceEditor: IEditorProps;
 
@@ -233,4 +233,4 @@ class ThingsboardAceEditor extends React.Component<ThingsboardAceEditorProps, Th
     }
 }
 
-export default ThingsboardBaseComponent(ThingsboardAceEditor);
+export default SobeamBaseComponent(SobeamAceEditor);

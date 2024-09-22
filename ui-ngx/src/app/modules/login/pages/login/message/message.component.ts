@@ -1,5 +1,5 @@
 ///
-/// Copyright © 2016-2024 The Thingsboard Authors
+/// Copyright © 2024 The Sobeam Authors
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 /// See the License for the specific language governing permissions and
 /// limitations under the License.
 ///
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ActionNotificationShow } from '@app/core/notification/notification.actions';

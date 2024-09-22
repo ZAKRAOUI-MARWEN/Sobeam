@@ -1,4 +1,4 @@
-Modify ‘main’ docker compose (`docker-compose.yml`) file for ThingsBoard Edge and update version of the image:
+Modify ‘main’ docker compose (`docker-compose.yml`) file for SoBeam Edge and update version of the image:
 ```bash
 nano docker-compose.yml
 {:copy-code}
@@ -9,7 +9,7 @@ version: '3.8'
 services:
     mytbedge:
         restart: always
-        image: "thingsboard/tb-edge:${TB_EDGE_VERSION}"
+        image: "sobeam/tb-edge:${TB_EDGE_VERSION}"
 ...
 ```
 

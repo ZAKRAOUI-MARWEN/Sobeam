@@ -1,5 +1,5 @@
 #
-# Copyright © 2016-2024 The Thingsboard Authors
+# Copyright © 2024 The Sobeam Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ on:
       - master
   pull_request:
     paths:
-      - 'application/src/main/resources/thingsboard.yml'
+      - 'application/src/main/resources/sobeam.yml'
       - 'transport/http/src/main/resources/tb-http-transport.yml'
       - 'transport/http/src/main/resources/tb-mqtt-transport.yml'
       - 'transport/http/src/main/resources/tb-coap-transport.yml'
@@ -31,7 +31,7 @@ on:
 
 jobs:
   build:
-    name: Check thingsboard.yml file
+    name: Check sobeam.yml file
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code

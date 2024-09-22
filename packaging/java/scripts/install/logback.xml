@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 
-    Copyright © 2016-2024 The Thingsboard Authors
+    Copyright © 2024 The Sobeam Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -40,15 +40,15 @@
         </encoder>
     </appender>
 
-    <logger name="org.thingsboard.server.install" level="INFO">
+    <logger name="org.sobeam.server.install" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
 
-    <logger name="org.thingsboard.server.service.install" level="INFO">
+    <logger name="org.sobeam.server.service.install" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
 
-    <logger name="org.thingsboard.server.ThingsboardInstallApplication" level="ERROR">
+    <logger name="org.sobeam.server.SobeamInstallApplication" level="ERROR">
         <appender-ref ref="STDOUT" />
     </logger>
 
@@ -56,11 +56,11 @@
         <appender-ref ref="STDOUT" />
     </logger>
 
-    <logger name="org.thingsboard.server.config.jwt" level="INFO">
+    <logger name="org.sobeam.server.config.jwt" level="INFO">
         <appender-ref ref="STDOUT" />
     </logger>
 
-    <logger name="org.thingsboard.server" level="INFO" />
+    <logger name="org.sobeam.server" level="INFO" />
 
     <root level="INFO">
         <appender-ref ref="fileLogAppender"/>

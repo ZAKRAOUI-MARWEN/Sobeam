@@ -1,6 +1,6 @@
 <!--
 
-    Copyright © 2016-2024 The Thingsboard Authors
+    Copyright © 2024 The Sobeam Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,16 +20,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.thingsboard</groupId>
+        <groupId>org.sobeam</groupId>
         <version>3.7.0</version>
         <artifactId>msa</artifactId>
     </parent>
-    <groupId>org.thingsboard.msa</groupId>
+    <groupId>org.sobeam.msa</groupId>
     <artifactId>black-box-tests</artifactId>
 
-    <name>ThingsBoard Black Box Tests</name>
-    <url>https://thingsboard.io</url>
-    <description>Project for ThingsBoard black box testing with using Docker</description>
+    <name>SoBeam Black Box Tests</name>
+    <url>https://sobeam.io</url>
+    <description>Project for SoBeam black box testing with using Docker</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -114,59 +114,59 @@
             <artifactId>guava</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard</groupId>
+            <groupId>org.sobeam</groupId>
             <artifactId>netty-mqtt</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard</groupId>
+            <groupId>org.sobeam</groupId>
             <artifactId>tools</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard</groupId>
+            <groupId>org.sobeam</groupId>
             <artifactId>rest-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.msa</groupId>
+            <groupId>org.sobeam.msa</groupId>
             <artifactId>js-executor</artifactId>
             <type>docker-info</type>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.msa</groupId>
+            <groupId>org.sobeam.msa</groupId>
             <artifactId>web-ui</artifactId>
             <type>docker-info</type>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.msa</groupId>
+            <groupId>org.sobeam.msa</groupId>
             <artifactId>tb-node</artifactId>
             <type>docker-info</type>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.msa.transport</groupId>
+            <groupId>org.sobeam.msa.transport</groupId>
             <artifactId>coap</artifactId>
             <type>docker-info</type>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.msa.transport</groupId>
+            <groupId>org.sobeam.msa.transport</groupId>
             <artifactId>http</artifactId>
             <type>docker-info</type>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.msa.transport</groupId>
+            <groupId>org.sobeam.msa.transport</groupId>
             <artifactId>mqtt</artifactId>
             <type>docker-info</type>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.msa.transport</groupId>
+            <groupId>org.sobeam.msa.transport</groupId>
             <artifactId>lwm2m</artifactId>
             <type>docker-info</type>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.msa.transport</groupId>
+            <groupId>org.sobeam.msa.transport</groupId>
             <artifactId>snmp</artifactId>
             <type>docker-info</type>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.common</groupId>
+            <groupId>org.sobeam.common</groupId>
             <artifactId>message</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>

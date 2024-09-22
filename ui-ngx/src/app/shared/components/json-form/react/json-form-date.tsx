@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2024 The Thingsboard Authors
+ * Copyright © 2024 The Sobeam Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import ThingsboardBaseComponent from './json-form-base-component';
+import SobeamBaseComponent from './json-form-base-component';
 import DateFnsUtils from '@date-io/date-fns';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { JsonFormFieldProps, JsonFormFieldState } from '@shared/components/json-form/react/json-form.models';
 
-interface ThingsboardDateState extends JsonFormFieldState {
+interface SobeamDateState extends JsonFormFieldState {
   currentValue: Date | null;
 }
 
-class ThingsboardDate extends React.Component<JsonFormFieldProps, ThingsboardDateState> {
+class SobeamDate extends React.Component<JsonFormFieldProps, SobeamDateState> {
 
     constructor(props) {
         super(props);
@@ -76,4 +76,4 @@ class ThingsboardDate extends React.Component<JsonFormFieldProps, ThingsboardDat
     }
 }
 
-export default ThingsboardBaseComponent(ThingsboardDate);
+export default SobeamBaseComponent(SobeamDate);

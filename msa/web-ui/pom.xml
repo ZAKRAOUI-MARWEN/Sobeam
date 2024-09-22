@@ -1,6 +1,6 @@
 <!--
 
-    Copyright © 2016-2024 The Thingsboard Authors
+    Copyright © 2024 The Sobeam Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,17 +19,17 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.thingsboard</groupId>
+        <groupId>org.sobeam</groupId>
         <version>3.7.0</version>
         <artifactId>msa</artifactId>
     </parent>
-    <groupId>org.thingsboard.msa</groupId>
+    <groupId>org.sobeam.msa</groupId>
     <artifactId>web-ui</artifactId>
     <packaging>pom</packaging>
 
-    <name>ThingsBoard Web UI Microservice</name>
-    <url>https://thingsboard.io</url>
-    <description>Service for hosting ThingsBoard Web UI</description>
+    <name>SoBeam Web UI Microservice</name>
+    <url>https://sobeam.io</url>
+    <description>Service for hosting SoBeam Web UI</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -49,7 +49,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.thingsboard</groupId>
+            <groupId>org.sobeam</groupId>
             <artifactId>ui-ngx</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
@@ -117,7 +117,7 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.thingsboard</groupId>
+                                    <groupId>org.sobeam</groupId>
                                     <artifactId>ui-ngx</artifactId>
                                     <type>jar</type>
                                     <overWrite>false</overWrite>

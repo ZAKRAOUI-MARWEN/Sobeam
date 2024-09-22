@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2024 The Thingsboard Authors
+ * Copyright © 2024 The Sobeam Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import ThingsboardBaseComponent from './json-form-base-component';
+import SobeamBaseComponent from './json-form-base-component';
 import reactCSS from 'reactcss';
 import tinycolor from 'tinycolor2';
 import TextField from '@material-ui/core/TextField';
@@ -24,12 +24,12 @@ import IconButton from '@material-ui/core/IconButton';
 import Clear from '@material-ui/icons/Clear';
 import Tooltip from '@material-ui/core/Tooltip';
 
-interface ThingsboardColorState extends JsonFormFieldState {
+interface SobeamColorState extends JsonFormFieldState {
   color: tinycolor.ColorFormats.RGBA | null;
   focused: boolean;
 }
 
-class ThingsboardColor extends React.Component<JsonFormFieldProps, ThingsboardColorState> {
+class SobeamColor extends React.Component<JsonFormFieldProps, SobeamColorState> {
 
     constructor(props) {
         super(props);
@@ -181,4 +181,4 @@ class ThingsboardColor extends React.Component<JsonFormFieldProps, ThingsboardCo
     }
 }
 
-export default ThingsboardBaseComponent(ThingsboardColor);
+export default SobeamBaseComponent(SobeamColor);

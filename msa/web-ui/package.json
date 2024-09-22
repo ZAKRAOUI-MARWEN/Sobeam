@@ -1,8 +1,8 @@
 {
-  "name": "thingsboard-web-ui",
+  "name": "sobeam-web-ui",
   "private": true,
   "version": "3.7.0",
-  "description": "ThingsBoard Web UI Microservice",
+  "description": "SoBeam Web UI Microservice",
   "main": "server.ts",
   "bin": "server.js",
   "scripts": {

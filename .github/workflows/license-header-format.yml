@@ -1,5 +1,5 @@
 #
-# Copyright © 2016-2024 The Thingsboard Authors
+# Copyright © 2024 The Sobeam Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,8 +46,8 @@ jobs:
 
       - name: Set Git user information
         run: |
-          git config user.name "ThingsBoard Bot"
-          git config user.email "noreply@thingsboard.io"
+          git config user.name "SoBeam Bot"
+          git config user.email "noreply@sobeam.io"
 
       - name: Check and push changes
         run: |

@@ -1,5 +1,5 @@
 #
-# Copyright © 2016-2024 The Thingsboard Authors
+# Copyright © 2024 The Sobeam Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-      monitor: 'thingsboard'
+      monitor: 'sobeam'
 
 
 # A scrape configuration containing exactly one endpoint to scrape:

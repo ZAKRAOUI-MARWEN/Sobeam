@@ -1,5 +1,5 @@
 ///
-/// Copyright © 2016-2024 The Thingsboard Authors
+/// Copyright © 2024 The Sobeam Authors
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -244,7 +244,7 @@ export class DashboardPageComponent extends PageComponent implements IDashboardC
   editingWidgetSubtitle: string = null;
   editingLayoutCtx: DashboardPageLayoutContext = null;
 
-  thingsboardVersion: string = env.tbVersion;
+  sobeamVersion: string = env.tbVersion;
 
   translatedDashboardTitle: string;
 

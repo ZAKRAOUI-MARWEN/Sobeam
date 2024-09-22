@@ -1,4 +1,4 @@
-Create docker compose file for ThingsBoard Edge upgrade process:
+Create docker compose file for SoBeam Edge upgrade process:
 
 ```bash
 > docker-compose-upgrade.yml && nano docker-compose-upgrade.yml
@@ -12,7 +12,7 @@ version: '3.8'
 services:
   mytbedge:
     restart: on-failure
-    image: "thingsboard/tb-edge:${TB_EDGE_VERSION}"
+    image: "sobeam/tb-edge:${TB_EDGE_VERSION}"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/tb-edge
     volumes:

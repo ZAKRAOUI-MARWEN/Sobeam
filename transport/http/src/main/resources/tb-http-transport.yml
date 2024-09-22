@@ -1,5 +1,5 @@
 #
-# Copyright © 2016-2024 The Thingsboard Authors
+# Copyright © 2024 The Sobeam Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,11 +43,11 @@ server:
         # Path to the key store that holds the SSL certificate
         store_file: "${SSL_KEY_STORE:classpath:keystore/keystore.p12}"
         # Password used to access the key store
-        store_password: "${SSL_KEY_STORE_PASSWORD:thingsboard}"
+        store_password: "${SSL_KEY_STORE_PASSWORD:sobeam}"
         # Key alias
         key_alias: "${SSL_KEY_ALIAS:tomcat}"
         # Password used to access the key
-        key_password: "${SSL_KEY_PASSWORD:thingsboard}"
+        key_password: "${SSL_KEY_PASSWORD:sobeam}"
   # HTTP/2 support (takes effect only if server SSL is enabled)
   http2:
     # Enable/disable HTTP/2 support
@@ -71,7 +71,7 @@ zk:
   # Zookeeper session timeout in milliseconds
   session_timeout_ms: "${ZOOKEEPER_SESSION_TIMEOUT_MS:3000}"
   # Name of the directory in zookeeper 'filesystem'
-  zk_dir: "${ZOOKEEPER_NODES_DIR:/thingsboard}"
+  zk_dir: "${ZOOKEEPER_NODES_DIR:/sobeam}"
   # The recalculate_delay property is recommended in a microservices architecture setup for rule-engine services.
   # This property provides a pause to ensure that when a rule-engine service is restarted, other nodes don't immediately attempt to recalculate their partitions.
   # The delay is recommended because the initialization of rule chain actors is time-consuming. Avoiding unnecessary recalculations during a restart can enhance system performance and stability.

@@ -1,7 +1,7 @@
-Here is the list of commands, that can be used to quickly install ThingsBoard Edge on Ubuntu Server and connect to the server.
+Here is the list of commands, that can be used to quickly install SoBeam Edge on Ubuntu Server and connect to the server.
 
 #### Install Java 11 (OpenJDK)
-ThingsBoard service is running on Java 11. Follow these instructions to install OpenJDK 11:
+SoBeam service is running on Java 11. Follow these instructions to install OpenJDK 11:
 
 ```bash
 sudo apt update
@@ -33,7 +33,7 @@ OpenJDK 64-Bit Server VM (build ...)
 ```
 
 #### Configure PostgreSQL
-ThingsBoard Edge uses PostgreSQL database as a local storage.
+SoBeam Edge uses PostgreSQL database as a local storage.
 Instructions listed below will help you to install PostgreSQL.
 
 ```bash
@@ -64,7 +64,7 @@ psql
 \q
 ```
 
-Then, press “Ctrl+D” to return to main user console and connect to the database to create ThingsBoard Edge DB:
+Then, press “Ctrl+D” to return to main user console and connect to the database to create SoBeam Edge DB:
 
 ```text
 psql -U postgres -d postgres -h 127.0.0.1 -W
@@ -72,23 +72,23 @@ CREATE DATABASE tb_edge;
 \q
 ```
 
-#### Thingsboard Edge service installation
+#### Sobeam Edge service installation
 Download installation package:
 
 ```bash
-wget https://github.com/thingsboard/thingsboard-edge/releases/download/v${TB_EDGE_VERSION}/tb-edge-${TB_EDGE_VERSION}.deb
+wget https://github.com/sobeam/sobeam-edge/releases/download/v${TB_EDGE_VERSION}/tb-edge-${TB_EDGE_VERSION}.deb
 {:copy-code}
 ```
 
-Go to the download repository and install ThingsBoard Edge service:
+Go to the download repository and install SoBeam Edge service:
 
 ```bash
 sudo dpkg -i tb-edge-${TB_EDGE_VERSION}.deb
 {:copy-code}
 ```
 
-#### Configure ThingsBoard Edge
-To configure ThingsBoard Edge, you  can use the following command to automatically update the configuration file with specific values:
+#### Configure SoBeam Edge
+To configure SoBeam Edge, you  can use the following command to automatically update the configuration file with specific values:
 
 ```bash
 sudo sh -c 'cat <<EOL >> /etc/tb-edge/conf/tb-edge.conf
@@ -121,9 +121,9 @@ export SPRING_DATASOURCE_PASSWORD=PUT_YOUR_POSTGRESQL_PASSWORD_HERE
 ```
 
 ##### [Optional] Update bind ports
-If ThingsBoard Edge is going to be running on the same machine where ThingsBoard server (cloud) is running, you'll need to update configuration parameters to avoid port collision between ThingsBoard server and ThingsBoard Edge.
+If SoBeam Edge is going to be running on the same machine where SoBeam server (cloud) is running, you'll need to update configuration parameters to avoid port collision between SoBeam server and SoBeam Edge.
 
-Please execute the following command to update ThingsBoard Edge configuration file (**/etc/tb-edge/conf/tb-edge.conf**):
+Please execute the following command to update SoBeam Edge configuration file (**/etc/tb-edge/conf/tb-edge.conf**):
 
 ```bash
 sudo sh -c 'cat <<EOL >> /etc/tb-edge/conf/tb-edge.conf
@@ -140,25 +140,25 @@ Make sure that ports above (18080, 11883, 15683) are not used by any other appli
 
 #### Run installation script
 
-Once ThingsBoard Edge is installed and configured please execute the following install script:
+Once SoBeam Edge is installed and configured please execute the following install script:
 
 ```bash
 sudo /usr/share/tb-edge/bin/install/install.sh
 {:copy-code}
 ```
 
-#### Restart ThingsBoard Edge service
+#### Restart SoBeam Edge service
 
 ```bash
 sudo service tb-edge restart
 {:copy-code}
 ```
 
-#### Open ThingsBoard Edge UI
+#### Open SoBeam Edge UI
 
-Once started, you will be able to open **ThingsBoard Edge UI** using the following link http://localhost:8080.
+Once started, you will be able to open **SoBeam Edge UI** using the following link http://localhost:8080.
 
 ###### NOTE: Edge HTTP bind port update
 
-Use next **ThingsBoard Edge UI** link **http://localhost:18080** if you updated HTTP 8080 bind port to **18080**.
+Use next **SoBeam Edge UI** link **http://localhost:18080** if you updated HTTP 8080 bind port to **18080**.
 

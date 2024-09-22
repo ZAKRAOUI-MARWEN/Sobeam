@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2024 The Thingsboard Authors
+ * Copyright © 2024 The Sobeam Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import ThingsboardBaseComponent from './json-form-base-component';
+import SobeamBaseComponent from './json-form-base-component';
 import TextField from '@material-ui/core/TextField';
 import { JsonFormFieldProps, JsonFormFieldState } from '@shared/components/json-form/react/json-form.models';
 
-interface ThingsboardTextState extends JsonFormFieldState {
+interface SobeamTextState extends JsonFormFieldState {
   focused: boolean;
 }
 
-class ThingsboardText extends React.Component<JsonFormFieldProps, ThingsboardTextState> {
+class SobeamText extends React.Component<JsonFormFieldProps, SobeamTextState> {
 
   constructor(props) {
     super(props);
@@ -88,4 +88,4 @@ class ThingsboardText extends React.Component<JsonFormFieldProps, ThingsboardTex
   }
 }
 
-export default ThingsboardBaseComponent(ThingsboardText);
+export default SobeamBaseComponent(SobeamText);

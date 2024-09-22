@@ -1,5 +1,5 @@
 ///
-/// Copyright © 2016-2024 The Thingsboard Authors
+/// Copyright © 2024 The Sobeam Authors
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -116,7 +116,7 @@ type Connector = {
 }
 
 interface GatewaySetting extends Connector{
-  thingsboard: GatewayMainSetting;
+  sobeam: GatewayMainSetting;
 }
 
 interface ConnectorConfig {
@@ -125,13 +125,13 @@ interface ConnectorConfig {
 }
 
 interface GatewayMainSetting {
-  thingsboard: GatewayMainThingsboardSetting;
+  sobeam: GatewayMainSobeamSetting;
   connectors: Array<GatewayMainConnector>,
   logs: string,
   storage: GatewayStorage
 }
 
-interface GatewayMainThingsboardSetting {
+interface GatewayMainSobeamSetting {
   host: string,
   remoteConfiguration: boolean,
   port: number,
@@ -183,7 +183,7 @@ const TEMPLATE_LOGS_CONFIG = '[loggers]}}keys=root, service, connector, converte
 
 export function generateYAMLConfigFile(gatewaySetting: GatewayFormModels): string {
   let config;
-  config = 'thingsboard:\n';
+  config = 'sobeam:\n';
   config += '  host: ' + gatewaySetting.host + '\n';
   config += '  remoteConfiguration: ' + gatewaySetting.remoteConfiguration + '\n';
   config += '  port: ' + gatewaySetting.port + '\n';
@@ -253,18 +253,18 @@ export function getEntityId(gatewayId: string): EntityId {
 
 export function createFormConfig(keyValue: GatewayMainSetting): GatewayFormModels {
   const formSetting: GatewayFormModels = {};
-  if (Object.prototype.hasOwnProperty.call(keyValue, 'thingsboard')) {
-    formSetting.host = keyValue.thingsboard.host;
-    formSetting.port = keyValue.thingsboard.port;
-    formSetting.remoteConfiguration = keyValue.thingsboard.remoteConfiguration;
-    if (Object.prototype.hasOwnProperty.call(keyValue.thingsboard.security, SecurityType.accessToken)) {
+  if (Object.prototype.hasOwnProperty.call(keyValue, 'sobeam')) {
+    formSetting.host = keyValue.sobeam.host;
+    formSetting.port = keyValue.sobeam.port;
+    formSetting.remoteConfiguration = keyValue.sobeam.remoteConfiguration;
+    if (Object.prototype.hasOwnProperty.call(keyValue.sobeam.security, SecurityType.accessToken)) {
       formSetting.securityType = SecurityType.accessToken;
-      formSetting.accessToken = (keyValue.thingsboard.security as SecurityToken).accessToken;
+      formSetting.accessToken = (keyValue.sobeam.security as SecurityToken).accessToken;
     } else {
       formSetting.securityType = SecurityType.tls;
-      formSetting.caCertPath = (keyValue.thingsboard.security as SecurityCertificate).caCert;
-      formSetting.privateKeyPath = (keyValue.thingsboard.security as SecurityCertificate).privateKey;
-      formSetting.certPath = (keyValue.thingsboard.security as SecurityCertificate).cert;
+      formSetting.caCertPath = (keyValue.sobeam.security as SecurityCertificate).caCert;
+      formSetting.privateKeyPath = (keyValue.sobeam.security as SecurityCertificate).privateKey;
+      formSetting.certPath = (keyValue.sobeam.security as SecurityCertificate).cert;
     }
   }
 
@@ -299,7 +299,7 @@ export function getDraftConnectorsJSON(currentConnectors: Array<GatewayFormConne
 
 export function gatewayConfigJSON(gatewayConfiguration: GatewayFormModels): GatewaySetting {
   const gatewayConfig = {
-    thingsboard: gatewayMainConfigJSON(gatewayConfiguration)
+    sobeam: gatewayMainConfigJSON(gatewayConfiguration)
   };
   gatewayConnectorJSON(gatewayConfig, gatewayConfiguration.connectors);
   return gatewayConfig;
@@ -318,7 +318,7 @@ function gatewayMainConfigJSON(gatewayConfiguration: GatewayFormModels): Gateway
       cert: gatewayConfiguration.certPath
     }
   }
-  const thingsboard: GatewayMainThingsboardSetting = {
+  const sobeam: GatewayMainSobeamSetting = {
     host: gatewayConfiguration.host,
     remoteConfiguration: gatewayConfiguration.remoteConfiguration,
     port: gatewayConfiguration.port,
@@ -355,7 +355,7 @@ function gatewayMainConfigJSON(gatewayConfiguration: GatewayFormModels): Gateway
   }
 
   return {
-    thingsboard,
+    sobeam,
     connectors,
     storage,
     logs: window.btoa(getLogsConfig(gatewayConfiguration.remoteLoggingLevel, gatewayConfiguration.remoteLoggingPathToLogs))

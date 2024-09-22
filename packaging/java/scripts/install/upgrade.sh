@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright © 2016-2024 The Thingsboard Authors
+# Copyright © 2024 The Sobeam Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ source "${CONF_FOLDER}/${configfile}"
 
 run_user=${pkg.user}
 
-su -s /bin/sh -c "java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.thingsboard.server.ThingsboardInstallApplication \
+su -s /bin/sh -c "java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.sobeam.server.SobeamInstallApplication \
                     -Dinstall.data_dir=${installDir} \
                     -Dspring.jpa.hibernate.ddl-auto=none \
                     -Dinstall.upgrade=true \
@@ -54,9 +54,9 @@ su -s /bin/sh -c "java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.thingsboard.s
                     org.springframework.boot.loader.launch.PropertiesLauncher" "$run_user"
 
 if [ $? -ne 0 ]; then
-    echo "ThingsBoard upgrade failed!"
+    echo "SoBeam upgrade failed!"
 else
-    echo "ThingsBoard upgraded successfully!"
+    echo "SoBeam upgraded successfully!"
 fi
 
 exit $?

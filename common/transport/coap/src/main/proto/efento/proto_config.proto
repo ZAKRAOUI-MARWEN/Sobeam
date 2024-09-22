@@ -1,5 +1,5 @@
 /**
- * Copyright © 2016-2024 The Thingsboard Authors
+ * Copyright © 2024 The Sobeam Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ syntax = "proto3";
 import "efento/proto_measurement_types.proto";
 import "efento/proto_rule.proto";
 
-option java_package = "org.thingsboard.server.gen.transport.coap";
+option java_package = "org.sobeam.server.gen.transport.coap";
 option java_outer_classname = "ConfigProtos";
 
 /* Message containing optional channels control parameters                                                                      */

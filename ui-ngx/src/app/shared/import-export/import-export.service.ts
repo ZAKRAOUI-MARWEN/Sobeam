@@ -1,5 +1,5 @@
 ///
-/// Copyright © 2016-2024 The Thingsboard Authors
+/// Copyright © 2024 The Sobeam Authors
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -583,7 +583,7 @@ export class ImportExportService {
             name: '',
             debugMode: false,
             singletonMode: false,
-            type: 'org.thingsboard.rule.engine.flow.TbRuleChainInputNode',
+            type: 'org.sobeam.rule.engine.flow.TbRuleChainInputNode',
             configuration: {
               ruleChainId: ruleChainConnection.targetRuleChainId.id
             },

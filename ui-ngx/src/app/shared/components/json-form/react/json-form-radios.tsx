@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2024 The Thingsboard Authors
+ * Copyright © 2024 The Sobeam Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ import { JsonFormFieldProps, JsonFormFieldState } from '@shared/components/json-
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { FormLabel, Radio, RadioGroup } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
-import ThingsboardBaseComponent from '@shared/components/json-form/react/json-form-base-component';
+import SobeamBaseComponent from '@shared/components/json-form/react/json-form-base-component';
 
-class ThingsboardRadios extends React.Component<JsonFormFieldProps, JsonFormFieldState> {
+class SobeamRadios extends React.Component<JsonFormFieldProps, JsonFormFieldState> {
   render() {
     const items = this.props.form.titleMap.map((item, index) => {
       return (
@@ -48,4 +48,4 @@ class ThingsboardRadios extends React.Component<JsonFormFieldProps, JsonFormFiel
   }
 }
 
-export default ThingsboardBaseComponent(ThingsboardRadios);
+export default SobeamBaseComponent(SobeamRadios);

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2024 The Thingsboard Authors
+ * Copyright © 2024 The Sobeam Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import ThingsboardBaseComponent from './json-form-base-component';
+import SobeamBaseComponent from './json-form-base-component';
 import { JsonFormFieldProps, JsonFormFieldState } from '@shared/components/json-form/react/json-form.models';
 import { TextField } from '@material-ui/core';
 
-interface ThingsboardNumberState extends JsonFormFieldState {
+interface SobeamNumberState extends JsonFormFieldState {
   focused: boolean;
   lastSuccessfulValue: number;
 }
 
-class ThingsboardNumber extends React.Component<JsonFormFieldProps, ThingsboardNumberState> {
+class SobeamNumber extends React.Component<JsonFormFieldProps, SobeamNumberState> {
 
   constructor(props) {
     super(props);
@@ -94,4 +94,4 @@ class ThingsboardNumber extends React.Component<JsonFormFieldProps, ThingsboardN
   }
 }
 
-export default ThingsboardBaseComponent(ThingsboardNumber);
+export default SobeamBaseComponent(SobeamNumber);

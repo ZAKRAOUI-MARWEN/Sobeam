@@ -1,5 +1,5 @@
 ///
-/// Copyright © 2016-2024 The Thingsboard Authors
+/// Copyright © 2024 The Sobeam Authors
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -205,9 +205,9 @@ export class GatewayFormComponent extends PageComponent implements OnInit, OnDes
       host: [this.window.location.hostname, [Validators.required]],
       port: [1883, [Validators.required, Validators.min(1), Validators.max(65535), Validators.pattern(/^-?[0-9]+$/)]],
       remoteConfiguration: [true],
-      caCertPath: ['/etc/thingsboard-gateway/ca.pem'],
-      privateKeyPath: ['/etc/thingsboard-gateway/privateKey.pem'],
-      certPath: ['/etc/thingsboard-gateway/certificate.pem'],
+      caCertPath: ['/etc/sobeam-gateway/ca.pem'],
+      privateKeyPath: ['/etc/sobeam-gateway/privateKey.pem'],
+      certPath: ['/etc/sobeam-gateway/certificate.pem'],
       remoteLoggingLevel: [GatewayLogLevel.debug],
       remoteLoggingPathToLogs: ['./logs/', [Validators.required]],
       storageType: [StorageType.memory],
@@ -379,7 +379,7 @@ export class GatewayFormComponent extends PageComponent implements OnInit, OnDes
       const attribute = JSON.parse(window.atob(response[0].value));
       for (const attributeKey of Object.keys(attribute)) {
         const keyValue = attribute[attributeKey];
-        if (attributeKey === 'thingsboard') {
+        if (attributeKey === 'sobeam') {
           if (keyValue !== null && Object.keys(keyValue).length > 0) {
             this.gatewayConfigurationGroup.patchValue(createFormConfig(keyValue));
           }

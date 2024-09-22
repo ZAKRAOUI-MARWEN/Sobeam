@@ -1,6 +1,6 @@
 <!--
 
-    Copyright © 2016-2024 The Thingsboard Authors
+    Copyright © 2024 The Sobeam Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,16 +19,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.thingsboard</groupId>
+        <groupId>org.sobeam</groupId>
         <version>3.7.0</version>
         <artifactId>transport</artifactId>
     </parent>
-    <groupId>org.thingsboard.transport</groupId>
+    <groupId>org.sobeam.transport</groupId>
     <artifactId>lwm2m</artifactId>
     <packaging>jar</packaging>
 
-    <name>Thingsboard LwM2m Transport Service</name>
-    <url>https://thingsboard.io</url>
+    <name>Sobeam LwM2m Transport Service</name>
+    <url>https://sobeam.io</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,8 +40,8 @@
         <pkg.name>tb-lwm2m-transport</pkg.name>
         <pkg.copyInstallScripts>false</pkg.copyInstallScripts>
         <pkg.win.dist>${project.build.directory}/windows</pkg.win.dist>
-        <pkg.implementationTitle>ThingsBoard LwM2m Transport Service</pkg.implementationTitle>
-        <pkg.mainClass>org.thingsboard.server.lwm2m.ThingsboardLwm2mTransportApplication</pkg.mainClass>
+        <pkg.implementationTitle>SoBeam LwM2m Transport Service</pkg.implementationTitle>
+        <pkg.mainClass>org.sobeam.server.lwm2m.SobeamLwm2mTransportApplication</pkg.mainClass>
     </properties>
 
     <dependencies>
@@ -50,15 +50,15 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.common.transport</groupId>
+            <groupId>org.sobeam.common.transport</groupId>
             <artifactId>lwm2m</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.common</groupId>
+            <groupId>org.sobeam.common</groupId>
             <artifactId>queue</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.common</groupId>
+            <groupId>org.sobeam.common</groupId>
             <artifactId>cache</artifactId>
         </dependency>
         <dependency>

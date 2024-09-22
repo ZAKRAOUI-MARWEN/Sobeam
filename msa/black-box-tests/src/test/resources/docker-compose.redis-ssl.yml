@@ -1,5 +1,5 @@
 #
-# Copyright © 2016-2024 The Thingsboard Authors
+# Copyright © 2024 The Sobeam Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ services:
       - ./tb-node/redis-data:/bitnami/redis/data
       - ./redis-certs:/redis/certs
 
-# ThingsBoard setup to use redis-standalone
+# SoBeam setup to use redis-standalone
   tb-core1:
     env_file:
       - cache-redis.env

@@ -1,11 +1,11 @@
 #### Upgrading to ${TB_EDGE_VERSION}EDGE
 
-**ThingsBoard Edge package download:**
+**SoBeam Edge package download:**
 ```bash
-wget https://github.com/thingsboard/thingsboard-edge/releases/download/v${TB_EDGE_TAG}/tb-edge-${TB_EDGE_TAG}.deb
+wget https://github.com/sobeam/sobeam-edge/releases/download/v${TB_EDGE_TAG}/tb-edge-${TB_EDGE_TAG}.deb
 {:copy-code}
 ```
-##### ThingsBoard Edge service upgrade
+##### SoBeam Edge service upgrade
 
 Install package:
 ```bash

@@ -1,6 +1,6 @@
 <!--
 
-    Copyright © 2016-2024 The Thingsboard Authors
+    Copyright © 2024 The Sobeam Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,16 +20,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.thingsboard</groupId>
+        <groupId>org.sobeam</groupId>
         <version>3.7.0</version>
         <artifactId>msa</artifactId>
     </parent>
-    <groupId>org.thingsboard.msa</groupId>
+    <groupId>org.sobeam.msa</groupId>
     <artifactId>vc-executor</artifactId>
 
-    <name>ThingsBoard Version Control Executor</name>
-    <url>https://thingsboard.io</url>
-    <description>Project for ThingsBoard version control microservice</description>
+    <name>SoBeam Version Control Executor</name>
+    <url>https://sobeam.io</url>
+    <description>Project for SoBeam version control microservice</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,17 +41,17 @@
         <pkg.name>tb-vc-executor</pkg.name>
         <pkg.copyInstallScripts>false</pkg.copyInstallScripts>
         <pkg.win.dist>${project.build.directory}/windows</pkg.win.dist>
-        <pkg.implementationTitle>ThingsBoard Version Control Executor Service</pkg.implementationTitle>
-        <pkg.mainClass>org.thingsboard.server.vc.ThingsboardVersionControlExecutorApplication</pkg.mainClass>
+        <pkg.implementationTitle>SoBeam Version Control Executor Service</pkg.implementationTitle>
+        <pkg.mainClass>org.sobeam.server.vc.SobeamVersionControlExecutorApplication</pkg.mainClass>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.thingsboard.common</groupId>
+            <groupId>org.sobeam.common</groupId>
             <artifactId>queue</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.common</groupId>
+            <groupId>org.sobeam.common</groupId>
             <artifactId>version-control</artifactId>
         </dependency>
         <dependency>

@@ -1,8 +1,8 @@
 {
-  "name": "thingsboard-js-executor",
+  "name": "sobeam-js-executor",
   "private": true,
   "version": "3.7.0",
-  "description": "ThingsBoard JavaScript Executor Microservice",
+  "description": "SoBeam JavaScript Executor Microservice",
   "main": "server.ts",
   "bin": "server.js",
   "scripts": {

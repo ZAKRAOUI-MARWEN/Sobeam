@@ -1,5 +1,5 @@
 #
-# Copyright © 2016-2024 The Thingsboard Authors
+# Copyright © 2024 The Sobeam Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -117,7 +117,7 @@ def check_yml(total_list, input_yaml_file):
 
 if __name__ == '__main__':
     sys.setrecursionlimit(10000)
-    files_to_check = ["application/src/main/resources/thingsboard.yml",
+    files_to_check = ["application/src/main/resources/sobeam.yml",
                       "transport/http/src/main/resources/tb-http-transport.yml",
                       "transport/mqtt/src/main/resources/tb-mqtt-transport.yml",
                       "transport/coap/src/main/resources/tb-coap-transport.yml",

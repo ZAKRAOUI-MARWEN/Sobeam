@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright © 2016-2024 The Thingsboard Authors
+    Copyright © 2024 The Sobeam Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.thingsboard</groupId>
+        <groupId>org.sobeam</groupId>
         <version>3.7.0</version>
-        <artifactId>thingsboard</artifactId>
+        <artifactId>sobeam</artifactId>
     </parent>
 
     <artifactId>monitoring</artifactId>
-    <name>ThingsBoard Monitoring Service</name>
+    <name>SoBeam Monitoring Service</name>
     <packaging>jar</packaging>
 
     <properties>
@@ -39,8 +39,8 @@
         <pkg.name>tb-monitoring</pkg.name>
         <pkg.copyInstallScripts>false</pkg.copyInstallScripts>
         <pkg.win.dist>${project.build.directory}/windows</pkg.win.dist>
-        <pkg.implementationTitle>ThingsBoard Monitoring Service</pkg.implementationTitle>
-        <pkg.mainClass>org.thingsboard.monitoring.ThingsboardMonitoringApplication</pkg.mainClass>
+        <pkg.implementationTitle>SoBeam Monitoring Service</pkg.implementationTitle>
+        <pkg.mainClass>org.sobeam.monitoring.SobeamMonitoringApplication</pkg.mainClass>
 
         <californium.version>2.6.1</californium.version>
         <leshan.version>2.0.0-M4</leshan.version>
@@ -48,15 +48,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.thingsboard.common</groupId>
+            <groupId>org.sobeam.common</groupId>
             <artifactId>data</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.common</groupId>
+            <groupId>org.sobeam.common</groupId>
             <artifactId>util</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard</groupId>
+            <groupId>org.sobeam</groupId>
             <artifactId>rest-client</artifactId>
             <scope>compile</scope>
         </dependency>

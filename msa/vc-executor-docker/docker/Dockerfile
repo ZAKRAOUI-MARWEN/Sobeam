@@ -1,5 +1,5 @@
 #
-# Copyright © 2016-2024 The Thingsboard Authors
+# Copyright © 2024 The Sobeam Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM thingsboard/openjdk17:bookworm-slim
+FROM sobeam/openjdk17:bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
@@ -23,8 +23,8 @@ RUN apt-get update \
 
 COPY start-tb-vc-executor.sh ${pkg.name}.deb /tmp/
 
-RUN mkdir -p /home/thingsboard/.config/jgit \
-    && chown -R ${pkg.user}:${pkg.user} /home/thingsboard \
+RUN mkdir -p /home/sobeam/.config/jgit \
+    && chown -R ${pkg.user}:${pkg.user} /home/sobeam \
     && chmod a+x /tmp/*.sh \
     && mv /tmp/start-tb-vc-executor.sh /usr/bin && \
     (yes | dpkg -i /tmp/${pkg.name}.deb) && \

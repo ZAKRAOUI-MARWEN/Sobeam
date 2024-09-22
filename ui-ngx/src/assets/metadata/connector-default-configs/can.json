@@ -53,7 +53,7 @@
       ],
       "attributeUpdates": [
         {
-          "attributeOnThingsBoard": "softwareVersion",
+          "attributeOnSoBeam": "softwareVersion",
           "nodeId": 64,
           "isExtendedId": true,
           "dataLength": 4,

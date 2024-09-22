@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright © 2016-2024 The Thingsboard Authors
+# Copyright © 2024 The Sobeam Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,15 +44,15 @@ upgradeversion=${DATA_FOLDER}/.upgradeversion
 
 source "${CONF_FOLDER}/${configfile}"
 
-echo "Starting ThingsBoard installation ..."
+echo "Starting SoBeam installation ..."
 
 set -e
 
-java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.thingsboard.server.ThingsboardInstallApplication \
+java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.sobeam.server.SobeamInstallApplication \
                     -Dinstall.load_demo=${loadDemo} \
                     -Dspring.jpa.hibernate.ddl-auto=none \
                     -Dinstall.upgrade=false \
-                    -Dlogging.config=/usr/share/thingsboard/bin/install/logback.xml \
+                    -Dlogging.config=/usr/share/sobeam/bin/install/logback.xml \
                     org.springframework.boot.loader.launch.PropertiesLauncher
 
 echo "${pkg.upgradeVersion}" > ${upgradeversion}

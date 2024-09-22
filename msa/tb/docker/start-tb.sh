@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright © 2016-2024 The Thingsboard Authors
+# Copyright © 2024 The Sobeam Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,14 +29,14 @@ if [ ! -f ${firstlaunch} ]; then
 fi
 
 if [ -f ${firstlaunch} ]; then
-    echo "Starting ThingsBoard ..."
+    echo "Starting SoBeam ..."
 
-    java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.thingsboard.server.ThingsboardServerApplication \
+    java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.sobeam.server.SobeamServerApplication \
                         -Dspring.jpa.hibernate.ddl-auto=none \
                         -Dlogging.config=${CONF_FOLDER}/logback.xml \
                         org.springframework.boot.loader.launch.PropertiesLauncher
 else
-    echo "ERROR: ThingsBoard is not installed"
+    echo "ERROR: SoBeam is not installed"
 fi
 
 stop-db.sh

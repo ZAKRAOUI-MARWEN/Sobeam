@@ -484,7 +484,7 @@ export class DashboardWidget implements GridsterItem, IDashboardWidget {
 
     this.style = {
       color: this.color,
-      backgroundColor: this.backgroundColor,
+    //  backgroundColor: this.backgroundColor,
       padding: this.padding,
       margin: this.margin,
       borderRadius: this.borderRadius };

@@ -29,7 +29,7 @@ import { Router } from '@angular/router';
 })
 export class SideMenuComponent implements OnInit {
 
-  menuSections$: any;
+  menuSections$ = this.menuService.menuSections();
 
   constructor(private router: Router,
     private store: Store<AppState>,
@@ -42,15 +42,12 @@ export class SideMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.menuSections$ = this.menuService.menuSections();
     this.menuService.refresh$.subscribe(value => {
-      if(value){
-      this.menuService=new MenuService(this.store, this.router, this.dashboardService);
+      this.menuService = new MenuService(this.store, this.router, this.dashboardService);
       this.menuSections$ = null;
       this.menuSections$ = this.menuService.menuSections();
-    }
+
     });
   }
   }
-
 

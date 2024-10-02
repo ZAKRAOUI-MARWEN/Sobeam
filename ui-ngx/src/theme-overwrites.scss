@@ -18,7 +18,7 @@
   @mixin theme-overwrites($primary, $config-or-theme) {
   @include _mat-form-field-overwrites($primary, $config-or-theme);
   @include _mat-button-overwrites($primary, $config-or-theme);
-   @include _mat-tollbar($primary, $config-or-theme);
+  //  @include _mat-tollbar($primary, $config-or-theme);
 }
 
 @mixin _mat-form-field-overwrites($primary, $config-or-theme) {
@@ -72,10 +72,8 @@
 }
 
 
-@mixin _mat-tollbar($primary , $config-or-theme){
-  .mat-toolbar.mat-mdc-table-toolbar:not(.mat-primary) {
-    background-color: mat.get-color-from-palette($primary)!important;
-
-   
-  }
-}
+// @mixin _mat-tollbar($primary , $config-or-theme){
+//   .mat-toolbar.mat-mdc-table-toolbar:not(.mat-primary) {
+//     background-color: mat.get-color-from-palette($primary)!important;
+//   }
+// }

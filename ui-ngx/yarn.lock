@@ -5430,9 +5430,9 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-"echarts@https://github.com/sobeam/echarts/archive/5.5.0-TB.tar.gz":
+"echarts@https://github.com/thingsboard/echarts/archive/5.5.0-TB.tar.gz":
   version "5.5.0-TB"
-  resolved "https://github.com/sobeam/echarts/archive/5.5.0-TB.tar.gz#d1017728576b3fd65532eb17e503d1349f7feaed"
+  resolved "https://github.com/thingsboard/echarts/archive/5.5.0-TB.tar.gz#0b707b5cd2ae4699e9ced8b07ca49cb70189ae2a"
   dependencies:
     tslib "2.3.0"
     zrender "5.5.0"
@@ -6241,9 +6241,9 @@ flatted@^3.2.7, flatted@^3.2.9:
   version "1.1.1"
   resolved "https://github.com/MichaelZinsmaier/CurvedLines.git#22ed1fc2a6ccafc816c2d07b36027cc123825c4b"
 
-"flot@https://github.com/sobeam/flot.git#0.9-work":
+"flot@https://github.com/thingsboard/flot.git#0.9-work":
   version "0.9.0-alpha"
-  resolved "https://github.com/sobeam/flot.git#c2734540477d8b261d04ee18d4d38af3b0ecb81b"
+  resolved "https://github.com/thingsboard/flot.git#c2734540477d8b261d04ee18d4d38af3b0ecb81b"
 
 follow-redirects@^1.0.0:
   version "1.15.6"
@@ -8395,9 +8395,9 @@ ngx-drag-drop@^15.0.1:
   dependencies:
     tslib "^2.3.0"
 
-"ngx-flowchart@https://github.com/sobeam/ngx-flowchart.git#release/2.0.0":
+"ngx-flowchart@https://github.com/thingsboard/ngx-flowchart.git#release/2.0.0":
   version "2.0.0"
-  resolved "https://github.com/sobeam/ngx-flowchart.git#354c6e86ef488ef974b2797336065fc4918b6dbb"
+  resolved "https://github.com/thingsboard/ngx-flowchart.git#354c6e86ef488ef974b2797336065fc4918b6dbb"
   dependencies:
     tslib "^2.3.0"
 

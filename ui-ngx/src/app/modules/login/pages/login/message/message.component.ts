@@ -29,6 +29,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class MessageComponent extends PageComponent implements OnInit {
   email = '';
+  errorCode :number = 0;
 
   constructor(
     protected store: Store<AppState>,
@@ -41,7 +42,9 @@ export class MessageComponent extends PageComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.email = params.email;
+      this.errorCode = params.errorCode;
     });
+    console.log(this.errorCode)
   }
   resendVerificationEmail() {
     if (!this.email || !this.isValidEmail(this.email)) {

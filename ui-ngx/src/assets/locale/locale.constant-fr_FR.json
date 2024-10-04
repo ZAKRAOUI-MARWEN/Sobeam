@@ -625,7 +625,10 @@
           "credentials-missing": "Les informations de connexion de l'utilisateur sont manquantes.",
           "account-already-active": "Le compte est déjà activé.",
           "server-error": "Erreur de serveur.",
-          "general-error": "Une erreur inconnue s'est produite."
+          "general-error": "Une erreur inconnue s'est produite.",
+          "titre-1": "Email non envoyé",
+          "line-1-1": "Un problème est survenu lors de l'envoi de votre email. Veuillez réessayer ou contacter l'administrateur pour obtenir de l'aide."
+
         }
     ,
       

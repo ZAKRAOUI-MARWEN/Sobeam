@@ -3144,7 +3144,10 @@
           "credentials-missing": "User credentials are missing.",
           "account-already-active": "The account is already active.",
           "server-error": "Server error.",
-          "general-error": "An unknown error occurred."
+          "general-error": "An unknown error occurred." ,
+          "titre-1": "Email not sent",
+          "line-1-1": "An issue occurred while sending your email. Please try again or contact the administrator for assistance."
+      
         }
       
       ,

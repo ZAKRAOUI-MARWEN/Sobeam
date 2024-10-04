@@ -82,11 +82,14 @@ export class SignupComponent extends PageComponent implements OnInit {
           error => {
             this.isSubmitting = false;
             let errorMessage = this.translate.instant('signup.error-message');
-            if (error.status === 400) {
+            if (error.error.status === 400) {
               errorMessage = this.translate.instant('signup.invalid-data-error');
-            } else if (error.status === 409) {
+            } else if (error.error.status === 409) {
               errorMessage = this.translate.instant('signup.email-taken-error');
-            }else if(error.status === 500){
+            }else if(error.error.status === 500 ){
+              if(error.error.errorCode === 3 ){
+                this.router.navigate(['/signup/emailVerification'], { queryParams: { email: this.signUpFormGroup.get('email')?.value, errorCode: error.error.errorCode } });              }
+
               errorMessage = this.translate.instant('signup.email-error');
             }
             this.store.dispatch(new ActionNotificationShow({

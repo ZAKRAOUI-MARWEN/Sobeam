@@ -30,7 +30,8 @@ public enum SobeamErrorCode {
     TOO_MANY_REQUESTS(33),
     TOO_MANY_UPDATES(34),
     SUBSCRIPTION_VIOLATION(40),
-    PASSWORD_VIOLATION(45);
+    PASSWORD_VIOLATION(45),
+    EMAIL_NOT_SENT(3);
 
     private int errorCode;
 

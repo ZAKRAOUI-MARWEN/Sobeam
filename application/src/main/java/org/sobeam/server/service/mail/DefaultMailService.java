@@ -475,7 +475,7 @@ public class DefaultMailService implements MailService {
         }
         log.warn("Unable to send mail: {}", message);
         return new SobeamException(String.format("Unable to send mail: %s", message),
-                SobeamErrorCode.GENERAL);
+                SobeamErrorCode.EMAIL_NOT_SENT);
     }
 
 }

@@ -37,7 +37,7 @@ export class DashboardService {
   constructor(
     private http: HttpClient,
     private router: Router,
-   @Inject(WINDOW) private window: Window
+    @Inject(WINDOW) private window: Window
   ) {
     this.currentUrl = this.router.url.split('?')[0];
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(
@@ -177,7 +177,7 @@ export class DashboardService {
   public getEdgeDashboards(edgeId: string, pageLink: PageLink, type: string = '',
                            config?: RequestConfig): Observable<PageData<DashboardInfo>> {
     return this.http.get<PageData<DashboardInfo>>(`/api/edge/${edgeId}/dashboards${pageLink.toQuery()}&type=${type}`,
-      defaultHttpOptionsFromConfig(config));
+      defaultHttpOptionsFromConfig(config))
   }
 
   public assignDashboardToEdge(edgeId: string, dashboardId: string,

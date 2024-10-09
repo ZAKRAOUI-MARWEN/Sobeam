@@ -65,7 +65,7 @@ export const progressBarDefaultSettings: ProgressBarWidgetSettings = {
   autoScale: true,
   showValue: true,
   valueFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 24,
     sizeUnit: 'px',
     style: 'normal',
@@ -77,7 +77,7 @@ export const progressBarDefaultSettings: ProgressBarWidgetSettings = {
   tickMin: 0,
   tickMax: 100,
   ticksFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 11,
     sizeUnit: 'px',
     style: 'normal',

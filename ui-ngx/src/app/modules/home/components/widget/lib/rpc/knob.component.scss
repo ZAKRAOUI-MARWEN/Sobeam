@@ -149,7 +149,7 @@ $minmax-container-margin-bottom-pct: percentage(.12) !default;
         left: $bars-margin-pct;
         z-index: 2;
         cursor: pointer !important;
-     //   background: $knob-img no-repeat;
+        background: $knob-img no-repeat;
         background-size: contain;
       }
 

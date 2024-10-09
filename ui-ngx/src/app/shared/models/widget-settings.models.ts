@@ -77,7 +77,7 @@ export const fontStyleTranslations = new Map<fontStyle, string>(
   ]
 );
 
-export const commonFonts = ['Manrope', 'monospace', 'sans-serif', 'serif'];
+export const commonFonts = ['Roboto', 'monospace', 'sans-serif', 'serif'];
 
 export interface Font {
   size: number;
@@ -195,8 +195,8 @@ export const colorRangeIncludes = (range: ColorRange, toCheck: ColorRange): bool
   }
 };
 
-export const filterIncludingColorRanges = (ranges: Array<ColorRange>): Array<ColorRange> => {
-  const result = [...ranges];
+export const filterIncludingColorRanges = (ranges: Array<ColorRange> | ColorRangeSettings): Array<ColorRange> => {
+  const result = [...(Array.isArray(ranges) ? ranges : ranges.range)];
   let includes = true;
   while (includes) {
     let index = -1;
@@ -329,11 +329,9 @@ export const resolveCssSize = (strSize?: string): [number, cssUnit] => {
   }
   let resolvedUnit: cssUnit;
   let resolvedSize = strSize;
-  for (const unit of cssUnits) {
-    if (strSize.endsWith(unit)) {
-      resolvedUnit = unit;
-      break;
-    }
+  const unitMatch = strSize.match(new RegExp(`(${cssUnits.join('|')})$`));
+  if (unitMatch) {
+    resolvedUnit = unitMatch[0] as cssUnit;
   }
   if (resolvedUnit) {
     resolvedSize = strSize.substring(0, strSize.length - resolvedUnit.length);
@@ -935,6 +933,24 @@ export interface BackgroundSettings {
   overlay: OverlaySettings;
 }
 
+export const isBackgroundSettings = (background: any): background is BackgroundSettings => {
+  if (background && background.type && background.overlay && background.overlay.color) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const colorBackground = (color: string): BackgroundSettings => ({
+  type: BackgroundType.color,
+  color,
+  overlay: {
+    enabled: false,
+    color: 'rgba(255,255,255,0.72)',
+    blur: 3
+  }
+});
+
 export const iconStyle = (size: number | string, sizeUnit: cssUnit = 'px'): ComponentStyle => {
   const iconSize = typeof size === 'number' ? size + sizeUnit : size;
   return {
@@ -964,7 +980,7 @@ export const textStyle = (font?: Font, letterSpacing = 'normal'): ComponentStyle
   }
   if (font?.family) {
     style.fontFamily = font.family +
-      (font.family !== 'Manrope' ? ', Manrope' : '');
+      (font.family !== 'Roboto' ? ', Roboto' : '');
   }
   return style;
 };
@@ -987,7 +1003,7 @@ export const inlineTextStyle = (font?: Font, letterSpacing = 'normal'): Componen
   }
   if (font?.family) {
     style['font-family'] = font.family +
-      (font.family !== 'Manrope' ? ', Manrope' : '');
+      (font.family !== 'Roboto' ? ', Roboto' : '');
   }
   return style;
 };

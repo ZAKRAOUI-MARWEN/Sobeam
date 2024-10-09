@@ -198,5 +198,4 @@ public abstract class DaoUtil {
                 .collect(Collectors.toList());
     }
 
-
 }

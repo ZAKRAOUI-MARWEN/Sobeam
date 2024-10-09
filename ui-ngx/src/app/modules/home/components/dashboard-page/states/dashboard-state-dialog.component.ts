@@ -34,7 +34,6 @@ import { DashboardState } from '@app/shared/models/dashboard.models';
 import { DashboardStateInfo } from '@home/components/dashboard-page/states/manage-dashboard-states-dialog.component.models';
 import { TranslateService } from '@ngx-translate/core';
 import { DashboardUtilsService } from '@core/services/dashboard-utils.service';
-import { MenuService } from '@core/services/menu.service';
 
 export interface DashboardStateDialogData {
   states: {[id: string]: DashboardState };
@@ -71,8 +70,7 @@ export class DashboardStateDialogComponent extends
               public dialogRef: MatDialogRef<DashboardStateDialogComponent, DashboardStateInfo>,
               private fb: UntypedFormBuilder,
               private translate: TranslateService,
-              private dashboardUtils: DashboardUtilsService,
-              private menuService: MenuService) {
+              private dashboardUtils: DashboardUtilsService) {
     super(store, router, dialogRef);
 
     this.states = this.data.states;
@@ -142,7 +140,5 @@ export class DashboardStateDialogComponent extends
     this.state = {...this.state, ...this.stateFormGroup.value};
     this.state.id = this.state.id.trim();
     this.dialogRef.close(this.state);
-    this.menuService.setRefresh(true);
-
   }
 }

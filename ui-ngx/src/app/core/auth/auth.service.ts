@@ -21,7 +21,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, ReplaySubject, throwError } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
-import { LoginRequest, LoginResponse, PublicLoginRequest, SignupRequest } from '@shared/models/login.models';
+import { LoginRequest, LoginResponse, PublicLoginRequest ,SignupRequest} from '@shared/models/login.models';
 import { Router, UrlTree } from '@angular/router';
 import { defaultHttpOptions, defaultHttpOptionsFromConfig, RequestConfig } from '../http/http-utils';
 import { UserService } from '../http/user.service';
@@ -42,7 +42,7 @@ import { TimeService } from '@core/services/time.service';
 import { UtilsService } from '@core/services/utils.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AlertDialogComponent } from '@shared/components/dialog/alert-dialog.component';
-import { OAuth2ClientInfo, PlatformType } from '@shared/models/oauth2.models';
+import { OAuth2ClientLoginInfo, PlatformType } from '@shared/models/oauth2.models';
 import { isMobileApp } from '@core/utils';
 import { TwoFactorAuthProviderType, TwoFaProviderInfo } from '@shared/models/two-factor-auth.models';
 import { UserPasswordPolicy } from '@shared/models/settings.models';
@@ -67,7 +67,7 @@ export class AuthService {
   }
 
   redirectUrl: string;
-  oauth2Clients: Array<OAuth2ClientInfo> = null;
+  oauth2Clients: Array<OAuth2ClientLoginInfo> = null;
   twoFactorAuthProviders: Array<TwoFaProviderInfo> = null;
 
   private refreshTokenSubject: ReplaySubject<LoginResponse> = null;
@@ -129,7 +129,7 @@ export class AuthService {
     return this.http.post<any>('/api/noauth/renvoyerEmail', email, defaultHttpOptions());
   }
 
-    public checkTwoFaVerificationCode(providerType: TwoFactorAuthProviderType, verificationCode: number): Observable<LoginResponse> {
+  public checkTwoFaVerificationCode(providerType: TwoFactorAuthProviderType, verificationCode: number): Observable<LoginResponse> {
     return this.http.post<LoginResponse>
     (`/api/auth/2fa/verification/check?providerType=${providerType}&verificationCode=${verificationCode}`,
       null, defaultHttpOptions(false, true)).pipe(
@@ -231,9 +231,9 @@ export class AuthService {
     }
   }
 
-  public loadOAuth2Clients(): Observable<Array<OAuth2ClientInfo>> {
+  public loadOAuth2Clients(): Observable<Array<OAuth2ClientLoginInfo>> {
     const url = '/api/noauth/oauth2Clients?platform=' + PlatformType.WEB;
-    return this.http.post<Array<OAuth2ClientInfo>>(url,
+    return this.http.post<Array<OAuth2ClientLoginInfo>>(url,
       null, defaultHttpOptions()).pipe(
       catchError(err => of([])),
       tap((OAuth2Clients) => {
@@ -358,7 +358,7 @@ export class AuthService {
           )
         );
       } else if (loginError) {
-        this.showLoginErrorDialog(loginError);
+        Promise.resolve().then(() => this.showLoginErrorDialog(loginError));
         this.utils.updateQueryParam('loginError', null);
         return throwError(Error());
       }
@@ -632,6 +632,7 @@ export class AuthService {
   private userForceFullscreen(authPayload: AuthPayload): boolean {
     return (authPayload.authUser && authPayload.authUser.isPublic) ||
       (authPayload.userDetails && authPayload.userDetails.additionalInfo &&
+        authPayload.userDetails.additionalInfo.defaultDashboardId &&
         authPayload.userDetails.additionalInfo.defaultDashboardFullscreen &&
         authPayload.userDetails.additionalInfo.defaultDashboardFullscreen === true);
   }

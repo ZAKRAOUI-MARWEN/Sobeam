@@ -125,7 +125,7 @@ export class AggregatedValueCardBasicConfigComponent extends BasicWidgetConfigCo
     let centerKeySettings: AggregatedValueCardKeySettings = {
       position: AggregatedValueCardKeyPosition.center,
       font: {
-        family: 'Manrope',
+        family: 'Roboto',
         size: 52,
         sizeUnit: 'px',
         style: 'normal',
@@ -138,7 +138,7 @@ export class AggregatedValueCardBasicConfigComponent extends BasicWidgetConfigCo
     let rightTopKeySettings: AggregatedValueCardKeySettings = {
       position: AggregatedValueCardKeyPosition.rightTop,
       font: {
-        family: 'Manrope',
+        family: 'Roboto',
         size: 14,
         sizeUnit: 'px',
         style: 'normal',
@@ -162,7 +162,7 @@ export class AggregatedValueCardBasicConfigComponent extends BasicWidgetConfigCo
     let rightBottomKeySettings: AggregatedValueCardKeySettings = {
       position: AggregatedValueCardKeyPosition.rightBottom,
       font: {
-        family: 'Manrope',
+        family: 'Roboto',
         size: 11,
         sizeUnit: 'px',
         style: 'normal',

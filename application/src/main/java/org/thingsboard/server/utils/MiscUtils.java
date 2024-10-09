@@ -17,7 +17,6 @@ package org.thingsboard.server.utils;
 
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
-
 import jakarta.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 

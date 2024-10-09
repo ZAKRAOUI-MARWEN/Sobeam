@@ -89,21 +89,21 @@ const defaultDigitalGaugeOptions: CanvasDigitalGaugeOptions = { ...GenericOption
     hideValue: false,
     hideMinMax: false,
 
-    fontTitle: 'Manrope',
+    fontTitle: 'Roboto',
 
-    fontValue: 'Manrope',
+    fontValue: 'Roboto',
 
     fontMinMaxSize: 10,
     fontMinMaxStyle: 'normal',
     fontMinMaxWeight: '500',
     colorMinMax: '#eee',
-    fontMinMax: 'Manrope',
+    fontMinMax: 'Roboto',
 
     fontLabelSize: 8,
     fontLabelStyle: 'normal',
     fontLabelWeight: '500',
     colorLabel: '#eee',
-    fontLabel: 'Manrope',
+    fontLabel: 'Roboto',
 
     neonGlowBrightness: 0,
 

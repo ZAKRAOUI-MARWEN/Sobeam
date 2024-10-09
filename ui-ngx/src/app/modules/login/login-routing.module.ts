@@ -26,6 +26,7 @@ import { TwoFactorAuthLoginComponent } from '@modules/login/pages/login/two-fact
 import { Authority } from '@shared/models/authority.enum';
 import { SignupComponent } from './pages/login/signup/signup.component';
 import { MessageComponent } from './pages/login/message/message.component';
+import { LinkExpiredComponent } from '@modules/login/pages/login/link-expired.component';
 
 const routes: Routes = [
   {
@@ -99,6 +100,25 @@ const routes: Routes = [
       title: 'login.two-factor-authentication',
       auth: [Authority.PRE_VERIFICATION_TOKEN],
       module: 'public'
+    },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'activationLinkExpired',
+    component: LinkExpiredComponent,
+    data: {
+      title: 'login.activation-link-expired',
+      module: 'public'
+    },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'passwordResetLinkExpired',
+    component: LinkExpiredComponent,
+    data: {
+      title: 'login.reset-password-link-expired',
+      module: 'public',
+      passwordLinkExpired: true
     },
     canActivate: [AuthGuard]
   }

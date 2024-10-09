@@ -160,7 +160,7 @@ export class TbFlot {
     const font = {
       color: this.settings.fontColor || '#545454',
       size: this.settings.fontSize || 10,
-      family: 'Manrope'
+      family: 'Roboto'
     };
 
     this.options = {
@@ -1156,7 +1156,7 @@ export class TbFlot {
     const tooltip = $('<div id="flot-series-tooltip" class="flot-mouse-value"></div>');
     tooltip.css({
       fontSize: '12px',
-      fontFamily: 'Manrope',
+      fontFamily: 'Roboto',
       fontWeight: '300',
       lineHeight: '18px',
       opacity: '1',

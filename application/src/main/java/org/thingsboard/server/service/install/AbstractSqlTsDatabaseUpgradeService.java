@@ -36,7 +36,7 @@ public abstract class AbstractSqlTsDatabaseUpgradeService {
     protected static final String DROP_PROCEDURE_IF_EXISTS = "DROP PROCEDURE IF EXISTS ";
     protected static final String TS_KV_SQL = "ts_kv.sql";
     protected static final String PATH_TO_USERS_PUBLIC_FOLDER = "C:\\Users\\Public";
-    protected static final String SOBEAM_WINDOWS_UPGRADE_DIR = "SOBEAM_WINDOWS_UPGRADE_DIR";
+    protected static final String THINGSBOARD_WINDOWS_UPGRADE_DIR = "THINGSBOARD_WINDOWS_UPGRADE_DIR";
 
     @Value("${spring.datasource.url}")
     protected String dbUrl;

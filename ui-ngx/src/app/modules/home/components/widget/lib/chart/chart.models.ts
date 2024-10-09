@@ -239,7 +239,7 @@ export const chartBarDefaultSettings: ChartBarSettings = {
   showLabel: false,
   labelPosition: ChartLabelPosition.top,
   labelFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 11,
     sizeUnit: 'px',
     style: 'normal',

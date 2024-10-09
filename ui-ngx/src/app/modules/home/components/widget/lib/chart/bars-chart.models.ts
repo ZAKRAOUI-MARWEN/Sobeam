@@ -47,7 +47,7 @@ export const barsChartDefaultSettings: BarsChartSettings = {
     barsChartAnimationDefaultSettings),
   polar: false,
   axisTickLabelFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',

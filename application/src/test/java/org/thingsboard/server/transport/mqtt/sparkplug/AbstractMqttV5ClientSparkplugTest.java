@@ -31,15 +31,25 @@ import org.junit.Assert;
 import org.thingsboard.server.common.data.Device;
 import org.thingsboard.server.common.data.TransportPayloadType;
 import org.thingsboard.server.common.data.exception.ThingsboardException;
-import org.thingsboard.server.common.data.kv.*;
+import org.thingsboard.server.common.data.kv.BasicTsKvEntry;
+import org.thingsboard.server.common.data.kv.BooleanDataEntry;
+import org.thingsboard.server.common.data.kv.DoubleDataEntry;
+import org.thingsboard.server.common.data.kv.JsonDataEntry;
+import org.thingsboard.server.common.data.kv.LongDataEntry;
+import org.thingsboard.server.common.data.kv.StringDataEntry;
+import org.thingsboard.server.common.data.kv.TsKvEntry;
+import org.thingsboard.server.gen.transport.mqtt.SparkplugBProto;
 import org.thingsboard.server.transport.mqtt.AbstractMqttIntegrationTest;
 import org.thingsboard.server.transport.mqtt.MqttTestConfigProperties;
 import org.thingsboard.server.transport.mqtt.mqttv5.MqttV5TestClient;
 import org.thingsboard.server.transport.mqtt.util.sparkplug.MetricDataType;
 import org.thingsboard.server.transport.mqtt.util.sparkplug.SparkplugMessageType;
-import org.thingsboard.server.gen.transport.mqtt.SparkplugBProto;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -47,13 +57,17 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.paho.mqttv5.common.packet.MqttWireMessage.MESSAGE_TYPE_CONNACK;
 import static org.thingsboard.common.util.JacksonUtil.newArrayNode;
-import static org.thingsboard.server.transport.mqtt.util.sparkplug.MetricDataType.*;
+import static org.thingsboard.server.transport.mqtt.util.sparkplug.MetricDataType.Bytes;
+import static org.thingsboard.server.transport.mqtt.util.sparkplug.MetricDataType.Int16;
+import static org.thingsboard.server.transport.mqtt.util.sparkplug.MetricDataType.Int32;
+import static org.thingsboard.server.transport.mqtt.util.sparkplug.MetricDataType.Int64;
+import static org.thingsboard.server.transport.mqtt.util.sparkplug.MetricDataType.Int8;
+import static org.thingsboard.server.transport.mqtt.util.sparkplug.MetricDataType.UInt16;
+import static org.thingsboard.server.transport.mqtt.util.sparkplug.MetricDataType.UInt32;
+import static org.thingsboard.server.transport.mqtt.util.sparkplug.MetricDataType.UInt64;
+import static org.thingsboard.server.transport.mqtt.util.sparkplug.MetricDataType.UInt8;
 import static org.thingsboard.server.transport.mqtt.util.sparkplug.SparkplugMetricUtil.createMetric;
 import static org.thingsboard.server.transport.mqtt.util.sparkplug.SparkplugTopicUtil.NAMESPACE;
-
-import java.lang.Float;
-import java.lang.Double;
-import java.lang.String;
 
 /**
  * Created by nickAS21 on 12.01.23
@@ -282,14 +296,14 @@ public abstract class AbstractMqttV5ClientSparkplugTest extends AbstractMqttInte
 
     private TsKvEntry createdAddMetricTsKvLong(SparkplugBProto.Payload.Builder dataPayload, String key, Object value,
                                                long ts, MetricDataType metricDataType) throws ThingsboardException {
-        TsKvEntry tsKvEntry = new BasicTsKvEntry(ts, new LongDataEntry(key, Long.valueOf(java.lang.String.valueOf(java.lang.String.valueOf((String) value)))));
+        TsKvEntry tsKvEntry = new BasicTsKvEntry(ts, new LongDataEntry(key, Long.valueOf(String.valueOf(value))));
         dataPayload.addMetrics(createMetric(value, ts, key, metricDataType));
         return tsKvEntry;
     }
 
-    private TsKvEntry createdAddMetricTsKvFloat(SparkplugBProto.Payload.Builder dataPayload, String key, Float value,
+    private TsKvEntry createdAddMetricTsKvFloat(SparkplugBProto.Payload.Builder dataPayload, String key, float value,
                                                 long ts, MetricDataType metricDataType) throws ThingsboardException {
-        Double dd = value.doubleValue();
+        Double dd = Double.parseDouble(Float.toString(value));
         TsKvEntry tsKvEntry = new BasicTsKvEntry(ts, new DoubleDataEntry(key, dd));
         dataPayload.addMetrics(createMetric(value, ts, key, metricDataType));
         return tsKvEntry;
@@ -297,7 +311,7 @@ public abstract class AbstractMqttV5ClientSparkplugTest extends AbstractMqttInte
 
     private TsKvEntry createdAddMetricTsKvDouble(SparkplugBProto.Payload.Builder dataPayload, String key, double value,
                                                  long ts, MetricDataType metricDataType) throws ThingsboardException {
-        Long l = (long) value;
+        Long l = Double.valueOf(value).longValue();
         TsKvEntry tsKvEntry = new BasicTsKvEntry(ts, new LongDataEntry(key, l));
         dataPayload.addMetrics(createMetric(value, ts, key, metricDataType));
         return tsKvEntry;
@@ -390,8 +404,7 @@ public abstract class AbstractMqttV5ClientSparkplugTest extends AbstractMqttInte
             throw new IllegalArgumentException("max must be greater than min");
         float result = ThreadLocalRandom.current().nextFloat() * (max - min) + min;
         if (result >= max) // correct for rounding
-           // result = Float.intBitsToFloat(Float.floatToIntBits(max) - 1);
-        result = (max) - 1;
+            result = Float.intBitsToFloat(Float.floatToIntBits(max) - 1);
         return result;
     }
 

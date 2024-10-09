@@ -38,7 +38,6 @@ import {
   TimeSeriesChartSettings,
   TimeSeriesChartThreshold,
   timeSeriesChartThresholdDefaultSettings,
-  TimeSeriesChartTooltipWidgetSettings,
   TimeSeriesChartVisualMapPiece,
   TimeSeriesChartXAxisSettings,
   TimeSeriesChartYAxisSettings
@@ -54,6 +53,9 @@ import {
   ChartLineType,
   ChartShape
 } from '@home/components/widget/lib/chart/chart.models';
+import {
+  TimeSeriesChartTooltipWidgetSettings
+} from '@home/components/widget/lib/chart/time-series-chart-tooltip.models';
 
 export interface RangeItem {
   index: number;
@@ -138,7 +140,7 @@ export const rangeChartDefaultSettings: RangeChartWidgetSettings = {
   showPointLabel: false,
   pointLabelPosition: ChartLabelPosition.top,
   pointLabelFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 11,
     sizeUnit: 'px',
     style: 'normal',
@@ -164,7 +166,7 @@ export const rangeChartDefaultSettings: RangeChartWidgetSettings = {
   showLegend: true,
   legendPosition: LegendPosition.top,
   legendLabelFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',
@@ -174,7 +176,7 @@ export const rangeChartDefaultSettings: RangeChartWidgetSettings = {
   legendLabelColor: 'rgba(0, 0, 0, 0.76)',
   showTooltip: true,
   tooltipLabelFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',
@@ -183,7 +185,7 @@ export const rangeChartDefaultSettings: RangeChartWidgetSettings = {
   },
   tooltipLabelColor: 'rgba(0, 0, 0, 0.76)',
   tooltipValueFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',
@@ -195,7 +197,7 @@ export const rangeChartDefaultSettings: RangeChartWidgetSettings = {
   tooltipDateInterval: true,
   tooltipDateFormat: simpleDateFormat('dd MMM yyyy HH:mm'),
   tooltipDateFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 11,
     sizeUnit: 'px',
     style: 'normal',

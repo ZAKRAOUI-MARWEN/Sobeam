@@ -23,10 +23,7 @@ import org.thingsboard.server.common.data.User;
 import org.thingsboard.server.common.data.audit.ActionType;
 import org.thingsboard.server.common.data.id.CustomerId;
 import org.thingsboard.server.common.data.id.TenantId;
-import org.thingsboard.server.common.data.plugin.ComponentLifecycleEvent;
 import org.thingsboard.server.service.entitiy.AbstractTbEntityService;
-
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -62,5 +59,4 @@ public class DefaultTbCustomerService extends AbstractTbEntityService implements
             throw e;
         }
     }
-
 }

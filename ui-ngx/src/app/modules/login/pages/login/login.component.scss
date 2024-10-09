@@ -16,7 +16,6 @@
 @import '../../../../../scss/constants';
 @import '../../../../../theme';
 
-
 :host {
 
   #myVideo {
@@ -32,14 +31,13 @@
   border: 1px solid #202637;
   --mdc-elevated-card-container-color: #0c162d !important;
 }
-  
+
 
   display: flex;
   flex: 1 1 0;
   .tb-login-content {
     margin-top: 36px;
     margin-bottom: 76px;
-    
     background-color: #eee;
     .tb-login-form {
       @media #{$mat-gt-xs} {

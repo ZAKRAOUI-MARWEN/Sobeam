@@ -19,8 +19,10 @@ import {
   BackgroundType,
   ColorSettings,
   constantColor,
-  cssUnit, DateFormatSettings,
-  Font, lastUpdateAgoDateFormat
+  cssUnit,
+  DateFormatSettings,
+  Font,
+  lastUpdateAgoDateFormat
 } from '@shared/models/widget-settings.models';
 
 export enum ValueCardLayout {
@@ -80,6 +82,7 @@ export interface ValueCardWidgetSettings {
   dateFont: Font;
   dateColor: ColorSettings;
   background: BackgroundSettings;
+  padding: string;
 }
 
 export const valueCardDefaultSettings = (horizontal: boolean): ValueCardWidgetSettings => ({
@@ -87,7 +90,7 @@ export const valueCardDefaultSettings = (horizontal: boolean): ValueCardWidgetSe
   autoScale: true,
   showLabel: true,
   labelFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 16,
     sizeUnit: 'px',
     style: 'normal',
@@ -101,7 +104,7 @@ export const valueCardDefaultSettings = (horizontal: boolean): ValueCardWidgetSe
   iconSizeUnit: 'px',
   iconColor: constantColor('#5469FF'),
   valueFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 52,
     sizeUnit: 'px',
     style: 'normal',
@@ -112,7 +115,7 @@ export const valueCardDefaultSettings = (horizontal: boolean): ValueCardWidgetSe
   showDate: true,
   dateFormat: lastUpdateAgoDateFormat(),
   dateFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',
@@ -128,5 +131,6 @@ export const valueCardDefaultSettings = (horizontal: boolean): ValueCardWidgetSe
       color: 'rgba(255,255,255,0.72)',
       blur: 3
     }
-  }
+  },
+  padding: ''
 });

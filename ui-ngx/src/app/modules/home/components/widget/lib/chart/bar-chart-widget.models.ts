@@ -45,7 +45,7 @@ export const barChartWidgetDefaultSettings: BarChartWidgetSettings = {
   animation: mergeDeep({} as ChartAnimationSettings,
     barsChartAnimationDefaultSettings),
   axisTickLabelFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',

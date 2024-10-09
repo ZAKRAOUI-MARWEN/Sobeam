@@ -33,7 +33,6 @@
       <tb-side-menu></tb-side-menu>
     </mat-toolbar>
   </mat-sidenav>
-
   <mat-sidenav-content>
     <div fxLayout="column" role="main" style="height: 100%;">
 
@@ -63,18 +62,10 @@
 
         <button mat-icon-button (click)="changeMode()">
           <mat-icon class="material-icons"> {{icon}}</mat-icon>
-
-
         </button>
-
         <button mat-icon-button (click)="changeColor()">
           <mat-icon class="material-icons">palette</mat-icon>
-
-
         </button>
-
-
-
         <button *ngIf="fullscreenEnabled" [fxShow]="!displaySearchMode()" mat-icon-button fxHide.lt-md
           (click)="toggleFullscreen()">
           <mat-icon class="material-icons">{{ isFullscreen() ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
@@ -82,9 +73,6 @@
         <tb-notification-bell></tb-notification-bell>
         <tb-user-menu [displayUserInfo]="!displaySearchMode()"></tb-user-menu>
       </mat-toolbar>
-
-
-
       <!-- <mat-progress-bar color="warn" style="z-index: 10; margin-bottom: -4px; width: 100%;" mode="indeterminate"
                         *ngIf="!hideLoadingBar && (isLoading$ | async)">
       </mat-progress-bar> -->

@@ -570,7 +570,7 @@
         "type-timeseries-updated": "Telemetrie mise à jour",
         "type-timeseries-deleted": "Telemetrie supprimée"
     },
-    
+
     "signup": {
         "firstname": "Prénom",
         "lastname": "Nom de famille",
@@ -612,7 +612,7 @@
 
 
       },
-      
+
         "validation": {
           "titre": "Email Verification",
           "line-1": "An email with verification details has been sent to the specified email address.",
@@ -631,7 +631,7 @@
 
         }
     ,
-      
+
     "common": {
         "enter-password": "Entrez le mot de passe",
         "enter-search": "Entrez la recherche",
@@ -1837,7 +1837,6 @@
         "login-with": "Se connecter avec {{name}}",
         "or": "ou",
         "question" :"Vous n'avez pas de compte"
-
     },
     "position": {
         "bottom": "Bas",

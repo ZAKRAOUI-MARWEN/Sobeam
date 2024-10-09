@@ -21,7 +21,6 @@
 @include mat.all-component-typographies();
 @include mat.core();
 
-
 $tb-mat-indigo: (
   50 : #e1f7f8,
   100 : #b3ecef,
@@ -89,6 +88,7 @@ $md-mcgpalette0: (
 
 
 $tb-primary: mat.define-palette($tb-mat-indigo);
+$tb-accent: mat.define-palette(mat.$deep-orange-palette);
 
 $tb-accent: mat.define-palette($md-mcgpalette0);
 
@@ -108,17 +108,12 @@ $tb-mat-theme: mat.define-light-theme((color: (primary: $tb-primary,
       density: 0));
 
 $color: map_get($tb-mat-theme, color);
-
 $color: map_merge($color, (background: $tb-theme-background));
-
 $tb-mat-theme: map_merge($tb-mat-theme, (color: $color));
-
 $tb-theme: map_merge($tb-mat-theme, $color);
 
 $primary: mat.get-color-from-palette($tb-primary);
-
 $accent: mat.get-color-from-palette($tb-accent);
-
 
 $tb-dark-mat-indigo: (
   50: #ffffff,
@@ -186,9 +181,6 @@ $color: map_merge($color, (background: $tb-dark-theme-background));
 $tb-dark-theme: map_merge($tb-dark-theme, (color: $color));
 $tb-dark-theme: map_merge($tb-dark-theme, $color);
 
-
-
-
 @mixin mat-fab-toolbar-theme($theme) {
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
@@ -201,21 +193,18 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
       background: map-get($theme, 100);
       color: mat.get-color-from-palette($foreground, text);
     }
-
     &.mat-primary {
       .mat-fab-toolbar-background {
         background: mat.get-color-from-palette($primary);
         color: mat.get-color-from-palette($primary, default-contrast);
       }
     }
-
     &.mat-accent {
       .mat-fab-toolbar-background {
         background: mat.get-color-from-palette($accent);
         color: mat.get-color-from-palette($accent, default-contrast);
       }
     }
-
     &.mat-warn {
       .mat-fab-toolbar-background {
         background: mat.get-color-from-palette($warn);
@@ -223,14 +212,12 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
       }
     }
   }
-
 }
 
 @mixin _mat-toolbar-inverse-color($palette) {
   background: mat.get-color-from-palette($palette, default-contrast);
   color: rgba(black, 0.87);
 }
-
 
 @mixin mat-fab-toolbar-inverse-theme($theme) {
   $primary: map-get($theme, primary);
@@ -244,17 +231,14 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
       background: map-get($theme, 100);
       color: mat.get-color-from-palette($foreground, text);
     }
-
     &.mat-primary {
       .mat-fab-toolbar-background {
         @include _mat-toolbar-inverse-color($primary);
       }
     }
-
     mat-toolbar {
       &.mat-primary {
         @include _mat-toolbar-inverse-color($primary);
-
         button.mat-mdc-icon-button {
           .mat-icon {
             color: mat.get-color-from-palette($primary);
@@ -262,7 +246,6 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
         }
       }
     }
-
     .mat-mdc-fab {
       &.mat-primary {
         background: mat.get-color-from-palette($primary, default-contrast);
@@ -272,7 +255,6 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
   }
 
 }
-
 
 @mixin tb-components-theme($theme) {
   $primary: map-get($theme, primary);
@@ -329,7 +311,6 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
     }
   }
 
-  #gridster-background,
   .tb-absolute-fill,
   .cdk-virtual-scroll-orientation-vertical {
     background: transparent;
@@ -350,19 +331,15 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
   }
 
   .tb-widget-container>.tb-widget {
-
     box-shadow: 0 2px 4px -1px #afb6c933 !important;
-
   }
 
   .tb-entity-table-content,
     .tb-time-series-chart-panel {
     background: if($is-tb-theme, $colorLocalLight1 !important, $colorLocalDark1 !important);
-    border-radius: 14px;
-    
+    border-radius: 14px !important;
+    border: none !important;
   }
-
-
 
   .mat-mdc-cell {
     .mat-icon {
@@ -381,7 +358,7 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
   span:not(gridster-item *),
   div:not(gridster-item *),
   .tb-usage-item-counts,
-  
+
   tb-icon:not(gridster-item *),
   a:not(gridster-item *),
   p:not(gridster-item *),
@@ -401,7 +378,7 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
 
   }
 
-  .mat-mdc-dialog-container {
+  .mat-mdc-dialog-container ,#gridster-background {
     --mdc-dialog-container-color: if($is-tb-theme, $colorLocalLight1 !important, $colorLocalDark1 !important);
     background-color: if($is-tb-theme, $colorLocalLight1 !important, $colorLocalDark1 !important);
   }
@@ -417,15 +394,13 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
     background: if($is-tb-theme, $tb-primary-color !important, $tb-primary-color !important);
   }
 
-
-
   tb-timewindow-panel,
   .ng-tns-c185-108,
   .tb-popover-inner,
   .tb-filter-panel,
   tb-widget-types-panel ,.tb-images-content{
     background-color: if($is-tb-theme, $colorLocalLight1 !important, $colorLocalDark1 !important);
-   
+
   }
 
   .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
@@ -438,11 +413,6 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
       border-color: if($is-tb-theme, $tb-primary-color !important, $colorLocalLight !important);
     }
   }
-
-  // .tb-images {
-  //   border-radius: 20px;
-  //   background-color: if($is-tb-theme, $colorLocalLight !important, $colorLocalDark1 !important);
-  // }
 
   .mat-mdc-radio-button {
     &.mat-primary {
@@ -457,11 +427,9 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
   .mat-expansion-panel {
     background-color: if($is-tb-theme, $colorLocalLight !important, $colorLocalDark2 !important);
   }
-
-
-
   .details-toolbar {
     background-color: $tb-primary-color !important;
+    border-radius: 11px 11px 0px 0px !important;
   }
 
   .card {
@@ -540,8 +508,13 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
     }
   }
 
-  .mat-button-toggle-group.mat-button-toggle-group-appearance-standard.tb-toggle-header.tb-fill.tb-invert .mat-button-toggle.mat-button-toggle-appearance-standard.mat-button-toggle-checked .mat-button-toggle-button {
+  .mat-button-toggle-group.mat-button-toggle-group-appearance-standard.tb-toggle-header.tb-fill.tb-invert .mat-button-toggle.mat-button-toggle-appearance-standard.mat-button-toggle-checked {
     background: $tb-primary-color !important;
+    border-radius: 12px;
+  }
+
+  .mat-button-toggle-button {
+    background: none !important;
   }
 
   .ace-tm .ace_gutter-active-line {
@@ -551,11 +524,13 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
   }
 
 
- 
 
 
+  .mat-elevation-z4{
+    box-shadow:none !important;
+  }
 
-  // rule chaine 
+  // rule chaine
   .tb-rulechain .tb-rulechain-library .tb-rulechain-library-panel-group .mat-expansion-panel .mat-expansion-panel-header {
     background-color: #16cdc7 !important;
     margin: 2px;
@@ -604,7 +579,7 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
     @if not $is-tb-theme {
       background:  #01c0c8  !important;
     }
-  
+
   }
 
   .tb-image-container, .tb-image-select-container {
@@ -617,7 +592,7 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
     --mdc-fab-container-color: #fb9678 !important;
   }
 
-  .tb-form-row  , .mdc-text-field--outlined{
+  .mdc-text-field--outlined{
     @if not $is-tb-theme {
       border: 1px solid rgba(255, 255, 255, 0.349) !important;
       border-radius: 5px;
@@ -634,7 +609,7 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
      }
   }
 
- 
+
 }
 
 .tb-default {
@@ -653,6 +628,3 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
   @include mat.typography-hierarchy($tb-dark-theme);
 
 }
-
-
-

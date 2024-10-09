@@ -33,7 +33,7 @@ export const mobileAppQrCodeWidgetDefaultSettings: MobileAppQrCodeWidgetSettings
   },
   title: 'Download mobile app',
   titleFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 16,
     sizeUnit: 'px',
     style: 'normal',

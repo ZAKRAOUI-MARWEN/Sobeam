@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 public class RateLimitsTest {
-/*
+
     @Test
     public void testRateLimits_greedyRefill() {
         testRateLimitWithGreedyRefill(3, 10);
@@ -82,5 +82,5 @@ public class RateLimitsTest {
                     assertThat(rateLimits.tryConsume()).as("new token is available").isFalse();
                 });
     }
- */
+
 }

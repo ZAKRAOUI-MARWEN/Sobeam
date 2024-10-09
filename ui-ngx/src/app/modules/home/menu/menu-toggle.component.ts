@@ -27,7 +27,7 @@ import { ActionPreferencesUpdateOpenedMenuSection } from '@core/auth/auth.action
   styleUrls: ['./menu-toggle.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MenuToggleComponent implements OnInit{
+export class MenuToggleComponent implements OnInit {
 
   @Input() section: MenuSection;
 
@@ -38,7 +38,7 @@ export class MenuToggleComponent implements OnInit{
   }
   sectionHeight(): string {
     if (this.section.opened) {
-      return this.section.pages.length * 50 + 'px';
+         return this.section.pages.length * 52 + 'px';
     } else {
       return '0px';
     }

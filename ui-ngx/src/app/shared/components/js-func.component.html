@@ -15,7 +15,7 @@
     limitations under the License.
 
 -->
-<div class="tb-js-func" [ngClass]="{'tb-disabled': disabled, 'fill-height': fillHeight, 'tb-hide-brackets': hideBrackets}"
+<div class="tb-js-func" style="background: #fff;" [ngClass]="{'tb-disabled': disabled, 'fill-height': fillHeight, 'tb-hide-brackets': hideBrackets}"
      tb-fullscreen
      [fullscreen]="fullscreen" fxLayout="column">
   <div fxLayout="row" fxLayoutAlign="start center" style="min-height: 40px;" class="tb-js-func-toolbar">
@@ -24,6 +24,7 @@
       {{ functionLabel }}
     </label>
     <span fxFlex></span>
+    <ng-content select="[toolbarPrefixButton]"></ng-content>
     <button type='button' *ngIf="!disabled" mat-button class="tidy" (click)="beautifyJs()">
       {{'js-func.tidy' | translate }}
     </button>

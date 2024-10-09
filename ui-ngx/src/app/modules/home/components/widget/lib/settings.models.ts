@@ -30,9 +30,9 @@ export interface FontSettings {
 }
 
 export function getFontFamily(fontSettings: FontSettings): string {
-  let family = fontSettings && fontSettings.family ? fontSettings.family : 'Manrope';
+  let family = fontSettings && fontSettings.family ? fontSettings.family : 'Roboto';
   if (family === 'RobotoDraft') {
-    family = 'Manrope';
+    family = 'Roboto';
   }
   return family;
 }

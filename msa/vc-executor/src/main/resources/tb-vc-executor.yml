@@ -18,7 +18,6 @@
 spring.main.web-environment: "${WEB_APPLICATION_ENABLE:false}" # If you enabled process metrics you should also enable 'web-environment'.
 spring.main.web-application-type: "${WEB_APPLICATION_TYPE:none}" # If you enabled process metrics you should set 'web-application-type' to 'servlet' value.
 spring.main.allow-circular-references: "true" # Spring Boot configuration property that controls whether circular dependencies between beans are allowed.
-
 # Server common parameters
 server:
   # Server bind address (has no effect if web-environment is disabled).

@@ -1100,7 +1100,7 @@ public class UserControllerTest extends AbstractControllerTest {
         User tenantAdmin = new User();
         tenantAdmin.setAuthority(Authority.TENANT_ADMIN);
         tenantAdmin.setTenantId(tenantId);
-        tenantAdmin.setEmail("testEmail" + suffix + "@thingsboard.org");
+        tenantAdmin.setEmail("testEmail" + suffix + "@thingsbord.org");
         tenantAdmin.setFirstName(firstName);
         tenantAdmin.setLastName(lastName);
         return tenantAdmin;

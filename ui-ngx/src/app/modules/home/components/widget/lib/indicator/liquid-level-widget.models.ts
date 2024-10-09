@@ -247,7 +247,7 @@ export const levelCardDefaultSettings: LevelCardWidgetSettings = {
   showTitle: false,
   title: 'Liquid level',
   titleFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 16,
     sizeUnit: 'px',
     style: 'normal',
@@ -265,7 +265,7 @@ export const levelCardDefaultSettings: LevelCardWidgetSettings = {
   volumeUnitsAttributeName: 'volumeUnits',
   volumeUnits: CapacityUnits.liters,
   volumeFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 14,
     sizeUnit: 'px',
     style: 'normal',
@@ -279,7 +279,7 @@ export const levelCardDefaultSettings: LevelCardWidgetSettings = {
   decimals: 0,
   liquidColor: constantColor('#7A8BFF'),
   valueFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 24,
     sizeUnit: 'px',
     style: 'normal',
@@ -294,7 +294,7 @@ export const levelCardDefaultSettings: LevelCardWidgetSettings = {
   tooltipUnits: CapacityUnits.percent,
   tooltipLevelDecimals: 0,
   tooltipLevelFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 13,
     sizeUnit: 'px',
     style: 'normal',
@@ -305,7 +305,7 @@ export const levelCardDefaultSettings: LevelCardWidgetSettings = {
   showTooltipDate: true,
   tooltipDateFormat: lastUpdateAgoDateFormat(),
   tooltipDateFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 13,
     sizeUnit: 'px',
     style: 'normal',
@@ -392,14 +392,14 @@ export const valueContainerStyleDefaults = cssTextFromInlineStyle({
   'align-items': 'center',
   'align-content': 'center',
   'justify-content': 'center',
-  'font-family': 'Manrope, Helvetica Neue, sans-serif'
+  'font-family': 'Roboto, Helvetica Neue, sans-serif'
 });
 
 export const valueTextStyleDefaults = 'letter-spacing: normal; font-style: normal; font-weight: 500; line-height: 100%;' +
-  '  font-size: 24px; font-family: Manrope, Helvetica Neue, sans-serif; color: #000000DE';
+  '  font-size: 24px; font-family: Roboto, Helvetica Neue, sans-serif; color: #000000DE';
 
 export const volumeTextStyleDefaults = 'letter-spacing: normal; font-style: normal; font-weight: 500;' +
-  ' line-height: 100%; font-size: 14px; font-family: Manrope, Helvetica Neue, sans-serif; color: rgba(0, 0, 0, 0.18)';
+  ' line-height: 100%; font-size: 14px; font-family: Roboto, Helvetica Neue, sans-serif; color: rgba(0, 0, 0, 0.18)';
 
 export const createAbsoluteLayout = (values?: {inputValue: number | string; volume: number | string},
                                      styles?: {valueStyle: string; volumeStyle: string},

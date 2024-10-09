@@ -23,7 +23,7 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Constants } from '@shared/models/constants';
 import { Router } from '@angular/router';
-import { OAuth2ClientInfo } from '@shared/models/oauth2.models';
+import { OAuth2ClientLoginInfo } from '@shared/models/oauth2.models';
 
 @Component({
   selector: 'tb-login',
@@ -35,7 +35,7 @@ export class LoginComponent extends PageComponent implements OnInit , AfterConte
   aText = [
     'Welcome to Sotunec IoT platform – where devices come alive, connect, and create magic in every moment.'
   ];
-  iSpeed = 100;
+  iSpeed = 50;
   iIndex = 0;
   iArrLength = this.aText[0].length;
   iScrollAt = 20;
@@ -51,7 +51,7 @@ export class LoginComponent extends PageComponent implements OnInit , AfterConte
     username: '',
     password: ''
   });
-  oauth2Clients: Array<OAuth2ClientInfo> = null;
+  oauth2Clients: Array<OAuth2ClientLoginInfo> = null;
 
   constructor(protected store: Store<AppState>,
               private authService: AuthService,
@@ -117,7 +117,7 @@ export class LoginComponent extends PageComponent implements OnInit , AfterConte
     }
   }
 
-  getOAuth2Uri(oauth2Client: OAuth2ClientInfo): string {
+  getOAuth2Uri(oauth2Client: OAuth2ClientLoginInfo): string {
     let result = "";
     if (this.authService.redirectUrl) {
       result += "?prevUri=" + this.authService.redirectUrl;

@@ -51,10 +51,7 @@
                       (click)="addEntity($event)"
                       matTooltip="{{ translations.add | translate }}"
                       matTooltipPosition="above">
-                      <span class="material-symbols-outlined">
-                        add
-                        </span>
-                <!-- <mat-icon>add</mat-icon> -->
+                <mat-icon>add</mat-icon>
               </button>
               <ng-template #addActions>
                 <button mat-icon-button [disabled]="isLoading$ | async"
@@ -70,10 +67,7 @@
                           matTooltip="{{ translations.add | translate }}"
                           matTooltipPosition="above"
                           [matMenuTriggerFor]="addActionsMenu">
-                          <span class="material-symbols-outlined">
-                            add
-                            </span>
-                    <!-- <mat-icon>add</mat-icon> -->
+                    <mat-icon>add</mat-icon>
                   </button>
                   <mat-menu #addActionsMenu="matMenu" xPosition="before">
                     <button mat-menu-item *ngFor="let actionDescriptor of entitiesTableConfig.addActionDescriptors"
@@ -97,19 +91,13 @@
             <button mat-icon-button [disabled]="isLoading$ | async" (click)="updateData()"
                     matTooltip="{{ 'action.refresh' | translate }}"
                     matTooltipPosition="above">
-                    <span class="material-symbols-outlined">
-                      refresh
-                      </span>
-              <!-- <mat-icon>refresh</mat-icon> -->
+              <mat-icon>refresh</mat-icon>
             </button>
             <button *ngIf="entitiesTableConfig.searchEnabled"
                     mat-icon-button [disabled]="isLoading$ | async" (click)="enterFilterMode()"
                     matTooltip="{{ translations.search | translate }}"
                     matTooltipPosition="above">
-                    <span class="material-symbols-outlined">
-                      search
-                      </span>
-              <!-- <mat-icon>search</mat-icon> -->
+              <mat-icon>search</mat-icon>
             </button>
           </div>
         </mat-toolbar>
@@ -118,10 +106,7 @@
             <button mat-icon-button
                     matTooltip="{{ translations.search | translate }}"
                     matTooltipPosition="above">
-                    <span class="material-symbols-outlined">
-                      search
-                      </span>
-              <!-- <mat-icon>search</mat-icon> -->
+              <mat-icon>search</mat-icon>
             </button>
             <mat-form-field fxFlex>
               <mat-label>&nbsp;</mat-label>
@@ -132,10 +117,7 @@
             <button mat-icon-button (click)="exitFilterMode()"
                     matTooltip="{{ 'action.close' | translate }}"
                     matTooltipPosition="above">
-                    <span class="material-symbols-outlined">
-                      close
-                      </span>
-              <!-- <mat-icon>close</mat-icon> -->
+              <mat-icon>close</mat-icon>
             </button>
           </div>
         </mat-toolbar>
@@ -183,12 +165,19 @@
                         [matTooltip]="cellTooltip(entity, column, row)"
                         matTooltipPosition="above"
                         [ngStyle]="cellStyle(entity, column, row)">
-                <ng-container *ngIf="column.type == 'link' && column.entityURL(entity) as detailsPageURL; else defaultContent">
-                  <a [routerLink]="detailsPageURL" [innerHTML]="cellContent(entity, column, row)" (click)="$event.stopPropagation();"></a>
+                <ng-container [ngSwitch]="column.type">
+                  <ng-template [ngSwitchCase]="'link'">
+                    <a *ngIf="column.entityURL(entity) as detailsPageURL; else defaultContent"
+                       [routerLink]="detailsPageURL" [innerHTML]="cellContent(entity, column, row)"
+                       (click)="$event.stopPropagation();"></a>
+                  </ng-template>
+                  <ng-template [ngSwitchCase]="'entityChips'">
+                    <tb-entity-chips [entity]="entity"></tb-entity-chips>
+                  </ng-template>
+                  <ng-template #defaultContent ngSwitchDefault>
+                    <span [innerHTML]="cellContent(entity, column, row)"></span>
+                  </ng-template>
                 </ng-container>
-                <ng-template #defaultContent>
-                  <span [innerHTML]="cellContent(entity, column, row)"></span>
-                </ng-template>
                 <ng-template [ngIf]="column.actionCell">
                   <ng-container [ngSwitch]="column.actionCell.type">
                     <ng-template [ngSwitchCase]="cellActionType.COPY_BUTTON">
@@ -227,7 +216,7 @@
                         matTooltipPosition="above"
                         (click)="column.actionDescriptor.onAction($event, entity)">
                   <tb-icon [ngStyle]="column.actionDescriptor.style">
-                    {{column.actionDescriptor.icon}}
+                    {{column.actionDescriptor.iconFunction ? column.actionDescriptor.iconFunction(entity) : column.actionDescriptor.icon}}
                   </tb-icon>
                 </button>
               </mat-cell>
@@ -256,10 +245,7 @@
                   <button mat-icon-button
                           (click)="$event.stopPropagation()"
                           [matMenuTriggerFor]="cellActionsMenu">
-                          <span class="material-symbols-outlined">
-                            more_vert
-                            </span>
-                    <!-- <mat-icon class="material-icons">more_vert</mat-icon> -->
+                    <mat-icon class="material-icons">more_vert</mat-icon>
                   </button>
                   <mat-menu #cellActionsMenu="matMenu" xPosition="before">
                     <button mat-menu-item *ngFor="let actionDescriptor of cellActionDescriptors"

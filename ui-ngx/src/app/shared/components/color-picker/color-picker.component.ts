@@ -133,6 +133,3 @@ export class ColorPickerComponent implements ControlValueAccessor, OnDestroy {
     }
   }
 }
-
-
-

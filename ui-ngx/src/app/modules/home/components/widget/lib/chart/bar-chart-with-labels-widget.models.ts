@@ -35,7 +35,6 @@ import {
   TimeSeriesChartSeriesType,
   TimeSeriesChartSettings,
   TimeSeriesChartThreshold,
-  TimeSeriesChartTooltipWidgetSettings,
   TimeSeriesChartXAxisSettings,
   TimeSeriesChartYAxisSettings
 } from '@home/components/widget/lib/chart/time-series-chart.models';
@@ -48,6 +47,9 @@ import {
   ChartFillSettings,
   ChartFillType
 } from '@home/components/widget/lib/chart/chart.models';
+import {
+  TimeSeriesChartTooltipWidgetSettings
+} from '@home/components/widget/lib/chart/time-series-chart-tooltip.models';
 
 export interface BarChartWithLabelsWidgetSettings extends TimeSeriesChartTooltipWidgetSettings {
   dataZoom: boolean;
@@ -79,7 +81,7 @@ export const barChartWithLabelsDefaultSettings: BarChartWithLabelsWidgetSettings
   dataZoom: false,
   showBarLabel: true,
   barLabelFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',
@@ -89,7 +91,7 @@ export const barChartWithLabelsDefaultSettings: BarChartWithLabelsWidgetSettings
   barLabelColor: 'rgba(0, 0, 0, 0.54)',
   showBarValue: true,
   barValueFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',
@@ -124,7 +126,7 @@ export const barChartWithLabelsDefaultSettings: BarChartWithLabelsWidgetSettings
   showLegend: true,
   legendPosition: LegendPosition.top,
   legendLabelFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',
@@ -134,7 +136,7 @@ export const barChartWithLabelsDefaultSettings: BarChartWithLabelsWidgetSettings
   legendLabelColor: 'rgba(0, 0, 0, 0.76)',
   showTooltip: true,
   tooltipLabelFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',
@@ -143,7 +145,7 @@ export const barChartWithLabelsDefaultSettings: BarChartWithLabelsWidgetSettings
   },
   tooltipLabelColor: 'rgba(0, 0, 0, 0.76)',
   tooltipValueFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',
@@ -155,7 +157,7 @@ export const barChartWithLabelsDefaultSettings: BarChartWithLabelsWidgetSettings
   tooltipDateInterval: true,
   tooltipDateFormat: customDateFormat('MMMM y'),
   tooltipDateFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 11,
     sizeUnit: 'px',
     style: 'normal',

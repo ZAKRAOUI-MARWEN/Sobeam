@@ -43,7 +43,6 @@ import { DOCUMENT } from '@angular/common';
 })
 export class HomeComponent extends PageComponent implements AfterViewInit, OnInit, OnDestroy {
 
-
   authState: AuthState = getCurrentAuthState(this.store);
 
   forceFullscreen = this.authState.forceFullscreen;

@@ -15,7 +15,7 @@
  */
 @use '@angular/material' as mat;
 
-  @mixin theme-overwrites($primary, $config-or-theme) {
+@mixin theme-overwrites($primary, $config-or-theme) {
   @include _mat-form-field-overwrites($primary, $config-or-theme);
   @include _mat-button-overwrites($primary, $config-or-theme);
   //  @include _mat-tollbar($primary, $config-or-theme);

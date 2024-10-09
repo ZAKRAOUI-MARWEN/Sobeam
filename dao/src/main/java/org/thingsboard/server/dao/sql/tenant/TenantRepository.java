@@ -39,7 +39,8 @@ public interface TenantRepository extends JpaRepository<TenantEntity, UUID> {
             "LEFT JOIN TenantProfileEntity p on p.id = t.tenantProfileId " +
             "WHERE t.id = :tenantId")
     TenantInfoEntity findTenantInfoById(@Param("tenantId") UUID tenantId);
-       @Query("SELECT t FROM TenantEntity t WHERE (:textSearch IS NULL OR ilike(t.title, CONCAT('%', :textSearch, '%')) = true)")
+
+    @Query("SELECT t FROM TenantEntity t WHERE (:textSearch IS NULL OR ilike(t.title, CONCAT('%', :textSearch, '%')) = true)")
     Page<TenantEntity> findTenantsNextPage(@Param("textSearch") String textSearch,
                                            Pageable pageable);
 
@@ -55,6 +56,4 @@ public interface TenantRepository extends JpaRepository<TenantEntity, UUID> {
 
     @Query("SELECT t.id FROM TenantEntity t where t.tenantProfileId = :tenantProfileId")
     List<UUID> findTenantIdsByTenantProfileId(@Param("tenantProfileId") UUID tenantProfileId);
-
-
 }

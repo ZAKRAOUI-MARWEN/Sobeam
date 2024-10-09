@@ -58,7 +58,7 @@ export const valueChartCardDefaultSettings: ValueChartCardWidgetSettings = {
   autoScale: true,
   showValue: true,
   valueFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 28,
     sizeUnit: 'px',
     style: 'normal',

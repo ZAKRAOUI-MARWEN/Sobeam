@@ -21,14 +21,13 @@
       <div #knobValueContainer class="value-container" fxLayout="row" fxLayoutAlign="center center">
         <span #knobValue class="knob-value">{{ value }}</span>
       </div>
-      <!-- <div class="canvas-background"></div> -->
+      <div class="canvas-background"></div>
       <canvas #canvasBar id="canvasBar"></canvas>
       <div #knobTopPointerContainer class="top-pointer-container">
         <div #knobTopPointer class="top-pointer"></div>
       </div>
       <div class="top"></div>
-      <!-- [ngStyle]="{'background': error?.length ? 'rgba(255,255,255,0.25)' : 'none'}" -->
-      <div #knobErrorContainer class="error-container" 
+      <div #knobErrorContainer class="error-container" [ngStyle]="{'background': error?.length ? 'rgba(255,255,255,0.25)' : 'none'}"
            fxLayout="row" fxLayoutAlign="center center">
         <span #knobError class="knob-error" [innerHTML]="error"></span>
       </div>
@@ -44,4 +43,3 @@
     </div>
   </div>
 </div>
-

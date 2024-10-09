@@ -15,15 +15,15 @@
     limitations under the License.
 
 -->
-<div #singleSwitchPanel class="tb-single-switch-panel" [class.auto-scale]="autoScale" [style.pointer-events]="ctx.isEdit ? 'none' : 'all'" [style]="backgroundStyle$ | async">
+<div #singleSwitchPanel class="tb-single-switch-panel" [class.auto-scale]="autoScale" [style.pointer-events]="ctx.isEdit ? 'none' : 'all'" [style.padding]="padding" [style]="backgroundStyle$ | async">
   <div class="tb-single-switch-overlay" [style]="overlayStyle" [style.inset]="overlayInset"></div>
   <div class="tb-single-switch-title-panel">
     <ng-container *ngTemplateOutlet="widgetTitlePanel"></ng-container>
   </div>
   <div #singleSwitchContent class="tb-single-switch-content" [class]="this.layout" [class.no-label]="!showIcon && !showLabel" [class.auto-scale]="autoScale">
     <div *ngIf="showIcon || showLabel" #singleSwitchLabelRow class="tb-single-switch-label-row">
-      <span   class="material-symbols-rounded"  *ngIf="showIcon" [style]="iconStyle"
-               [style.color]="(disabled || (loading$ | async)) ? disabledColor : settings.iconColor">{{ icon }}</span>
+      <tb-icon *ngIf="showIcon" [style]="iconStyle"
+               [style.color]="(disabled || (loading$ | async)) ? disabledColor : settings.iconColor">{{ icon }}</tb-icon>
       <div *ngIf="showLabel" class="tb-single-switch-label" [style]="labelStyle"
            [style.color]="(disabled || (loading$ | async)) ? disabledColor : settings.labelColor">{{ label$ | async }}</div>
     </div>

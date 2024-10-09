@@ -16,17 +16,13 @@
 package org.thingsboard.server.service.mail;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.thingsboard.common.util.JacksonUtil;
 
-import jakarta.annotation.PostConstruct;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 
 @Service
 @Slf4j
@@ -36,15 +32,7 @@ public class DefaultTbMailConfigTemplateService implements TbMailConfigTemplateS
 
     @PostConstruct
     private void postConstruct() throws IOException {
-        try (InputStream inputStream = getClass().getResourceAsStream("/templates/mail_config_templates.json")) {
-            if (inputStream == null) {
-                throw new FileNotFoundException("File not found: mail_config_templates.json");
-            }
-            mailConfigTemplates = JacksonUtil.toJsonNode(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            log.error("Error loading mail configuration templates", e);
-            throw e;
-        }
+        mailConfigTemplates = JacksonUtil.toJsonNode(new ClassPathResource("/templates/mail_config_templates.json").getInputStream());
     }
 
     @Override

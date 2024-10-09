@@ -39,7 +39,6 @@
   }
 }
 
-
 .tb-default, .tb-dark {
   .tb-form-panel {
     box-shadow:0 2px 4px -1px #afb6c933;
@@ -176,7 +175,7 @@
     align-items: center;
     gap: 16px;
     padding: 7px 7px 7px 16px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(184, 170, 170, 0.12);
     border-radius: 6px;
     &.column {
       @include form-row-column;
@@ -205,6 +204,12 @@
     }
     &.space-between {
       justify-content: space-between;
+    }
+    &.flex-wrap {
+      flex-wrap: wrap;
+    }
+    &.overflow-auto {
+      overflow: auto;
     }
     .mat-divider-vertical {
       height: 56px;
@@ -235,6 +240,10 @@
     }
     .fixed-title-width {
       min-width: 200px;
+
+      &-180 {
+        min-width: 180px;
+      }
 
       &-230 {
         min-width: 230px;
@@ -267,6 +276,16 @@
     &.no-flex {
       flex: none;
     }
+
+    &-xs {
+      @media #{$mat-xs} {
+        flex: 1;
+      }
+    }
+  }
+  [class*="tb-flex"] {
+    display: flex;
+    gap: 8px;
     &.row {
       flex-direction: row;
     }
@@ -293,6 +312,12 @@
     }
     &.align-center {
       align-items: center;
+    }
+    &.align-start {
+      align-items: start;
+    }
+    &.align-end {
+      align-items: end;
     }
     &.no-gap {
       gap: 0;
@@ -367,6 +392,15 @@
             border-color: rgba(0, 0, 0, 0.12);
           }
         }
+        .mdc-floating-label {
+          top: 20px;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 20px;
+          &--float-above {
+            --mat-mdc-form-field-label-transform: translateY(-27px) scale(var(--mat-mdc-form-field-floating-label-scale, 0.75));
+          }
+        }
         .mat-mdc-form-field-infix {
           padding-top: 8px !important;
           padding-bottom: 8px !important;
@@ -392,6 +426,10 @@
               width: 20px;
               height: 20px;
               font-size: 20px;
+              svg {
+                width: 20px;
+                height: 20px;
+              }
             }
             .mat-mdc-button-touch-target {
               width: 40px;

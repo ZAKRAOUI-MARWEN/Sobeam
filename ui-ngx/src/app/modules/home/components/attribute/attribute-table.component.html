@@ -39,10 +39,7 @@
                 (click)="addAttribute($event)"
                 matTooltip="{{ 'action.add' | translate }}"
                 matTooltipPosition="above">
-         <span class="material-symbols-outlined">
-            add          
-            </span>
-
+          <mat-icon>add</mat-icon>
         </button>
         <button mat-icon-button
                 *ngIf="!isClientSideTelemetryTypeMap.get(attributeScope)"
@@ -102,7 +99,7 @@
                 matTooltip="{{ 'attribute.show-on-widget' | translate }}"
                 matTooltipPosition="above"
                 (click)="enterWidgetMode()">
-          <mat-icon>now_widgets</mat-icon>
+          <mat-icon>widgets</mat-icon>
           <span translate>attribute.show-on-widget</span>
         </button>
       </div>
@@ -135,9 +132,7 @@
                 matTooltip="{{ 'action.close' | translate }}"
                 matTooltipPosition="above"
                 (click)="exitWidgetMode()">
-          <span class="material-symbols-outlined">
-            close
-            </span>
+          <mat-icon>close</mat-icon>
         </button>
       </div>
     </mat-toolbar>
@@ -191,6 +186,7 @@
               <div fxFlex fxLayout="row" style="overflow: hidden; align-items: center;">
                 <span class="ellipsis">{{attribute.value | tbJson}}</span>
                 <tb-copy-button
+                  *ngIf="attribute.value !== ''"
                   class="attribute-copy"
                   [disabled]="isLoading$ | async"
                   [copyText]="attribute.value | tbJson"

@@ -68,7 +68,7 @@ export const latestChartTooltipDefaultSettings: LatestChartTooltipSettings = {
   tooltipValueType: LatestChartTooltipValueType.percentage,
   tooltipValueDecimals: 0,
   tooltipValueFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 13,
     sizeUnit: 'px',
     style: 'normal',
@@ -112,7 +112,7 @@ export const latestChartWidgetDefaultSettings: LatestChartWidgetSettings = {
   showLegend: true,
   legendPosition: LegendPosition.bottom,
   legendLabelFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',
@@ -121,7 +121,7 @@ export const latestChartWidgetDefaultSettings: LatestChartWidgetSettings = {
   },
   legendLabelColor: 'rgba(0, 0, 0, 0.38)',
   legendValueFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 14,
     sizeUnit: 'px',
     style: 'normal',
@@ -210,7 +210,7 @@ const constructTooltipSeriesElement = (renderer: Renderer2,
   }
   const labelTextElement: HTMLElement = renderer.createElement('div');
   renderer.appendChild(labelTextElement, renderer.createText(label));
-  renderer.setStyle(labelTextElement, 'font-family', 'Manrope');
+  renderer.setStyle(labelTextElement, 'font-family', 'Roboto');
   renderer.setStyle(labelTextElement, 'font-size', '11px');
   renderer.setStyle(labelTextElement, 'font-style', 'normal');
   renderer.setStyle(labelTextElement, 'font-weight', '400');

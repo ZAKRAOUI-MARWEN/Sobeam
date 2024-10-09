@@ -118,7 +118,7 @@ export const aggregatedValueCardDefaultSettings: AggregatedValueCardWidgetSettin
   showSubtitle: true,
   subtitle: '${entityName}',
   subtitleFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',
@@ -129,7 +129,7 @@ export const aggregatedValueCardDefaultSettings: AggregatedValueCardWidgetSettin
   showDate: true,
   dateFormat: lastUpdateAgoDateFormat(),
   dateFont: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 12,
     sizeUnit: 'px',
     style: 'normal',
@@ -153,7 +153,7 @@ export const aggregatedValueCardDefaultSettings: AggregatedValueCardWidgetSettin
 export const aggregatedValueCardDefaultKeySettings: AggregatedValueCardKeySettings = {
   position: AggregatedValueCardKeyPosition.center,
   font: {
-    family: 'Manrope',
+    family: 'Roboto',
     size: 14,
     sizeUnit: 'px',
     style: 'normal',

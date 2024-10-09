@@ -1,6 +1,6 @@
 <!--
 
-    Copyright © 2024 The Sobeam Authors
+    Copyright © 2016-2024 The Thingsboard Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,22 +19,22 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.sobeam</groupId>
+        <groupId>org.thingsboard</groupId>
         <version>3.7.0</version>
         <artifactId>msa</artifactId>
     </parent>
-    <groupId>org.sobeam.msa</groupId>
+    <groupId>org.thingsboard.msa</groupId>
     <artifactId>tb-node</artifactId>
     <packaging>pom</packaging>
 
-    <name>SoBeam Node Microservice</name>
-    <url>https://sobeam.io</url>
-    <description>SoBeam Node Microservice</description>
+    <name>ThingsBoard Node Microservice</name>
+    <url>https://thingsboard.io</url>
+    <description>ThingsBoard Node Microservice</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}/../..</main.dir>
-        <pkg.name>sobeam</pkg.name>
+        <pkg.name>thingsboard</pkg.name>
         <docker.name>tb-node</docker.name>
         <pkg.unixLogFolder>/var/log/${pkg.name}</pkg.unixLogFolder>
         <pkg.installFolder>/usr/share/${pkg.name}</pkg.installFolder>
@@ -43,7 +43,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.sobeam</groupId>
+            <groupId>org.thingsboard</groupId>
             <artifactId>application</artifactId>
             <version>${project.version}</version>
             <classifier>deb</classifier>
@@ -67,7 +67,7 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.sobeam</groupId>
+                                    <groupId>org.thingsboard</groupId>
                                     <artifactId>application</artifactId>
                                     <classifier>deb</classifier>
                                     <type>deb</type>

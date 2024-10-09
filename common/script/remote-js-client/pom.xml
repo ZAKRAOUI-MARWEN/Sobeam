@@ -1,6 +1,6 @@
 <!--
 
-    Copyright © 2024 The Sobeam Authors
+    Copyright © 2016-2024 The Thingsboard Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,16 +19,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.sobeam.common</groupId>
+        <groupId>org.thingsboard.common</groupId>
         <version>3.7.0</version>
         <artifactId>script</artifactId>
     </parent>
-    <groupId>org.sobeam.common.script</groupId>
+    <groupId>org.thingsboard.common.script</groupId>
     <artifactId>remote-js-client</artifactId>
     <packaging>jar</packaging>
 
-    <name>Sobeam Server JS Client for remote JS execution</name>
-    <url>https://sobeam.io</url>
+    <name>Thingsboard Server JS Client for remote JS execution</name>
+    <url>https://thingsboard.io</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -37,23 +37,23 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.sobeam.common</groupId>
+            <groupId>org.thingsboard.common</groupId>
             <artifactId>queue</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.sobeam.common.script</groupId>
+            <groupId>org.thingsboard.common.script</groupId>
             <artifactId>script-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.sobeam.rule-engine</groupId>
+            <groupId>org.thingsboard.rule-engine</groupId>
             <artifactId>rule-engine-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.sobeam.common</groupId>
+            <groupId>org.thingsboard.common</groupId>
             <artifactId>data</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.sobeam.common</groupId>
+            <groupId>org.thingsboard.common</groupId>
             <artifactId>message</artifactId>
         </dependency>
         <dependency>

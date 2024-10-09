@@ -1,6 +1,6 @@
 <!--
 
-    Copyright © 2024 The Sobeam Authors
+    Copyright © 2016-2024 The Thingsboard Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,18 +19,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.sobeam.msa</groupId>
+        <groupId>org.thingsboard.msa</groupId>
         <artifactId>transport</artifactId>
         <version>3.7.0</version>
     </parent>
 
-    <groupId>org.sobeam.msa.transport</groupId>
+    <groupId>org.thingsboard.msa.transport</groupId>
     <artifactId>snmp</artifactId>
     <packaging>pom</packaging>
 
-    <name>SoBeam SNMP Transport Microservice</name>
-    <url>https://sobeam.io</url>
-    <description>SoBeam SNMP Transport Microservice</description>
+    <name>ThingsBoard SNMP Transport Microservice</name>
+    <url>https://thingsboard.io</url>
+    <description>ThingsBoard SNMP Transport Microservice</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,7 +44,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.sobeam.transport</groupId>
+            <groupId>org.thingsboard.transport</groupId>
             <artifactId>snmp</artifactId>
             <version>${project.version}</version>
             <classifier>deb</classifier>
@@ -68,7 +68,7 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.sobeam.transport</groupId>
+                                    <groupId>org.thingsboard.transport</groupId>
                                     <artifactId>snmp</artifactId>
                                     <classifier>deb</classifier>
                                     <type>deb</type>

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 The Sobeam Authors
+ * Copyright © 2016-2024 The Thingsboard Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
-import SobeamBaseComponent from '@shared/components/json-form/react/json-form-base-component';
+import ThingsboardBaseComponent from '@shared/components/json-form/react/json-form-base-component';
 
-interface SobeamSelectState extends JsonFormFieldState {
+interface ThingsboardSelectState extends JsonFormFieldState {
   currentValue: any;
 }
 
-class SobeamSelect extends React.Component<JsonFormFieldProps, SobeamSelectState> {
+class ThingsboardSelect extends React.Component<JsonFormFieldProps, ThingsboardSelectState> {
 
   constructor(props) {
     super(props);
@@ -83,4 +83,4 @@ class SobeamSelect extends React.Component<JsonFormFieldProps, SobeamSelectState
   }
 }
 
-export default SobeamBaseComponent(SobeamSelect);
+export default ThingsboardBaseComponent(ThingsboardSelect);

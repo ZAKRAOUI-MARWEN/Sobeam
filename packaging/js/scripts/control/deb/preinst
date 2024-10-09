@@ -12,6 +12,6 @@ if ! getent passwd ${pkg.user} >/dev/null; then
             --disabled-password \
             --home ${pkg.installFolder} \
             --no-create-home \
-            -gecos "Sobeam application" \
+            -gecos "Thingsboard application" \
             ${pkg.user}
 fi

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 The Sobeam Authors
+ * Copyright © 2016-2024 The Thingsboard Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 import * as React from 'react';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import sobeamTheme from './styles/sobeamTheme';
-import SobeamSchemaForm from './json-form-schema-form';
+import thingsboardTheme from './styles/thingsboardTheme';
+import ThingsboardSchemaForm from './json-form-schema-form';
 import { JsonFormProps } from './json-form.models';
 
-const tbTheme = createTheme(sobeamTheme);
+const tbTheme = createTheme(thingsboardTheme);
 
 class ReactSchemaForm extends React.Component<JsonFormProps, {}> {
 
@@ -31,7 +31,7 @@ class ReactSchemaForm extends React.Component<JsonFormProps, {}> {
 
   render() {
     if (this.props.form.length > 0) {
-      return <ThemeProvider theme={tbTheme}><SobeamSchemaForm {...this.props} /></ThemeProvider>;
+      return <ThemeProvider theme={tbTheme}><ThingsboardSchemaForm {...this.props} /></ThemeProvider>;
     } else {
       return <div></div>;
     }

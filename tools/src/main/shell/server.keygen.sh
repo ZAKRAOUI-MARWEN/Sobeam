@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright © 2024 The Sobeam Authors
+# Copyright © 2016-2024 The Thingsboard Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 #
 
 usage() {
-    echo "This script generates sobeam server's ssl certificate"
+    echo "This script generates thingsboard server's ssl certificate"
     echo "and optionally copies it to the server's resource directory."
     echo "usage: ./server.keygen.sh [-c flag] [-d directory] [-p file]"
     echo "    -c | --copy flag                  Specifies if the keystore should be copied to the server directory. Defaults to true"

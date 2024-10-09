@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 The Sobeam Authors
+ * Copyright © 2016-2024 The Thingsboard Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 import * as React from 'react';
 import { JsonFormFieldProps, JsonFormFieldState } from '@shared/components/json-form/react/json-form.models';
 
-class SobeamHelp extends React.Component<JsonFormFieldProps, JsonFormFieldState> {
+class ThingsboardHelp extends React.Component<JsonFormFieldProps, JsonFormFieldState> {
   render() {
     return (
       <div className={this.props.form.htmlClass} dangerouslySetInnerHTML={{__html: this.props.form.description}} ></div>
@@ -24,4 +24,4 @@ class SobeamHelp extends React.Component<JsonFormFieldProps, JsonFormFieldState>
   }
 }
 
-export default SobeamHelp;
+export default ThingsboardHelp;

@@ -24,7 +24,7 @@ You may also modify the value of the parameter with one of the suffixes:
 
 ##### Examples
 
-Let's assume the notification about the connecting Edge into the SoBeam.
+Let's assume the notification about the connecting Edge into the ThingsBoard.
 The following template:
 
 ```text

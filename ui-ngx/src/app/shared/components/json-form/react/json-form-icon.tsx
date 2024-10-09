@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 The Sobeam Authors
+ * Copyright © 2016-2024 The Thingsboard Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import SobeamBaseComponent from './json-form-base-component';
+import ThingsboardBaseComponent from './json-form-base-component';
 import reactCSS from 'reactcss';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
@@ -24,12 +24,12 @@ import Clear from '@material-ui/icons/Clear';
 import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
 
-interface SobeamIconState extends JsonFormFieldState {
+interface ThingsboardIconState extends JsonFormFieldState {
   icon: string | null;
   focused: boolean;
 }
 
-class SobeamIcon extends React.Component<JsonFormFieldProps, SobeamIconState> {
+class ThingsboardIcon extends React.Component<JsonFormFieldProps, ThingsboardIconState> {
 
     constructor(props) {
         super(props);
@@ -156,4 +156,4 @@ class SobeamIcon extends React.Component<JsonFormFieldProps, SobeamIconState> {
     }
 }
 
-export default SobeamBaseComponent(SobeamIcon);
+export default ThingsboardBaseComponent(ThingsboardIcon);

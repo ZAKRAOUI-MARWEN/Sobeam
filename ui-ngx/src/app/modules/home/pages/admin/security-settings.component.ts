@@ -1,5 +1,5 @@
 ///
-/// Copyright © 2024 The Sobeam Authors
+/// Copyright © 2016-2024 The Thingsboard Authors
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -196,7 +196,7 @@ export class SecuritySettingsComponent extends PageComponent implements HasConfi
   }
 
   private base64Format(control: UntypedFormControl): { [key: string]: boolean } | null {
-    if (control.value === '' || control.value === 'sobeamDefaultSigningKey') {
+    if (control.value === '' || control.value === 'thingsboardDefaultSigningKey') {
       return null;
     }
     try {

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright © 2024 The Sobeam Authors
+# Copyright © 2016-2024 The Thingsboard Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-echo "Building SoBeam protobuf-containing packages..."
+echo "Building ThingsBoard protobuf-containing packages..."
 MAVEN_OPTS="-Xmx1024m" NODE_OPTIONS="--max_old_space_size=3072" \
 mvn clean compile -T4 --also-make --projects='
 common/cluster-api,

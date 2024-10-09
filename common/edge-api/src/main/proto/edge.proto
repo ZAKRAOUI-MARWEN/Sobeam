@@ -1,5 +1,5 @@
 /**
- * Copyright © 2024 The Sobeam Authors
+ * Copyright © 2016-2024 The Thingsboard Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 syntax = "proto3";
 
-option java_package = "org.sobeam.server.gen.edge.v1";
+option java_package = "org.thingsboard.server.gen.edge.v1";
 option java_multiple_files = true;
 option java_outer_classname = "EdgeProtos";
 
@@ -23,7 +23,7 @@ import "queue.proto";
 
 package edge;
 
-// Interface exported by the SoBeam Edge Transport.
+// Interface exported by the ThingsBoard Edge Transport.
 service EdgeRpcService {
 
   rpc handleMsgs(stream RequestMsg) returns (stream ResponseMsg) {}

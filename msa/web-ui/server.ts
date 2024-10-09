@@ -1,5 +1,5 @@
 ///
-/// Copyright © 2024 The Sobeam Authors
+/// Copyright © 2016-2024 The Thingsboard Authors
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -31,23 +31,23 @@ let connections: Socket[] = [];
 
 (async() => {
     try {
-        logger.info('Starting SoBeam Web UI Microservice...');
+        logger.info('Starting ThingsBoard Web UI Microservice...');
 
         const bindAddress: string = config.get('server.address');
         const bindPort = Number(config.get('server.port'));
 
-        const sobeamEnableProxy: string = config.get('sobeam.enableProxy');
+        const thingsboardEnableProxy: string = config.get('thingsboard.enableProxy');
 
-        const sobeamHost: string = config.get('sobeam.host');
-        const sobeamPort = Number(config.get('sobeam.port'));
+        const thingsboardHost: string = config.get('thingsboard.host');
+        const thingsboardPort = Number(config.get('thingsboard.port'));
 
         logger.info('Bind address: %s', bindAddress);
         logger.info('Bind port: %s', bindPort);
-        logger.info('SoBeam Enable Proxy: %s', sobeamEnableProxy);
-        logger.info('SoBeam host: %s', sobeamHost);
-        logger.info('SoBeam port: %s', sobeamPort);
+        logger.info('ThingsBoard Enable Proxy: %s', thingsboardEnableProxy);
+        logger.info('ThingsBoard host: %s', thingsboardHost);
+        logger.info('ThingsBoard port: %s', thingsboardPort);
 
-        const useApiProxy = sobeamEnableProxy === "true";
+        const useApiProxy = thingsboardEnableProxy === "true";
 
         let webDir = path.join(__dirname, 'web');
 
@@ -63,8 +63,8 @@ let connections: Socket[] = [];
         if (useApiProxy) {
             apiProxy = httpProxy.createProxyServer({
                 target: {
-                    host: sobeamHost,
-                    port: sobeamPort
+                    host: thingsboardHost,
+                    port: thingsboardPort
                 }
             });
 
@@ -74,9 +74,9 @@ let connections: Socket[] = [];
                     res.writeHead(500);
                     const error = err as any;
                     if (error.code && error.code === 'ECONNREFUSED') {
-                        res.end('Unable to connect to SoBeam server.');
+                        res.end('Unable to connect to ThingsBoard server.');
                     } else {
-                        res.end('SoBeam server connection error: ' + error.code ? error.code : '');
+                        res.end('ThingsBoard server connection error: ' + error.code ? error.code : '');
                     }
                 }
             });
@@ -103,9 +103,9 @@ let connections: Socket[] = [];
 
         server.listen(bindPort, bindAddress, () => {
             logger.info('==> 🌎  Listening on port %s.', bindPort);
-            logger.info('Started SoBeam Web UI Microservice.');
+            logger.info('Started ThingsBoard Web UI Microservice.');
         }).on('error', async (error) => {
-            logger.error('Failed to start SoBeam Web UI Microservice: %s', error.message);
+            logger.error('Failed to start ThingsBoard Web UI Microservice: %s', error.message);
             logger.error(error.stack);
             await exit(-1);
         });
@@ -116,7 +116,7 @@ let connections: Socket[] = [];
         });
 
     } catch (e: any) {
-        logger.error('Failed to start SoBeam Web UI Microservice: %s', e.message);
+        logger.error('Failed to start ThingsBoard Web UI Microservice: %s', e.message);
         logger.error(e.stack);
         await exit(-1);
     }
@@ -130,7 +130,7 @@ let connections: Socket[] = [];
 })
 
 process.on('exit', async (code: number) => {
-    logger.info(`SoBeam Web UI Microservice has been stopped. Exit code: ${code}.`);
+    logger.info(`ThingsBoard Web UI Microservice has been stopped. Exit code: ${code}.`);
 });
 
 async function exit(status: number) {

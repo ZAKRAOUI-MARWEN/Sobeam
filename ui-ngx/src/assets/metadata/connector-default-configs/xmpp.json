@@ -37,7 +37,7 @@
       ],
       "attributeUpdates": [
         {
-          "attributeOnSoBeam": "shared",
+          "attributeOnThingsBoard": "shared",
           "valueExpression": "{\"${attributeKey}\":\"${attributeValue}\"}"
         }
       ],

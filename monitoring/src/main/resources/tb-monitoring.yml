@@ -1,5 +1,5 @@
 #
-# Copyright © 2024 The Sobeam Authors
+# Copyright © 2016-2024 The Thingsboard Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ monitoring:
     # Base REST API url, https://DOMAIN by default
     base_url: '${REST_BASE_URL:https://${monitoring.domain}}'
     # Authentication username
-    username: '${REST_AUTH_USERNAME:tenant@sobeam.org}'
+    username: '${REST_AUTH_USERNAME:tenant@thingsboard.org}'
     # Authentication password
     password: '${REST_AUTH_PASSWORD:tenant}'
     # REST request timeout in milliseconds

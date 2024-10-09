@@ -1,5 +1,5 @@
 {
-  "name": "sobeam",
+  "name": "thingsboard",
   "version": "3.7.0",
   "scripts": {
     "ng": "ng",

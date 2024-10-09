@@ -42,7 +42,7 @@
         ],
         "attributes_updates": [
           {
-            "attributeOnSoBeam": "deviceName",
+            "attributeOnThingsBoard": "deviceName",
             "attributeOnDevice": "Root\\.Objects\\.Device1\\.serialNumber"
           }
         ]

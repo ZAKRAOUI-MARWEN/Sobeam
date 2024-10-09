@@ -43,7 +43,7 @@
       "attributeUpdates": [
         {
           "encoding": "utf-16",
-          "attributeOnSoBeam": "sharedName"
+          "attributeOnThingsBoard": "sharedName"
         }
       ],
       "serverSideRpc": [

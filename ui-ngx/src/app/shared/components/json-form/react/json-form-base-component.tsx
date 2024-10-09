@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 The Sobeam Authors
+ * Copyright © 2016-2024 The Thingsboard Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import JsonFormUtils from './json-form-utils';
 import { JsonFormFieldProps, JsonFormFieldState } from '@shared/components/json-form/react/json-form.models';
 import { isDefinedAndNotNull } from '@core/utils';
 
-export default SobeamBaseComponent => class<P extends JsonFormFieldProps>
+export default ThingsboardBaseComponent => class<P extends JsonFormFieldProps>
   extends React.Component<P, JsonFormFieldState> {
 
     constructor(props) {
@@ -112,7 +112,7 @@ export default SobeamBaseComponent => class<P extends JsonFormFieldProps>
 
     render() {
         if (this.props.form && this.props.form.schema) {
-            return <SobeamBaseComponent {...this.props} {...this.state} onChangeValidate={this.onChangeValidate}/>;
+            return <ThingsboardBaseComponent {...this.props} {...this.state} onChangeValidate={this.onChangeValidate}/>;
         } else {
             return <div></div>;
         }

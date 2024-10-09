@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright © 2024 The Sobeam Authors
+# Copyright © 2016-2024 The Thingsboard Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,18 +34,18 @@ if [ "$INSTALL_TB" == "true" ]; then
         loadDemo=false
     fi
 
-    echo "Starting SoBeam installation ..."
+    echo "Starting ThingsBoard installation ..."
 
-    exec java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.sobeam.server.SobeamInstallApplication \
+    exec java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.thingsboard.server.ThingsboardInstallApplication \
                         -Dinstall.load_demo=${loadDemo} \
                         -Dspring.jpa.hibernate.ddl-auto=none \
                         -Dinstall.upgrade=false \
-                        -Dlogging.config=/usr/share/sobeam/bin/install/logback.xml \
+                        -Dlogging.config=/usr/share/thingsboard/bin/install/logback.xml \
                         org.springframework.boot.loader.launch.PropertiesLauncher
 
 elif [ "$UPGRADE_TB" == "true" ]; then
 
-    echo "Starting SoBeam upgrade ..."
+    echo "Starting ThingsBoard upgrade ..."
 
     if [[ -z "${FROM_VERSION// }" ]]; then
         echo "FROM_VERSION variable is invalid or unspecified!"
@@ -54,18 +54,18 @@ elif [ "$UPGRADE_TB" == "true" ]; then
         fromVersion="${FROM_VERSION// }"
     fi
 
-    exec java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.sobeam.server.SobeamInstallApplication \
+    exec java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.thingsboard.server.ThingsboardInstallApplication \
                     -Dspring.jpa.hibernate.ddl-auto=none \
                     -Dinstall.upgrade=true \
                     -Dinstall.upgrade.from_version=${fromVersion} \
-                    -Dlogging.config=/usr/share/sobeam/bin/install/logback.xml \
+                    -Dlogging.config=/usr/share/thingsboard/bin/install/logback.xml \
                     org.springframework.boot.loader.launch.PropertiesLauncher
 
 else
 
     echo "Starting '${project.name}' ..."
 
-    exec java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.sobeam.server.SobeamServerApplication \
+    exec java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.thingsboard.server.ThingsboardServerApplication \
                         -Dspring.jpa.hibernate.ddl-auto=none \
                         -Dlogging.config=/config/logback.xml \
                         org.springframework.boot.loader.launch.PropertiesLauncher

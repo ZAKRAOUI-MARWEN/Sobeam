@@ -28,7 +28,7 @@ SET installDir=%BASE%\data
 
 PUSHD "%BASE%\conf"
 
-java -cp "%jarfile%" -Dloader.main=org.sobeam.server.SobeamInstallApplication^
+java -cp "%jarfile%" -Dloader.main=org.thingsboard.server.ThingsboardInstallApplication^
                     -Dinstall.data_dir="%installDir%"^
                     -Dspring.jpa.hibernate.ddl-auto=none^
                     -Dinstall.upgrade=true^
@@ -37,13 +37,13 @@ java -cp "%jarfile%" -Dloader.main=org.sobeam.server.SobeamInstallApplication^
                     org.springframework.boot.loader.launch.PropertiesLauncher
 
 if errorlevel 1 (
-   @echo SoBeam upgrade failed!
+   @echo ThingsBoard upgrade failed!
    POPD
    exit /b %errorlevel%
 )
 POPD
 
-@ECHO SoBeam upgraded successfully!
+@ECHO ThingsBoard upgraded successfully!
 
 GOTO END
 

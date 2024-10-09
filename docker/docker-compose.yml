@@ -1,5 +1,5 @@
 #
-# Copyright © 2024 The Sobeam Authors
+# Copyright © 2016-2024 The Thingsboard Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ services:
       - tb-node.env
     volumes:
       - ./tb-node/conf:/config
-      - ./tb-node/log:/var/log/sobeam
+      - ./tb-node/log:/var/log/thingsboard
     depends_on:
       - zookeeper
       - tb-js-executor
@@ -80,7 +80,7 @@ services:
       - tb-node.env
     volumes:
       - ./tb-node/conf:/config
-      - ./tb-node/log:/var/log/sobeam
+      - ./tb-node/log:/var/log/thingsboard
     depends_on:
       - zookeeper
       - tb-js-executor
@@ -104,7 +104,7 @@ services:
       - tb-node.env
     volumes:
       - ./tb-node/conf:/config
-      - ./tb-node/log:/var/log/sobeam
+      - ./tb-node/log:/var/log/thingsboard
     depends_on:
       - zookeeper
       - tb-js-executor
@@ -126,7 +126,7 @@ services:
       - tb-node.env
     volumes:
       - ./tb-node/conf:/config
-      - ./tb-node/log:/var/log/sobeam
+      - ./tb-node/log:/var/log/thingsboard
     depends_on:
       - zookeeper
       - tb-js-executor
@@ -301,7 +301,7 @@ services:
   haproxy:
     restart: always
     container_name: "${LOAD_BALANCER_NAME}"
-    image: sobeam/haproxy-certbot:2.2.33-alpine
+    image: thingsboard/haproxy-certbot:2.2.33-alpine
     volumes:
      - ./haproxy/config:/config
      - ./haproxy/letsencrypt:/etc/letsencrypt

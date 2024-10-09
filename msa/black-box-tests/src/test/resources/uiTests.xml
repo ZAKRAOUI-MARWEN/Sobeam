@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
 
-    Copyright © 2024 The Sobeam Authors
+    Copyright © 2016-2024 The Thingsboard Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 
 <suite name="UI smoke tests">
     <listeners>
-        <listener class-name="org.sobeam.server.msa.ui.listeners.RetryTestListener"/>
+        <listener class-name="org.thingsboard.server.msa.ui.listeners.RetryTestListener"/>
     </listeners>
     <test name="Smoke rule chains tests">
         <groups>
@@ -29,7 +29,7 @@
             </run>
         </groups>
         <packages>
-            <package name="org.sobeam.server.msa.ui.tests.rulechainssmoke"/>
+            <package name="org.thingsboard.server.msa.ui.tests.rulechainssmoke"/>
         </packages>
     </test>
     <test name="Smoke customers tests">
@@ -39,7 +39,7 @@
             </run>
         </groups>
         <packages>
-            <package name="org.sobeam.server.msa.ui.tests.customerSmoke"/>
+            <package name="org.thingsboard.server.msa.ui.tests.customerSmoke"/>
         </packages>
     </test>
     <test name="Smoke device profile tests">
@@ -49,7 +49,7 @@
             </run>
         </groups>
         <packages>
-            <package name="org.sobeam.server.msa.ui.tests.deviceProfileSmoke"/>
+            <package name="org.thingsboard.server.msa.ui.tests.deviceProfileSmoke"/>
         </packages>
     </test>
     <test name="Smoke asset profile tests">
@@ -59,7 +59,7 @@
             </run>
         </groups>
         <packages>
-            <package name="org.sobeam.server.msa.ui.tests.assetProfileSmoke"/>
+            <package name="org.thingsboard.server.msa.ui.tests.assetProfileSmoke"/>
         </packages>
     </test>
     <test name="Smoke devices tests">
@@ -69,7 +69,7 @@
             </run>
         </groups>
         <packages>
-            <package name="org.sobeam.server.msa.ui.tests.devicessmoke"/>
+            <package name="org.thingsboard.server.msa.ui.tests.devicessmoke"/>
         </packages>
     </test>
     <test name="Alarm assignee tests">
@@ -79,7 +79,7 @@
             </run>
         </groups>
         <packages>
-            <package name="org.sobeam.server.msa.ui.tests.alarmassignee.*"/>
+            <package name="org.thingsboard.server.msa.ui.tests.alarmassignee.*"/>
         </packages>
     </test>
 </suite>

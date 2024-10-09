@@ -1,5 +1,5 @@
 #
-# Copyright © 2024 The Sobeam Authors
+# Copyright © 2016-2024 The Thingsboard Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@ server:
   address: "0.0.0.0"
   # Server bind port
   port: "8090"
-sobeam:
+thingsboard:
   enableProxy: "false"
-  # SoBeam node host
+  # ThingsBoard node host
   host: "localhost"
-  # SoBeam node port
+  # ThingsBoard node port
   port: "8080"
 logger:
   level: "info"

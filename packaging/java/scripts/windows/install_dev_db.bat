@@ -13,7 +13,7 @@ IF "%SQL_DATA_FOLDER%" == "" (
 	SET SQL_DATA_FOLDER=/tmp
 )
 
-java -cp %jarfile% -Dloader.main=org.sobeam.server.SobeamInstallApplication^
+java -cp %jarfile% -Dloader.main=org.thingsboard.server.ThingsboardInstallApplication^
                     -Dinstall.data_dir=%installDir%^
                     -Dinstall.load_demo=%loadDemo%^
                     -Dspring.jpa.hibernate.ddl-auto=none^
@@ -22,8 +22,8 @@ java -cp %jarfile% -Dloader.main=org.sobeam.server.SobeamInstallApplication^
                     org.springframework.boot.loader.launch.PropertiesLauncher
 
 if errorlevel 1 (
-   @echo SoBeam DB installation failed!
+   @echo ThingsBoard DB installation failed!
    POPD
    exit /b %errorlevel%
    )
-@echo SoBeam DB installed successfully!
+@echo ThingsBoard DB installed successfully!

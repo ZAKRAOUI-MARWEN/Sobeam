@@ -18,7 +18,7 @@
           "layoutX": 1202,
           "layoutY": 221
         },
-        "type": "org.sobeam.rule.engine.telemetry.TbMsgTimeseriesNode",
+        "type": "org.thingsboard.rule.engine.telemetry.TbMsgTimeseriesNode",
         "name": "Save Timeseries",
         "debugMode": true,
         "singletonMode": false,
@@ -33,7 +33,7 @@
           "layoutX": 1000,
           "layoutY": 167
         },
-        "type": "org.sobeam.rule.engine.telemetry.TbMsgAttributesNode",
+        "type": "org.thingsboard.rule.engine.telemetry.TbMsgAttributesNode",
         "name": "Save Attributes",
         "debugMode": false,
         "singletonMode": false,
@@ -51,7 +51,7 @@
           "layoutX": 566,
           "layoutY": 302
         },
-        "type": "org.sobeam.rule.engine.filter.TbMsgTypeSwitchNode",
+        "type": "org.thingsboard.rule.engine.filter.TbMsgTypeSwitchNode",
         "name": "Message Type Switch",
         "debugMode": false,
         "singletonMode": false,
@@ -66,7 +66,7 @@
           "layoutX": 1000,
           "layoutY": 381
         },
-        "type": "org.sobeam.rule.engine.action.TbLogNode",
+        "type": "org.thingsboard.rule.engine.action.TbLogNode",
         "name": "Log RPC from Device",
         "debugMode": false,
         "singletonMode": false,
@@ -83,7 +83,7 @@
           "layoutX": 1000,
           "layoutY": 494
         },
-        "type": "org.sobeam.rule.engine.action.TbLogNode",
+        "type": "org.thingsboard.rule.engine.action.TbLogNode",
         "name": "Log Other",
         "debugMode": false,
         "singletonMode": false,
@@ -100,7 +100,7 @@
           "layoutX": 1000,
           "layoutY": 583
         },
-        "type": "org.sobeam.rule.engine.rpc.TbSendRPCRequestNode",
+        "type": "org.thingsboard.rule.engine.rpc.TbSendRPCRequestNode",
         "name": "RPC Call Request",
         "debugMode": false,
         "singletonMode": false,
@@ -115,7 +115,7 @@
           "layoutX": 255,
           "layoutY": 301
         },
-        "type": "org.sobeam.rule.engine.filter.TbOriginatorTypeFilterNode",
+        "type": "org.thingsboard.rule.engine.filter.TbOriginatorTypeFilterNode",
         "name": "Is Entity Group",
         "debugMode": false,
         "singletonMode": false,
@@ -132,7 +132,7 @@
           "layoutX": 319,
           "layoutY": 109
         },
-        "type": "org.sobeam.rule.engine.filter.TbMsgTypeFilterNode",
+        "type": "org.thingsboard.rule.engine.filter.TbMsgTypeFilterNode",
         "name": "Post attributes or RPC request",
         "debugMode": false,
         "singletonMode": false,
@@ -150,7 +150,7 @@
           "layoutX": 627,
           "layoutY": 108
         },
-        "type": "org.sobeam.rule.engine.transform.TbDuplicateMsgToGroupNode",
+        "type": "org.thingsboard.rule.engine.transform.TbDuplicateMsgToGroupNode",
         "name": "Duplicate To Group Entities",
         "debugMode": false,
         "singletonMode": false,
@@ -167,7 +167,7 @@
           "layoutX": 45,
           "layoutY": 359
         },
-        "type": "org.sobeam.rule.engine.profile.TbDeviceProfileNode",
+        "type": "org.thingsboard.rule.engine.profile.TbDeviceProfileNode",
         "name": "Device Profile Node",
         "debugMode": true,
         "singletonMode": false,
@@ -184,7 +184,7 @@
           "layoutX": 160,
           "layoutY": 631
         },
-        "type": "org.sobeam.rule.engine.filter.TbJsFilterNode",
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
         "name": "Test JS script",
         "debugMode": false,
         "singletonMode": false,
@@ -202,7 +202,7 @@
           "layoutX": 427,
           "layoutY": 541
         },
-        "type": "org.sobeam.rule.engine.filter.TbJsFilterNode",
+        "type": "org.thingsboard.rule.engine.filter.TbJsFilterNode",
         "name": "Test TBEL script",
         "debugMode": false,
         "singletonMode": false,
@@ -220,7 +220,7 @@
           "layoutX": 40,
           "layoutY": 252
         },
-        "type": "org.sobeam.rule.engine.transform.TbTransformMsgNode",
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
         "name": "Add arrival timestamp",
         "debugMode": false,
         "singletonMode": false,
@@ -238,7 +238,7 @@
           "layoutX": 1467,
           "layoutY": 267
         },
-        "type": "org.sobeam.rule.engine.transform.TbTransformMsgNode",
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
         "name": "Calculate additional latencies",
         "debugMode": true,
         "singletonMode": false,
@@ -256,7 +256,7 @@
           "layoutX": 1438,
           "layoutY": 403
         },
-        "type": "org.sobeam.rule.engine.transform.TbChangeOriginatorNode",
+        "type": "org.thingsboard.rule.engine.transform.TbChangeOriginatorNode",
         "name": "To latencies asset",
         "debugMode": false,
         "singletonMode": false,
@@ -285,7 +285,7 @@
           "layoutX": 1458,
           "layoutY": 505
         },
-        "type": "org.sobeam.rule.engine.telemetry.TbMsgTimeseriesNode",
+        "type": "org.thingsboard.rule.engine.telemetry.TbMsgTimeseriesNode",
         "name": "Save Timeseries",
         "debugMode": true,
         "singletonMode": false,
@@ -301,7 +301,7 @@
           "layoutX": 928,
           "layoutY": 266
         },
-        "type": "org.sobeam.rule.engine.filter.TbCheckMessageNode",
+        "type": "org.thingsboard.rule.engine.filter.TbCheckMessageNode",
         "name": "Has testData",
         "debugMode": false,
         "singletonMode": false,
@@ -321,7 +321,7 @@
           "layoutX": 1203,
           "layoutY": 327
         },
-        "type": "org.sobeam.rule.engine.telemetry.TbMsgTimeseriesNode",
+        "type": "org.thingsboard.rule.engine.telemetry.TbMsgTimeseriesNode",
         "name": "Save Timeseries with TTL",
         "debugMode": true,
         "singletonMode": false,

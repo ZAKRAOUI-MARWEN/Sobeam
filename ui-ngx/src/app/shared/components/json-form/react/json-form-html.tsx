@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 The Sobeam Authors
+ * Copyright © 2016-2024 The Thingsboard Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import SobeamAceEditor from './json-form-ace-editor';
+import ThingsboardAceEditor from './json-form-ace-editor';
 import { JsonFormFieldProps, JsonFormFieldState } from '@shared/components/json-form/react/json-form.models';
 import { Observable } from 'rxjs/internal/Observable';
 import { beautifyHtml } from '@shared/models/beautify.models';
 
-class SobeamHtml extends React.Component<JsonFormFieldProps, JsonFormFieldState> {
+class ThingsboardHtml extends React.Component<JsonFormFieldProps, JsonFormFieldState> {
 
     constructor(props) {
         super(props);
@@ -32,9 +32,9 @@ class SobeamHtml extends React.Component<JsonFormFieldProps, JsonFormFieldState>
 
     render() {
         return (
-            <SobeamAceEditor {...this.props} mode='html' onTidy={this.onTidyHtml} {...this.state}></SobeamAceEditor>
+            <ThingsboardAceEditor {...this.props} mode='html' onTidy={this.onTidyHtml} {...this.state}></ThingsboardAceEditor>
         );
     }
 }
 
-export default SobeamHtml;
+export default ThingsboardHtml;

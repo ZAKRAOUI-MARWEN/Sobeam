@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 
-    Copyright © 2024 The Sobeam Authors
+    Copyright © 2016-2024 The Thingsboard Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -21,10 +21,10 @@
 
     <appender name="fileLogAppender"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/var/log/sobeam/${TB_SERVICE_ID}/sobeam.log</file>
+        <file>/var/log/thingsboard/${TB_SERVICE_ID}/thingsboard.log</file>
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>/var/log/sobeam/${TB_SERVICE_ID}/sobeam.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>/var/log/thingsboard/${TB_SERVICE_ID}/thingsboard.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>3GB</totalSizeCap>
@@ -40,15 +40,15 @@
         </encoder>
     </appender>
 
-    <logger name="org.sobeam.server" level="INFO" />
+    <logger name="org.thingsboard.server" level="INFO" />
     <logger name="com.google.common.util.concurrent.AggregateFuture" level="OFF" />
     <logger name="org.apache.kafka.common.utils.AppInfoParser" level="WARN"/>
     <logger name="org.apache.kafka.clients" level="WARN"/>
     <logger name="com.microsoft.azure.servicebus.primitives.CoreMessageReceiver" level="OFF" />
 
 
-    <logger name="org.sobeam.server.service" level="DEBUG"/>
-    <logger name="org.sobeam.server.service.subscription" level="TRACE"/>
+    <logger name="org.thingsboard.server.service" level="DEBUG"/>
+    <logger name="org.thingsboard.server.service.subscription" level="TRACE"/>
 
     <root level="INFO">
         <appender-ref ref="fileLogAppender"/>

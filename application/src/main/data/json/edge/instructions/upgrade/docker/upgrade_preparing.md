@@ -1,6 +1,6 @@
-Here is the list of commands, that can be used to quickly upgrade SoBeam Edge on Docker (Linux or MacOS).
+Here is the list of commands, that can be used to quickly upgrade ThingsBoard Edge on Docker (Linux or MacOS).
 
-#### Prepare for upgrading SoBeam Edge
+#### Prepare for upgrading ThingsBoard Edge
 Set the terminal in the directory which contains the `docker-compose.yml` file and execute the following command
 to stop and remove currently running TB Edge container:
 
@@ -17,7 +17,7 @@ docker-compose rm mytbedge
 ```
 
 ##### Migrating Data from Docker Bind Mount Folders to Docker Volumes
-Starting with the **3.6.2** release, the SoBeam team has transitioned from using Docker bind mount folders to Docker volumes.
+Starting with the **3.6.2** release, the ThingsBoard team has transitioned from using Docker bind mount folders to Docker volumes.
 This change aims to enhance security and efficiency in storing data for Docker containers and to mitigate permission issues across various environments.
 
 To migrate from Docker bind mounts to Docker volumes, please execute the following commands:
@@ -30,7 +30,7 @@ docker run --rm -v tb-edge-postgres-data:/volume -v ~/.mytb-edge-data/db:/backup
 ```
 
 After completing the data migration to the newly created Docker volumes, you'll need to update the volume mounts in your Docker Compose configuration.
-Modify the `docker-compose.yml` file for SoBeam Edge to update the volume settings.
+Modify the `docker-compose.yml` file for ThingsBoard Edge to update the volume settings.
 
 First, please update docker compose file version. Find next snippet:
 ```text

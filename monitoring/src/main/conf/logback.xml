@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 
-    Copyright © 2024 The Sobeam Authors
+    Copyright © 2016-2024 The Thingsboard Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -40,8 +40,8 @@
     </appender>
 
     <logger name="org" level="WARN"/>
-    <logger name="org.sobeam.monitoring" level="DEBUG"/>
-    <logger name="org.sobeam.monitoring.client" level="INFO"/>
+    <logger name="org.thingsboard.monitoring" level="DEBUG"/>
+    <logger name="org.thingsboard.monitoring.client" level="INFO"/>
 
     <root level="INFO">
         <appender-ref ref="fileLogAppender"/>

@@ -7,7 +7,7 @@
         "layoutX": 626,
         "layoutY": 152
       },
-      "type": "org.sobeam.rule.engine.mqtt.TbMqttNode",
+      "type": "org.thingsboard.rule.engine.mqtt.TbMqttNode",
       "name": "test mqtt",
       "debugMode": true,
       "singletonMode": true,
@@ -34,7 +34,7 @@
         "layoutX": 949,
         "layoutY": 153
       },
-      "type": "org.sobeam.rule.engine.telemetry.TbMsgTimeseriesNode",
+      "type": "org.thingsboard.rule.engine.telemetry.TbMsgTimeseriesNode",
       "name": "save timeseries",
       "debugMode": true,
       "singletonMode": false,
@@ -52,7 +52,7 @@
         "layoutX": 305,
         "layoutY": 151
       },
-      "type": "org.sobeam.rule.engine.filter.TbMsgTypeSwitchNode",
+      "type": "org.thingsboard.rule.engine.filter.TbMsgTypeSwitchNode",
       "name": "switch",
       "debugMode": false,
       "singletonMode": false,

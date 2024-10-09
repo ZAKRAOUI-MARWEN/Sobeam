@@ -17,7 +17,7 @@
           "layoutX": 822,
           "layoutY": 294
         },
-        "type": "org.sobeam.rule.engine.telemetry.TbMsgTimeseriesNode",
+        "type": "org.thingsboard.rule.engine.telemetry.TbMsgTimeseriesNode",
         "name": "Save Timeseries",
         "debugMode": false,
         "configuration": {
@@ -29,7 +29,7 @@
           "layoutX": 824,
           "layoutY": 221
         },
-        "type": "org.sobeam.rule.engine.telemetry.TbMsgAttributesNode",
+        "type": "org.thingsboard.rule.engine.telemetry.TbMsgAttributesNode",
         "name": "Save Client Attributes",
         "debugMode": false,
         "configurationVersion": 2,
@@ -45,7 +45,7 @@
           "layoutX": 494,
           "layoutY": 309
         },
-        "type": "org.sobeam.rule.engine.filter.TbMsgTypeSwitchNode",
+        "type": "org.thingsboard.rule.engine.filter.TbMsgTypeSwitchNode",
         "name": "Message Type Switch",
         "debugMode": false,
         "configuration": {
@@ -57,7 +57,7 @@
           "layoutX": 824,
           "layoutY": 383
         },
-        "type": "org.sobeam.rule.engine.action.TbLogNode",
+        "type": "org.thingsboard.rule.engine.action.TbLogNode",
         "name": "Log RPC from Device",
         "debugMode": false,
         "configuration": {
@@ -71,7 +71,7 @@
           "layoutX": 823,
           "layoutY": 444
         },
-        "type": "org.sobeam.rule.engine.action.TbLogNode",
+        "type": "org.thingsboard.rule.engine.action.TbLogNode",
         "name": "Log Other",
         "debugMode": false,
         "configuration": {
@@ -85,7 +85,7 @@
           "layoutX": 822,
           "layoutY": 507
         },
-        "type": "org.sobeam.rule.engine.rpc.TbSendRPCRequestNode",
+        "type": "org.thingsboard.rule.engine.rpc.TbSendRPCRequestNode",
         "name": "RPC Call Request",
         "debugMode": false,
         "configuration": {
@@ -98,7 +98,7 @@
           "layoutX": 209,
           "layoutY": 307
         },
-        "type": "org.sobeam.rule.engine.profile.TbDeviceProfileNode",
+        "type": "org.thingsboard.rule.engine.profile.TbDeviceProfileNode",
         "name": "Device Profile Node",
         "debugMode": false,
         "configuration": {

@@ -12,7 +12,7 @@ if %jver% NEQ 170 GOTO JAVA_NOT_INSTALLED
 :JAVA_INSTALLED
 
 @ECHO Java 17 found!
-@ECHO Installing sobeam ...
+@ECHO Installing thingsboard ...
 
 SET loadDemo=false
 
@@ -28,7 +28,7 @@ SET installDir=%BASE%\data
 
 PUSHD "%BASE%\conf"
 
-java -cp "%jarfile%" -Dloader.main=org.sobeam.server.SobeamInstallApplication^
+java -cp "%jarfile%" -Dloader.main=org.thingsboard.server.ThingsboardInstallApplication^
                     -Dinstall.data_dir="%installDir%"^
                     -Dinstall.load_demo=%loadDemo%^
                     -Dspring.jpa.hibernate.ddl-auto=none^
@@ -37,15 +37,15 @@ java -cp "%jarfile%" -Dloader.main=org.sobeam.server.SobeamInstallApplication^
                     org.springframework.boot.loader.launch.PropertiesLauncher
 
 if errorlevel 1 (
-   @echo SoBeam installation failed!
+   @echo ThingsBoard installation failed!
    POPD
    exit /b %errorlevel%
 )
 POPD
 
-"%BASE%"sobeam.exe install
+"%BASE%"thingsboard.exe install
 
-@ECHO SoBeam installed successfully!
+@ECHO ThingsBoard installed successfully!
 
 GOTO END
 

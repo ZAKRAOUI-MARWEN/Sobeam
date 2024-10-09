@@ -1,8 +1,8 @@
-Here is the list of commands, that can be used to quickly upgrade SoBeam Edge on ${OS}
+Here is the list of commands, that can be used to quickly upgrade ThingsBoard Edge on ${OS}
 
-#### Prepare for upgrading SoBeam Edge
+#### Prepare for upgrading ThingsBoard Edge
 
-Stop SoBeam Edge service:
+Stop ThingsBoard Edge service:
 
 ```bash
 sudo systemctl stop tb-edge

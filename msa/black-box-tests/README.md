@@ -1,7 +1,7 @@
 
 ## Black box tests execution
-To run the black box tests with using Docker, the local Docker images of Sobeam's microservices should be built. <br />
-- Build the local Docker images in the directory with the Sobeam's main [pom.xml](./../../pom.xml):
+To run the black box tests with using Docker, the local Docker images of Thingsboard's microservices should be built. <br />
+- Build the local Docker images in the directory with the Thingsboard's main [pom.xml](./../../pom.xml):
         
         mvn clean install -Ddockerfile.skip=false
 - Verify that the new local images were built: 
@@ -9,14 +9,14 @@ To run the black box tests with using Docker, the local Docker images of Sobeam'
         docker image ls
 As result, in REPOSITORY column, next images should be present:
         
-        sobeam/tb-coap-transport
-        sobeam/tb-lwm2m-transport
-        sobeam/tb-http-transport
-        sobeam/tb-mqtt-transport
-        sobeam/tb-snmp-transport
-        sobeam/tb-node
-        sobeam/tb-web-ui
-        sobeam/tb-js-executor
+        thingsboard/tb-coap-transport
+        thingsboard/tb-lwm2m-transport
+        thingsboard/tb-http-transport
+        thingsboard/tb-mqtt-transport
+        thingsboard/tb-snmp-transport
+        thingsboard/tb-node
+        thingsboard/tb-web-ui
+        thingsboard/tb-js-executor
 
 - Run the black box tests (without ui tests) in the [msa/black-box-tests](../black-box-tests) directory with Redis standalone:
 
@@ -65,4 +65,4 @@ As result, in REPOSITORY column, next images should be present:
 ### To run a separate test manually on a built UI:
 1. Add the black-box-tests module in the [pom.xml](../pom.xml) or add as a Maven project
 2. Add Vm Option "*-DrunLocal=true -Dtb.baseUiUrl=http://localhost:4200/*" in "Run" -> "Edit Configuration" -> "Edit Configuration Templates" -> "TestNG"
-3. To run a specific test, go to the test class in the [UI tests package](../black-box-tests/src/test/java/org/sobeam/server/msa/ui/tests) and run the test. Alternatively, go to the [resources](../black-box-tests/src/test/resources) in the black-box-tests module and run the test suite that you need.
+3. To run a specific test, go to the test class in the [UI tests package](../black-box-tests/src/test/java/org/thingsboard/server/msa/ui/tests) and run the test. Alternatively, go to the [resources](../black-box-tests/src/test/resources) in the black-box-tests module and run the test suite that you need.

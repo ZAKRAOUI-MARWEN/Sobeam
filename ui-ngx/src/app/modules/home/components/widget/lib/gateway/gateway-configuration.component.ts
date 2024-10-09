@@ -1,5 +1,5 @@
 ///
-/// Copyright © 2024 The Sobeam Authors
+/// Copyright © 2016-2024 The Thingsboard Authors
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ export class GatewayConfigurationComponent implements OnInit {
 
   ngOnInit() {
     this.gatewayConfigGroup = this.fb.group({
-      sobeam: this.fb.group({
+      thingsboard: this.fb.group({
         host: [window.location.hostname, [Validators.required, Validators.pattern(/^[^\s]+$/)]],
         port: [1883, [Validators.required, Validators.min(1), Validators.max(65535), Validators.pattern(/^-?[0-9]+$/)]],
         remoteShell: [false, []],
@@ -160,18 +160,18 @@ export class GatewayConfigurationComponent implements OnInit {
       })
     });
 
-    this.gatewayConfigGroup.get('sobeam.security.password').valueChanges.subscribe(password => {
+    this.gatewayConfigGroup.get('thingsboard.security.password').valueChanges.subscribe(password => {
       if (password && password !== '') {
-        this.gatewayConfigGroup.get('sobeam.security.username').setValidators([Validators.required]);
+        this.gatewayConfigGroup.get('thingsboard.security.username').setValidators([Validators.required]);
       } else {
-        this.gatewayConfigGroup.get('sobeam.security.username').clearValidators();
+        this.gatewayConfigGroup.get('thingsboard.security.username').clearValidators();
       }
-      this.gatewayConfigGroup.get('sobeam.security.username').updateValueAndValidity({emitEvent: false});
+      this.gatewayConfigGroup.get('thingsboard.security.username').updateValueAndValidity({emitEvent: false});
     });
 
     this.toggleRpcFields(false);
 
-    this.gatewayConfigGroup.get('sobeam.remoteConfiguration').valueChanges.subscribe(enabled => {
+    this.gatewayConfigGroup.get('thingsboard.remoteConfiguration').valueChanges.subscribe(enabled => {
       if (!enabled) {
         this.openConfigurationConfirmDialog();
       }
@@ -183,7 +183,7 @@ export class GatewayConfigurationComponent implements OnInit {
       this.addLocalLogConfig(localLogsConfigsKey, {});
     }
 
-    const checkingDeviceActivityGroup = this.gatewayConfigGroup.get('sobeam.checkingDeviceActivity') as FormGroup;
+    const checkingDeviceActivityGroup = this.gatewayConfigGroup.get('thingsboard.checkingDeviceActivity') as FormGroup;
     checkingDeviceActivityGroup.get('checkDeviceInactivity').valueChanges.subscribe(enabled => {
       checkingDeviceActivityGroup.updateValueAndValidity();
       if (enabled) {
@@ -201,7 +201,7 @@ export class GatewayConfigurationComponent implements OnInit {
       this.toggleRpcFields(value);
     });
 
-    const securityGroup = this.gatewayConfigGroup.get('sobeam.security') as FormGroup;
+    const securityGroup = this.gatewayConfigGroup.get('thingsboard.security') as FormGroup;
     securityGroup.get('type').valueChanges.subscribe(type => {
       this.removeAllSecurityValidators();
       if (type === SecurityTypes.ACCESS_TOKEN) {
@@ -294,19 +294,19 @@ export class GatewayConfigurationComponent implements OnInit {
         const storage_configuration = attributes.find(attribute => attribute.key === 'storage_configuration')?.value;
         const remoteLoggingLevel = attributes.find(attribute => attribute.key === 'RemoteLoggingLevel')?.value;
         if (general_configuration) {
-          const configObj = {sobeam: general_configuration};
-          if (configObj.sobeam.statistics && configObj.sobeam.statistics.commands) {
-            for (const command of configObj.sobeam.statistics.commands) {
+          const configObj = {thingsboard: general_configuration};
+          if (configObj.thingsboard.statistics && configObj.thingsboard.statistics.commands) {
+            for (const command of configObj.thingsboard.statistics.commands) {
               this.addCommand(command);
             }
-            delete configObj.sobeam.statistics.commands;
+            delete configObj.thingsboard.statistics.commands;
           }
           this.gatewayConfigGroup.patchValue(configObj, {emitEvent: false});
           this.gatewayConfigGroup.markAsPristine();
-          if (!configObj.sobeam.remoteConfiguration) {
+          if (!configObj.thingsboard.remoteConfiguration) {
             this.gatewayConfigGroup.disable({emitEvent: false});
           }
-          this.checkAndFetchCredentials(configObj.sobeam.security);
+          this.checkAndFetchCredentials(configObj.thingsboard.security);
         }
         if (grpc_configuration) {
           const configObj = {grpc: grpc_configuration};
@@ -342,19 +342,19 @@ export class GatewayConfigurationComponent implements OnInit {
       this.deviceService.getDeviceCredentials(this.device.id).subscribe(credentials => {
         this.initialCredentials = credentials;
         if (credentials.credentialsType === DeviceCredentialsType.ACCESS_TOKEN || security.type === SecurityTypes.TLS_ACCESS_TOKEN) {
-          this.gatewayConfigGroup.get('sobeam.security.type').setValue(security.type === SecurityTypes.TLS_ACCESS_TOKEN
+          this.gatewayConfigGroup.get('thingsboard.security.type').setValue(security.type === SecurityTypes.TLS_ACCESS_TOKEN
             ? SecurityTypes.TLS_ACCESS_TOKEN
             : SecurityTypes.ACCESS_TOKEN);
-          this.gatewayConfigGroup.get('sobeam.security.accessToken').setValue(credentials.credentialsId);
+          this.gatewayConfigGroup.get('thingsboard.security.accessToken').setValue(credentials.credentialsId);
           if(security.type === SecurityTypes.TLS_ACCESS_TOKEN) {
-            this.gatewayConfigGroup.get('sobeam.security.caCert').setValue(security.caCert);
+            this.gatewayConfigGroup.get('thingsboard.security.caCert').setValue(security.caCert);
           }
         } else if (credentials.credentialsType === DeviceCredentialsType.MQTT_BASIC) {
           const parsedValue = JSON.parse(credentials.credentialsValue);
-          this.gatewayConfigGroup.get('sobeam.security.type').setValue(SecurityTypes.USERNAME_PASSWORD);
-          this.gatewayConfigGroup.get('sobeam.security.clientId').setValue(parsedValue.clientId);
-          this.gatewayConfigGroup.get('sobeam.security.username').setValue(parsedValue.userName);
-          this.gatewayConfigGroup.get('sobeam.security.password').setValue(parsedValue.password, {emitEvent: false});
+          this.gatewayConfigGroup.get('thingsboard.security.type').setValue(SecurityTypes.USERNAME_PASSWORD);
+          this.gatewayConfigGroup.get('thingsboard.security.clientId').setValue(parsedValue.clientId);
+          this.gatewayConfigGroup.get('thingsboard.security.username').setValue(parsedValue.userName);
+          this.gatewayConfigGroup.get('thingsboard.security.password').setValue(parsedValue.password, {emitEvent: false});
         } else if (credentials.credentialsType === DeviceCredentialsType.X509_CERTIFICATE) {
           //if sertificate is present set sertificate as present
         }
@@ -432,7 +432,7 @@ export class GatewayConfigurationComponent implements OnInit {
   }
 
   commandFormArray(): FormArray {
-    return this.gatewayConfigGroup.get('sobeam.statistics.commands') as FormArray;
+    return this.gatewayConfigGroup.get('thingsboard.statistics.commands') as FormArray;
   }
 
   removeCommandControl(index: number, event: any): void {
@@ -444,7 +444,7 @@ export class GatewayConfigurationComponent implements OnInit {
   }
 
   private removeAllSecurityValidators(): void {
-    const securityGroup = this.gatewayConfigGroup.get('sobeam.security') as FormGroup;
+    const securityGroup = this.gatewayConfigGroup.get('thingsboard.security') as FormGroup;
     securityGroup.clearValidators();
     for (const controlsKey in securityGroup.controls) {
       if (controlsKey !== 'type') {
@@ -493,7 +493,7 @@ export class GatewayConfigurationComponent implements OnInit {
           stream: 'ext://sys.stdout'
         },
         databaseHandler: {
-          class: 'sobeam_gateway.tb_utility.tb_handler.TimedRotatingFileHandler',
+          class: 'thingsboard_gateway.tb_utility.tb_handler.TimedRotatingFileHandler',
           formatter: 'LogFormatter',
           filename: './logs/database.log',
           backupCount: 1,
@@ -524,7 +524,7 @@ export class GatewayConfigurationComponent implements OnInit {
 
   private createHandlerObj(logObj: any, key: string) {
     return {
-      class: 'sobeam_gateway.tb_utility.tb_handler.TimedRotatingFileHandler',
+      class: 'thingsboard_gateway.tb_utility.tb_handler.TimedRotatingFileHandler',
       formatter: 'LogFormatter',
       filename: `${logObj.filePath}/${key}.log`,
       backupCount: logObj.backupCount,
@@ -544,7 +544,7 @@ export class GatewayConfigurationComponent implements OnInit {
 
   saveConfig(): void {
     const value = deepTrim(this.removeEmpty(this.gatewayConfigGroup.value));
-    value.sobeam.statistics.commands = Object.values(value.sobeam.statistics.commands);
+    value.thingsboard.statistics.commands = Object.values(value.thingsboard.statistics.commands);
     const attributes = [];
     attributes.push({
       key: 'RemoteLoggingLevel',
@@ -565,15 +565,15 @@ export class GatewayConfigurationComponent implements OnInit {
       key: 'storage_configuration',
       value: value.storage
     });
-    value.sobeam.ts = new Date().getTime();
+    value.thingsboard.ts = new Date().getTime();
     attributes.push({
       key: 'general_configuration',
-      value: value.sobeam
+      value: value.thingsboard
     });
 
 
     this.attributeService.saveEntityAttributes(this.device, AttributeScope.SHARED_SCOPE, attributes).subscribe(_ => {
-      this.updateCredentials(value.sobeam.security).subscribe(() => {
+      this.updateCredentials(value.thingsboard.security).subscribe(() => {
         if (this.dialogRef) {
           this.dialogRef.close();
         } else {
@@ -652,7 +652,7 @@ export class GatewayConfigurationComponent implements OnInit {
       }).afterClosed().subscribe(
         (res) => {
           if (!res) {
-            this.gatewayConfigGroup.get('sobeam.remoteConfiguration').setValue(true, {emitEvent: false});
+            this.gatewayConfigGroup.get('thingsboard.remoteConfiguration').setValue(true, {emitEvent: false});
           }
         }
       );

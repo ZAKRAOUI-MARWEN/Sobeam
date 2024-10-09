@@ -1,6 +1,6 @@
 {
   "connection": {
-    "str": "Driver={PostgreSQL};Server=localhost;Port=5432;Database=sobeam;Uid=postgres;Pwd=postgres;",
+    "str": "Driver={PostgreSQL};Server=localhost;Port=5432;Database=thingsboard;Uid=postgres;Pwd=postgres;",
     "attributes": {
       "autocommit": true,
       "timeout": 0

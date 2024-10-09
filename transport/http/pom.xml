@@ -1,6 +1,6 @@
 <!--
 
-    Copyright © 2024 The Sobeam Authors
+    Copyright © 2016-2024 The Thingsboard Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,16 +19,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.sobeam</groupId>
+        <groupId>org.thingsboard</groupId>
         <version>3.7.0</version>
         <artifactId>transport</artifactId>
     </parent>
-    <groupId>org.sobeam.transport</groupId>
+    <groupId>org.thingsboard.transport</groupId>
     <artifactId>http</artifactId>
     <packaging>jar</packaging>
 
-    <name>Sobeam HTTP Transport Service</name>
-    <url>https://sobeam.io</url>
+    <name>Thingsboard HTTP Transport Service</name>
+    <url>https://thingsboard.io</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,17 +40,17 @@
         <pkg.name>tb-http-transport</pkg.name>
         <pkg.copyInstallScripts>false</pkg.copyInstallScripts>
         <pkg.win.dist>${project.build.directory}/windows</pkg.win.dist>
-        <pkg.implementationTitle>SoBeam HTTP Transport Service</pkg.implementationTitle>
-        <pkg.mainClass>org.sobeam.server.http.SobeamHttpTransportApplication</pkg.mainClass>
+        <pkg.implementationTitle>ThingsBoard HTTP Transport Service</pkg.implementationTitle>
+        <pkg.mainClass>org.thingsboard.server.http.ThingsboardHttpTransportApplication</pkg.mainClass>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.sobeam.common.transport</groupId>
+            <groupId>org.thingsboard.common.transport</groupId>
             <artifactId>http</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.sobeam.common</groupId>
+            <groupId>org.thingsboard.common</groupId>
             <artifactId>queue</artifactId>
         </dependency>
         <dependency>

@@ -1,6 +1,6 @@
 <!--
 
-    Copyright © 2024 The Sobeam Authors
+    Copyright © 2016-2024 The Thingsboard Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,17 +20,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.sobeam</groupId>
+        <groupId>org.thingsboard</groupId>
         <version>3.7.0</version>
         <artifactId>transport</artifactId>
     </parent>
 
-    <groupId>org.sobeam.transport</groupId>
+    <groupId>org.thingsboard.transport</groupId>
     <artifactId>snmp</artifactId>
     <packaging>jar</packaging>
 
-    <name>Sobeam SNMP Transport Service</name>
-    <url>https://sobeam.io</url>
+    <name>Thingsboard SNMP Transport Service</name>
+    <url>https://thingsboard.io</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -42,17 +42,17 @@
         <pkg.name>tb-snmp-transport</pkg.name>
         <pkg.copyInstallScripts>false</pkg.copyInstallScripts>
         <pkg.win.dist>${project.build.directory}/windows</pkg.win.dist>
-        <pkg.implementationTitle>SoBeam SNMP Transport Service</pkg.implementationTitle>
-        <pkg.mainClass>org.sobeam.server.snmp.SobeamSnmpTransportApplication</pkg.mainClass>
+        <pkg.implementationTitle>ThingsBoard SNMP Transport Service</pkg.implementationTitle>
+        <pkg.mainClass>org.thingsboard.server.snmp.ThingsboardSnmpTransportApplication</pkg.mainClass>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.sobeam.common.transport</groupId>
+            <groupId>org.thingsboard.common.transport</groupId>
             <artifactId>snmp</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.sobeam.common</groupId>
+            <groupId>org.thingsboard.common</groupId>
             <artifactId>queue</artifactId>
         </dependency>
         <dependency>

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright © 2024 The Sobeam Authors
+# Copyright © 2016-2024 The Thingsboard Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 BASE=${project.basedir}/target
 CONF_FOLDER=${BASE}/conf
-jarfile="${BASE}/sobeam-${project.version}-boot.jar"
+jarfile="${BASE}/thingsboard-${project.version}-boot.jar"
 installDir=${BASE}/data
 loadDemo=true
 
@@ -30,7 +30,7 @@ export SQL_DATA_FOLDER=${SQL_DATA_FOLDER:-/tmp}
 
 run_user="$USER"
 
-sudo -u "$run_user" -s /bin/sh -c "java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.sobeam.server.SobeamInstallApplication \
+sudo -u "$run_user" -s /bin/sh -c "java -cp ${jarfile} $JAVA_OPTS -Dloader.main=org.thingsboard.server.ThingsboardInstallApplication \
                     -Dinstall.data_dir=${installDir} \
                     -Dinstall.load_demo=${loadDemo} \
                     -Dspring.jpa.hibernate.ddl-auto=none \
@@ -39,9 +39,9 @@ sudo -u "$run_user" -s /bin/sh -c "java -cp ${jarfile} $JAVA_OPTS -Dloader.main=
                     org.springframework.boot.loader.launch.PropertiesLauncher"
 
 if [ $? -ne 0 ]; then
-    echo "SoBeam DB installation failed!"
+    echo "ThingsBoard DB installation failed!"
 else
-    echo "SoBeam DB installed successfully!"
+    echo "ThingsBoard DB installed successfully!"
 fi
 
 exit $?

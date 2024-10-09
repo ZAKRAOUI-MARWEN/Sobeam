@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 The Sobeam Authors
+ * Copyright © 2016-2024 The Thingsboard Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,17 @@
  */
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import SobeamBaseComponent from './json-form-base-component';
+import ThingsboardBaseComponent from './json-form-base-component';
 import { JsonFormFieldProps, JsonFormFieldState } from '@shared/components/json-form/react/json-form.models';
 import IconButton from '@material-ui/core/IconButton';
 import Clear from '@material-ui/icons/Clear';
 import Tooltip from '@material-ui/core/Tooltip';
 
-interface SobeamImageState extends JsonFormFieldState {
+interface ThingsboardImageState extends JsonFormFieldState {
   imageUrl: string;
 }
 
-class SobeamImage extends React.Component<JsonFormFieldProps, SobeamImageState> {
+class ThingsboardImage extends React.Component<JsonFormFieldProps, ThingsboardImageState> {
 
     constructor(props) {
         super(props);
@@ -105,4 +105,4 @@ class SobeamImage extends React.Component<JsonFormFieldProps, SobeamImageState> 
     }
 }
 
-export default SobeamBaseComponent(SobeamImage);
+export default ThingsboardBaseComponent(ThingsboardImage);

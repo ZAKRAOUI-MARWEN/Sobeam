@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 The Sobeam Authors
+ * Copyright © 2016-2024 The Thingsboard Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,23 @@
 import * as React from 'react';
 import JsonFormUtils from './json-form-utils';
 
-import SobeamArray from './json-form-array';
-import SobeamJavaScript from './json-form-javascript';
-import SobeamJson from './json-form-json';
-import SobeamHtml from './json-form-html';
-import SobeamCss from './json-form-css';
-import SobeamColor from './json-form-color';
-import SobeamRcSelect from './json-form-rc-select';
-import SobeamNumber from './json-form-number';
-import SobeamText from './json-form-text';
-import SobeamSelect from './json-form-select';
-import SobeamRadios from './json-form-radios';
-import SobeamDate from './json-form-date';
-import SobeamImage from './json-form-image';
-import SobeamCheckbox from './json-form-checkbox';
-import SobeamHelp from './json-form-help';
-import SobeamFieldSet from './json-form-fieldset';
-import SobeamIcon from './json-form-icon';
+import ThingsboardArray from './json-form-array';
+import ThingsboardJavaScript from './json-form-javascript';
+import ThingsboardJson from './json-form-json';
+import ThingsboardHtml from './json-form-html';
+import ThingsboardCss from './json-form-css';
+import ThingsboardColor from './json-form-color';
+import ThingsboardRcSelect from './json-form-rc-select';
+import ThingsboardNumber from './json-form-number';
+import ThingsboardText from './json-form-text';
+import ThingsboardSelect from './json-form-select';
+import ThingsboardRadios from './json-form-radios';
+import ThingsboardDate from './json-form-date';
+import ThingsboardImage from './json-form-image';
+import ThingsboardCheckbox from './json-form-checkbox';
+import ThingsboardHelp from './json-form-help';
+import ThingsboardFieldSet from './json-form-fieldset';
+import ThingsboardIcon from './json-form-icon';
 import {
   JsonFormData,
   JsonFormProps,
@@ -45,10 +45,10 @@ import {
 import _ from 'lodash';
 import tinycolor from 'tinycolor2';
 import { GroupInfo } from '@shared/models/widget.models';
-import SobeamMarkdown from '@shared/components/json-form/react/json-form-markdown';
+import ThingsboardMarkdown from '@shared/components/json-form/react/json-form-markdown';
 import { MouseEvent } from 'react';
 
-class SobeamSchemaForm extends React.Component<JsonFormProps, any> {
+class ThingsboardSchemaForm extends React.Component<JsonFormProps, any> {
 
   private hasConditions: boolean;
   private readonly mapper: {[type: string]: any};
@@ -57,26 +57,26 @@ class SobeamSchemaForm extends React.Component<JsonFormProps, any> {
     super(props);
 
     this.mapper = {
-      number: SobeamNumber,
-      text: SobeamText,
-      password: SobeamText,
-      textarea: SobeamText,
-      select: SobeamSelect,
-      radios: SobeamRadios,
-      date: SobeamDate,
-      image: SobeamImage,
-      checkbox: SobeamCheckbox,
-      help: SobeamHelp,
-      array: SobeamArray,
-      javascript: SobeamJavaScript,
-      json: SobeamJson,
-      html: SobeamHtml,
-      css: SobeamCss,
-      markdown: SobeamMarkdown,
-      color: SobeamColor,
-      'rc-select': SobeamRcSelect,
-      fieldset: SobeamFieldSet,
-      icon: SobeamIcon
+      number: ThingsboardNumber,
+      text: ThingsboardText,
+      password: ThingsboardText,
+      textarea: ThingsboardText,
+      select: ThingsboardSelect,
+      radios: ThingsboardRadios,
+      date: ThingsboardDate,
+      image: ThingsboardImage,
+      checkbox: ThingsboardCheckbox,
+      help: ThingsboardHelp,
+      array: ThingsboardArray,
+      javascript: ThingsboardJavaScript,
+      json: ThingsboardJson,
+      html: ThingsboardHtml,
+      css: ThingsboardCss,
+      markdown: ThingsboardMarkdown,
+      color: ThingsboardColor,
+      'rc-select': ThingsboardRcSelect,
+      fieldset: ThingsboardFieldSet,
+      icon: ThingsboardIcon
     };
 
     this.onChange = this.onChange.bind(this);
@@ -169,7 +169,7 @@ class SobeamSchemaForm extends React.Component<JsonFormProps, any> {
       const content: JSX.Element[] = [];
       for (const info of this.props.groupInfoes) {
         const forms = this.createSchema(this.props.form[info.formIndex]);
-        const item = <SobeamSchemaGroup key={content.length} forms={forms} info={info}></SobeamSchemaGroup>;
+        const item = <ThingsboardSchemaGroup key={content.length} forms={forms} info={info}></ThingsboardSchemaGroup>;
         content.push(item);
       }
       return (<div>{content}</div>);
@@ -178,18 +178,18 @@ class SobeamSchemaForm extends React.Component<JsonFormProps, any> {
     }
   }
 }
-export default SobeamSchemaForm;
+export default ThingsboardSchemaForm;
 
-interface SobeamSchemaGroupProps {
+interface ThingsboardSchemaGroupProps {
   info: GroupInfo;
   forms: JSX.Element;
 }
 
-interface SobeamSchemaGroupState {
+interface ThingsboardSchemaGroupState {
   showGroup: boolean;
 }
 
-class SobeamSchemaGroup extends React.Component<SobeamSchemaGroupProps, SobeamSchemaGroupState> {
+class ThingsboardSchemaGroup extends React.Component<ThingsboardSchemaGroupProps, ThingsboardSchemaGroupState> {
   constructor(props) {
     super(props);
     this.state = {

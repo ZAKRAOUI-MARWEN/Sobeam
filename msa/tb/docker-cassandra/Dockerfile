@@ -1,5 +1,5 @@
 #
-# Copyright © 2024 The Sobeam Authors
+# Copyright © 2016-2024 The Thingsboard Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM sobeam/openjdk17:bookworm-slim
+FROM thingsboard/openjdk17:bookworm-slim
 
 ENV PG_MAJOR=15
 
@@ -27,7 +27,7 @@ ENV PGDATA=/data/db
 ENV CASSANDRA_DATA=/data/cassandra
 
 ENV SPRING_DRIVER_CLASS_NAME=org.postgresql.Driver
-ENV SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/sobeam
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/thingsboard
 ENV SPRING_DATASOURCE_USERNAME=${pkg.user}
 ENV SPRING_DATASOURCE_PASSWORD=postgres
 

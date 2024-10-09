@@ -1,5 +1,5 @@
 --
--- Copyright © 2024 The Sobeam Authors
+-- Copyright © 2016-2024 The Thingsboard Authors
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -23,4 +23,4 @@ UPDATE rule_node SET
         'updateAttributesOnlyOnValueChange',
         CASE WHEN configuration::jsonb ->> 'updateAttributesOnlyOnValueChange' = 'false' THEN false ELSE true END)::jsonb)::varchar,
     configuration_version = 2
-WHERE type = 'org.sobeam.rule.engine.telemetry.TbMsgAttributesNode' AND configuration_version = 1;
+WHERE type = 'org.thingsboard.rule.engine.telemetry.TbMsgAttributesNode' AND configuration_version = 1;

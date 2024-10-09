@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 The Sobeam Authors
+ * Copyright © 2016-2024 The Thingsboard Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 import * as React from 'react';
 import JsonFormUtils from './json-form-utils';
-import SobeamBaseComponent from './json-form-base-component';
+import ThingsboardBaseComponent from './json-form-base-component';
 import Button from '@material-ui/core/Button';
 import _ from 'lodash';
 import IconButton from '@material-ui/core/IconButton';
@@ -28,12 +28,12 @@ import {
   JsonFormFieldState
 } from '@shared/components/json-form/react/json-form.models';
 
-interface SobeamArrayState extends JsonFormFieldState {
+interface ThingsboardArrayState extends JsonFormFieldState {
   model: any[];
   keys: number[];
 }
 
-class SobeamArray extends React.Component<JsonFormFieldProps, SobeamArrayState> {
+class ThingsboardArray extends React.Component<JsonFormFieldProps, ThingsboardArrayState> {
 
     constructor(props) {
         super(props);
@@ -176,4 +176,4 @@ class SobeamArray extends React.Component<JsonFormFieldProps, SobeamArrayState> 
     }
 }
 
-export default SobeamBaseComponent(SobeamArray);
+export default ThingsboardBaseComponent(ThingsboardArray);

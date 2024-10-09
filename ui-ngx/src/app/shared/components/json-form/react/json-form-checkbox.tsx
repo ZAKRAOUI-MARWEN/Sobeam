@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 The Sobeam Authors
+ * Copyright © 2016-2024 The Thingsboard Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import SobeamBaseComponent from './json-form-base-component';
+import ThingsboardBaseComponent from './json-form-base-component';
 import Checkbox from '@material-ui/core/Checkbox';
 import { JsonFormFieldProps, JsonFormFieldState } from './json-form.models.js';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-class SobeamCheckbox extends React.Component<JsonFormFieldProps, JsonFormFieldState> {
+class ThingsboardCheckbox extends React.Component<JsonFormFieldProps, JsonFormFieldState> {
     render() {
         return (
           <div>
@@ -42,4 +42,4 @@ class SobeamCheckbox extends React.Component<JsonFormFieldProps, JsonFormFieldSt
     }
 }
 
-export default SobeamBaseComponent(SobeamCheckbox);
+export default ThingsboardBaseComponent(ThingsboardCheckbox);

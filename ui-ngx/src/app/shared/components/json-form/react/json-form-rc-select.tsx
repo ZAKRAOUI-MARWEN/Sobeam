@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 The Sobeam Authors
+ * Copyright © 2016-2024 The Thingsboard Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import SobeamBaseComponent from './json-form-base-component';
+import ThingsboardBaseComponent from './json-form-base-component';
 import Select, { Option } from 'rc-select';
 import {
   JsonFormFieldProps,
@@ -24,13 +24,13 @@ import {
 import { Mode } from 'rc-select/lib/interface';
 import { deepClone } from '@core/utils';
 
-interface SobeamRcSelectState extends JsonFormFieldState {
+interface ThingsboardRcSelectState extends JsonFormFieldState {
   currentValue: KeyLabelItem | KeyLabelItem[];
   items: Array<KeyLabelItem>;
   focused: boolean;
 }
 
-class SobeamRcSelect extends React.Component<JsonFormFieldProps, SobeamRcSelectState> {
+class ThingsboardRcSelect extends React.Component<JsonFormFieldProps, ThingsboardRcSelectState> {
 
     constructor(props) {
         super(props);
@@ -199,4 +199,4 @@ class SobeamRcSelect extends React.Component<JsonFormFieldProps, SobeamRcSelectS
     }
 }
 
-export default SobeamBaseComponent(SobeamRcSelect);
+export default ThingsboardBaseComponent(ThingsboardRcSelect);

@@ -19,9 +19,9 @@ assignees: 'Ultrazombie'
 Clear and concise details.
 
 **Environment**
-<!-- Add information about your environment and SoBeam version if applicable -->
+<!-- Add information about your environment and ThingsBoard version if applicable -->
  * OS:  name and version
- * SoBeam: version
+ * ThingsBoard: version
  * Browser: name and version
 
 ___________________________________________________________

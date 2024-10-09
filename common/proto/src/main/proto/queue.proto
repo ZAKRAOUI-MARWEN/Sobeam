@@ -1,5 +1,5 @@
 /**
- * Copyright © 2024 The Sobeam Authors
+ * Copyright © 2016-2024 The Thingsboard Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ syntax = "proto3";
 
 package transport;
 
-option java_package = "org.sobeam.server.gen.transport";
+option java_package = "org.thingsboard.server.gen.transport";
 option java_outer_classname = "TransportProtos";
 
 /**
@@ -1417,7 +1417,7 @@ message VersionControlResponseMsg {
  * Main messages;
  */
 
-/* Request from Transport Service to SoBeam Core Service */
+/* Request from Transport Service to ThingsBoard Core Service */
 message TransportApiRequestMsg {
   ValidateDeviceTokenRequestMsg validateTokenRequestMsg = 1;
   ValidateDeviceX509CertRequestMsg validateX509CertRequestMsg = 2;
@@ -1436,7 +1436,7 @@ message TransportApiRequestMsg {
   ValidateOrCreateDeviceX509CertRequestMsg validateOrCreateX509CertRequestMsg = 15;
 }
 
-/* Response from SoBeam Core Service to Transport Service */
+/* Response from ThingsBoard Core Service to Transport Service */
 message TransportApiResponseMsg {
   ValidateDeviceCredentialsResponseMsg validateCredResponseMsg = 1;
   GetOrCreateDeviceFromGatewayResponseMsg getOrCreateDeviceResponseMsg = 2;
@@ -1451,7 +1451,7 @@ message TransportApiResponseMsg {
   repeated GetQueueRoutingInfoResponseMsg getQueueRoutingInfoResponseMsgs = 11;
 }
 
-/* Messages that are handled by SoBeam Core Service */
+/* Messages that are handled by ThingsBoard Core Service */
 message ToCoreMsg {
   TransportToDeviceActorMsg toDeviceActorMsg = 1;
   DeviceStateServiceMsgProto deviceStateServiceMsg = 2;
@@ -1468,7 +1468,7 @@ message ToCoreMsg {
   DeviceInactivityProto deviceInactivityMsg = 52;
 }
 
-/* High priority messages with low latency are handled by SoBeam Core Service separately */
+/* High priority messages with low latency are handled by ThingsBoard Core Service separately */
 /* Please, adjust the TbCoreConsumerStats when modifying the ToCoreNotificationMsg */
 message ToCoreNotificationMsg {
   LocalSubscriptionServiceMsgProto toLocalSubscriptionServiceMsg = 1;
@@ -1486,7 +1486,7 @@ message ToCoreNotificationMsg {
   ResourceCacheInvalidateMsg resourceCacheInvalidateMsg = 13;
 }
 
-/* Messages that are handled by SoBeam RuleEngine Service */
+/* Messages that are handled by ThingsBoard RuleEngine Service */
 message ToRuleEngineMsg {
   int64 tenantIdMSB = 1;
   int64 tenantIdLSB = 2;
@@ -1502,7 +1502,7 @@ message ToRuleEngineNotificationMsg {
   ComponentLifecycleMsgProto componentLifecycle = 5;
 }
 
-/* Messages that are handled by SoBeam Transport Service */
+/* Messages that are handled by ThingsBoard Transport Service */
 message ToTransportMsg {
   int64 sessionIdMSB = 1;
   int64 sessionIdLSB = 2;

@@ -1,6 +1,6 @@
 <!--
 
-    Copyright © 2016-2024 The Thingsboard Authors
+    Copyright © 2016-2024 The Sobeam Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,9 +16,7 @@
 
 -->
 <img src="../../../../../assets/thingsboard.gif" atl=" " id="myVideo">
-
-<div class="tb-login-content mat-app-background tb-dark" fxFlex fxLayoutAlign="center center" fxLayout="column" style="background: #1a2537;">
-
+<div class="tb-login-content mat-app-background tb-dark" fxFlex fxLayoutAlign="center center" fxLayout="column" style="background: transparent;">
   <mat-card appearance="raised" style="max-height: 80vh; overflow-y: auto;">
     <mat-card-content>
       <form class="tb-login-form" [formGroup]="loginFormGroup" (ngSubmit)="login()">
@@ -26,7 +24,6 @@
           <div fxLayout="column" fxLayoutAlign="start center" style="padding: 15px 0;">
             <span style="height: 15px;"></span>
             <div id="typedtext" style="letter-spacing: 3px;"></div>
-
             <!-- <tb-logo class="login-logo"></tb-logo> -->
           </div>
           <!-- <mat-progress-bar color="warn" mode="indeterminate" *ngIf="isLoading$ | async">

@@ -39,7 +39,7 @@
     "@types/amqplib": "^0.8.2",
     "@types/config": "^0.0.41",
     "@types/express": "^4.17.13",
-    "@types/node": "^18.0.1",
+    "@types/node": "16",
     "@types/uuid-parse": "^1.0.0",
     "fs-extra": "^10.1.0",
     "nodemon": "^2.0.16",

@@ -1,5 +1,5 @@
 ///
-/// Copyright © 2016-2024 The Thingsboard Authors
+/// Copyright © 2016-2024 The Sobeam Authors
 ///
 /// Licensed under the Apache License, Version 2.0 (the "License");
 /// you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
               private domSanitizer: DomSanitizer,
               private authService: AuthService) {
 
-    console.log(`ThingsBoard Version: ${env.tbVersion}`);
+    console.log(`Sobeam Version: ${env.tbVersion}`);
 
     this.matIconRegistry.addSvgIconResolver((name, namespace) => {
       if (namespace === 'mdi') {

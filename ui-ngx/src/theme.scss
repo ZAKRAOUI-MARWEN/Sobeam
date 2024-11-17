@@ -100,7 +100,7 @@ $tb-theme-background: map_merge(mat.$light-theme-background-palette, $background
 
 $tb-mat-theme: mat.define-light-theme((color: (primary: $tb-primary,
         accent: $tb-accent ),
-      typography: mat.define-typography-config($button: mat.define-typography-level(14px, 36px, 500, $letter-spacing: 0.03125em, $font-family: 'Manrope'),
+        typography: mat.define-typography-config($button: mat.define-typography-level(14px, 36px, 500, $letter-spacing: 0.03125em, $font-family: 'Manrope'),
         $body-1: mat.define-typography-level(16px, 24px, 400, $letter-spacing: 0.5px, $font-family: 'Manrope'),
         $body-2: mat.define-typography-level(14px, 20px, 400, $letter-spacing: 0.25px, $font-family: 'Manrope'),
         $font-family: 'Manrope',
@@ -169,7 +169,7 @@ $tb-dark-theme-background: (
 
 $tb-dark-theme: mat.define-dark-theme((color: (primary: $tb-dark-primary,
         accent: $tb-accent ),
-      typography: mat.define-typography-config($button: mat.define-typography-level(14px, 36px, 500, $letter-spacing: 0.03125em, $font-family: 'Manrope'),
+        typography: mat.define-typography-config($button: mat.define-typography-level(14px, 36px, 500, $letter-spacing: 0.03125em, $font-family: 'Manrope'),
         $body-1: mat.define-typography-level(16px, 24px, 400, $letter-spacing: 0.5px, $font-family: 'Manrope'),
         $body-2: mat.define-typography-level(14px, 20px, 400, $letter-spacing: 0.25px, $font-family: 'Manrope'),
         $font-family: 'Manrope',
@@ -259,7 +259,7 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
 @mixin tb-components-theme($theme) {
   $primary: map-get($theme, primary);
   $warn: map-get($theme, warn);
-  $is-tb-theme: $theme ==$tb-theme;
+  $is-tb-theme: $theme == $tb-theme;
   $colorLocalDark : #273042;
   $colorLocalDark1 : #1a2537;
   $colorLocalDark2 : #2a3447;
@@ -317,7 +317,7 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
   }
 
   #gridster-child,
-  .tb-entity-table {
+  .tb-entity-table , mat-drawer-container{
     background: if($is-tb-theme, $colorLocalLight, #1f2a3d) !important;
 
   }
@@ -335,7 +335,8 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
   }
 */
   .tb-entity-table-content,
-    .tb-time-series-chart-panel {
+     .tb-widget-container {
+      
     background: if($is-tb-theme, $colorLocalLight1 !important, $colorLocalDark1 !important);
     border-radius: 14px !important;
     border: none !important;
@@ -451,7 +452,8 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
   .leaflet-popup-content-wrapper {
     background-color: if($is-tb-theme, $colorLocalLight !important, $colorLocalDark1 !important);
   }
-
+   
+   input[type="text"],
   .mat-mdc-select-arrow {
     &:after {
       color: if($is-tb-theme, #1f2a3d, $colorLocalLight) !important;

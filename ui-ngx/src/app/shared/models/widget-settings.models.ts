@@ -1034,7 +1034,7 @@ export const backgroundStyle = (background: BackgroundSettings, imagePipe: Image
   background = validateAndUpdateBackgroundSettings(background);
   if (background.type === BackgroundType.color) {
     return of({
-      background: background.color
+      background: "none"
     });
   } else {
     const imageUrl = background.imageUrl;

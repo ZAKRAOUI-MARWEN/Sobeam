@@ -1011,7 +1011,7 @@ transport:
     # MQTT bind-address
     bind_address: "${MQTT_BIND_ADDRESS:0.0.0.0}"
     # MQTT bind port
-    bind_port: "${MQTT_BIND_PORT:1883}"
+    bind_port: "${MQTT_BIND_PORT:1884}"
     # Enable proxy protocol support. Disabled by default. If enabled, supports both v1 and v2.
     # Useful to get the real IP address of the client in the logs and for rate limits.
     proxy_enabled: "${MQTT_PROXY_PROTOCOL_ENABLED:false}"
@@ -1327,7 +1327,7 @@ device:
       # Host of mqtt transport service. If empty, the base url host will be used.
       host: "${DEVICE_CONNECTIVITY_MQTT_HOST:}"
       # Port of mqtt transport service
-      port: "${DEVICE_CONNECTIVITY_MQTT_PORT:1883}"
+      port: "${DEVICE_CONNECTIVITY_MQTT_PORT:1884}"
     mqtts:
       # If true mosquito command will be included in the list of all test commands using DEVICE_CONNECTIVITY_MQTTS_HOST and DEVICE_CONNECTIVITY_MQTTS_PORT<
       enabled: "${DEVICE_CONNECTIVITY_MQTTS_ENABLED:false}"

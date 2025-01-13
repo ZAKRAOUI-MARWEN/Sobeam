@@ -101,6 +101,7 @@ export class SingleSwitchWidgetComponent extends
   disabledColor = 'rgba(0, 0, 0, 0.38)';
 
   autoScale = false;
+  helpValue : boolean;
 
   private panelResize$: ResizeObserver;
 
@@ -159,7 +160,9 @@ export class SingleSwitchWidgetComponent extends
     const getInitialStateSettings =
       {...this.settings.initialState, actionLabel: this.ctx.translate.instant('widgets.rpc-state.initial-state')};
     this.createValueGetter(getInitialStateSettings, ValueType.BOOLEAN, {
-      next: (value) => this.onValue(value)
+      next: (value) => {this.onValue(value)
+        this.helpValue = value
+      }
     });
 
     const disabledStateSettings =
@@ -216,11 +219,25 @@ export class SingleSwitchWidgetComponent extends
       const targetValue = this.value;
       const targetSetter = targetValue ? this.onValueSetter : this.offValueSetter;
       this.updateValue(targetSetter, targetValue, {
-        next: () => this.onValue(targetValue),
+        next: () => this.onValueSetTime(targetValue),
         error: () => this.onValue(!targetValue)
       });
     }
   }
+
+
+  private onValueSetTime(value: boolean): void {
+    this.value = !!value;
+    this.disabled = true
+    setTimeout(() => {
+      if (this.helpValue !== value) {
+        this.value = this.helpValue;
+        this.disabled = false
+      }
+      this.cd.markForCheck();
+    }, 8000);
+  }
+
 
   private onValue(value: boolean): void {
     this.value = !!value;

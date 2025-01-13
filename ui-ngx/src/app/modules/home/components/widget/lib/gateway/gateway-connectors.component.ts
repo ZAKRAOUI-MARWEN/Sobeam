@@ -236,7 +236,9 @@ export class GatewayConnectorComponent extends PageComponent implements AfterVie
   }
 
   private removeConnectorFromList(connectorName: string, isActive: boolean): void {
+    console.log("remouve from gateway" , connectorName , isActive)
     const list = isActive? this.activeConnectors : this.inactiveConnectors;
+    console.log("list of getway" , list)
     const index = list.indexOf(connectorName);
     if (index !== -1) {
       list.splice(index, 1);

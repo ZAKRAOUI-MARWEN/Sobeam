@@ -318,7 +318,7 @@ export class ValueToDataConverter<V> {
         break;
       case ValueToDataType.FUNCTION:
         try {
-          this.valueToDataFunction = new Function('value', settings.valueToDataFunction) as ValueToDataFunction<V>;
+          this.valueToDataFunction = new Function('value',settings.valueToDataFunction) as ValueToDataFunction<V>;
         } catch (e) {
           this.valueToDataFunction = (data) => data;
         }

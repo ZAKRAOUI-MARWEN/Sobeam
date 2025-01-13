@@ -116,7 +116,7 @@
                   formControlName="valueToDataFunction"
                   required
                   [globalVariables]="functionScopeVariables"
-                  [functionArgs]="['value']"
+                  [functionArgs]="['value' , 'widgetContext']"
                   functionTitle="{{ 'widgets.value-action.convert-value-function' | translate }}"
                   helpId="widget/lib/rpc/convert_value_fn">
       </tb-js-func>

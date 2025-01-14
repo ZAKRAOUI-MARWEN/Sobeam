@@ -19,7 +19,6 @@ import { Authority } from '@shared/models/authority.enum';
 import { deepClone } from '@core/utils';
 
 export declare type MenuSectionType = 'link' | 'toggle';
-
 export interface MenuSection {
   id: MenuId | string;
   name: string;
@@ -100,9 +99,10 @@ export enum MenuId {
   features = 'features',
   otaUpdates = 'otaUpdates',
   version_control = 'version_control',
-  api_usage = 'api_usage'
+  api_usage = 'api_usage',
+  user_management = 'user_management'
 }
-
+ 
 declare type MenuFilter = (authState: AuthState) => boolean;
 
 export const menuSectionMap = new Map<MenuId, MenuSection>([
@@ -640,9 +640,18 @@ export const menuSectionMap = new Map<MenuId, MenuSection>([
       path: '/usage',
       icon: 'insert_chart'
     }
+  ],
+  [
+    MenuId.user_management,
+    {
+      id: MenuId.user_management,
+      name: 'Users Management',
+      type: 'link',
+      path: '',
+      icon: 'mdi:account-group'
+    }
   ]
 ]);
-
 const menuFilters = new Map<MenuId, MenuFilter>([
   [
     MenuId.edges, (authState) => authState.edgesSupportEnabled
@@ -736,6 +745,7 @@ const defaultUserMenuMap = new Map<Authority, MenuReference[]>([
         ]
       },
       {id: MenuId.customers},
+      {id: MenuId.user_management},
       {id: MenuId.rule_chains},
       {
         id: MenuId.edge_management,
@@ -818,7 +828,6 @@ const defaultUserMenuMap = new Map<Authority, MenuReference[]>([
     ]
   ]
 ]);
-
 const defaultHomeSectionMap = new Map<Authority, HomeSectionReference[]>([
   [
     Authority.SYS_ADMIN,
@@ -849,6 +858,10 @@ const defaultHomeSectionMap = new Map<Authority, HomeSectionReference[]>([
       {
         name: 'customer.management',
         places: [MenuId.customers]
+      },
+      {
+        name: 'User Management',
+        places: [MenuId.user_management]
       },
       {
         name: 'asset.management',

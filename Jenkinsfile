@@ -54,7 +54,7 @@ node("master") {
     stage("deploy"){
         def buildParameters = [
             [$class: 'StringParameterValue', name: 'tag', value: "${TAG}"], // make this dynamic
-            [$class: 'StringParameterValue', name: 'target', value: "development"] // make this dynamic
+            [$class: 'StringParameterValue', name: 'target', value: "${params.target}"] // make this dynamic
         ]
         build job: 'sobeam/cd', parameters: buildParameters, wait : false
     }

@@ -31,6 +31,7 @@ node("master") {
         }
     } else {
         stage("debug"){
+            // work on automated pull request detect
             echo "GITHUB_PR_STATE: ${GITHUB_PR_STATE}"
             echo "GITHUB_PR_NUMBER: ${GITHUB_PR_NUMBER}"
             echo "GITHUB_PR_SOURCE_BRANCH: ${GITHUB_PR_SOURCE_BRANCH}"

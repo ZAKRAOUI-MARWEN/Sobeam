@@ -22,7 +22,7 @@ node("master") {
             )
         }
         stage("tag") {
-            TAG= "12"
+            TAG= "12" // make this dynamic
             echo "detect version"
         }
     } else {
@@ -49,8 +49,8 @@ node("master") {
     }
     stage("deploy"){
         def buildParameters = [
-            [$class: 'StringParameterValue', name: 'tag', value: "${TAG}"],
-            [$class: 'StringParameterValue', name: 'target', value: ""]
+            [$class: 'StringParameterValue', name: 'tag', value: "${TAG}"], // make this dynamic
+            [$class: 'StringParameterValue', name: 'target', value: "development"] // make this dynamic
         ]
         build job: 'sobeam/cd', parameters: buildParameters, wait : false
     }

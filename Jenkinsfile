@@ -14,11 +14,9 @@ node("master") {
                 url: "https://github.com/ZAKRAOUI-MARWEN/sobeam-auto.git"]]
             )
         }
-        stage("unittest"){
-            echo "running unit test"
-        }
         stage("build") {
-            echo "building project"
+            //sh "mvn clean install -DskipTests -Ddockerfile.skip=false -Dlicense.skip=true"
+            echo "runing build"
         }
         stage("push") {
             echo "pushing project"

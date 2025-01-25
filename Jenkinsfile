@@ -22,8 +22,12 @@ node("master") {
             )
         }
         stage("tag") {
-            TAG= "12" // make this dynamic
-            echo "detect version"
+			def version = sh(script: "grep -m1 '<version>' pom.xml | sed 's/.*<version>\\(.*\\)<\\/version>.*/\\1/'", returnStdout: true).trim()	
+            if (params.branch == "development") {
+                TAG = "${version}-${env.BUILD_NUMBER}"
+            } else if (params.branch == "main"){
+                TAG = "${version}"
+            }
         }
     } else {
         stage("debug"){

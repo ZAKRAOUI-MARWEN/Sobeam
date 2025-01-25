@@ -5,7 +5,7 @@ properties([
         booleanParam(defaultValue: false, description: 'manual override', name: 'manual')
     ])
 ])
-node("master") {
+node("main") {
     if (manual){
         stage("checkout"){
             checkout scmGit(

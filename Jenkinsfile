@@ -21,7 +21,7 @@ node("master") {
         stage("tag") {
             echo "detect version"
         }
-    } else (
+    } else {
         stage("debug"){
             echo "GITHUB_PR_STATE: ${GITHUB_PR_STATE}"
             echo "GITHUB_PR_NUMBER: ${GITHUB_PR_NUMBER}"
@@ -34,7 +34,7 @@ node("master") {
         stage("tag") {
             echo "detect version"
         }
-    )
+    }
 
     stage("build") {
         //sh "mvn clean install -DskipTests -Ddockerfile.skip=false -Dlicense.skip=true"

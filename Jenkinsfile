@@ -6,6 +6,9 @@ properties([
     ])
 ])
 node("master") {
+
+    def TAG
+
     if (params.manual){
         stage("debug"){
             echo "branchname: ${params.branch}"
@@ -19,6 +22,7 @@ node("master") {
             )
         }
         stage("tag") {
+            TAG= "12"
             echo "detect version"
         }
     } else {

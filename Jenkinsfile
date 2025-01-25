@@ -5,8 +5,12 @@ properties([
         booleanParam(defaultValue: false, description: 'manual override', name: 'manual')
     ])
 ])
-node("main") {
-    if (manual){
+node("master") {
+    if (params.manual){
+        stage("debug"){
+            echo "branchname: ${params.branch}"
+            echo "override: ${params.manual}"
+        }
         stage("checkout"){
             checkout scmGit(
                 branches: [[name: params.branch]],

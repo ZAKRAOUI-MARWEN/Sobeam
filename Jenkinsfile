@@ -15,15 +15,11 @@ node("master") {
             checkout scmGit(
                 branches: [[name: params.branch]],
                 userRemoteConfigs: [[credentialsId: 'git-ssh-access',
-                url: "https://github.com/ZAKRAOUI-MARWEN/sobeam-auto.git"]]
+                url: "https://github.com/ZAKRAOUI-MARWEN/Sobeam.git"]]
             )
         }
-        stage("build") {
-            //sh "mvn clean install -DskipTests -Ddockerfile.skip=false -Dlicense.skip=true"
-            echo "runing build"
-        }
-        stage("push") {
-            echo "pushing project"
+        stage("tag") {
+            echo "detect version"
         }
     } else (
         stage("debug"){
@@ -32,7 +28,21 @@ node("master") {
             echo "GITHUB_PR_SOURCE_BRANCH: ${GITHUB_PR_SOURCE_BRANCH}"
             echo "GITHUB_PR_AUTHOR_EMAIL: ${GITHUB_PR_AUTHOR_EMAIL}"
         }
+        stage("checkout"){
+            checkout scm
+        }
+        stage("tag") {
+            echo "detect version"
+        }
     )
+
+    stage("build") {
+        //sh "mvn clean install -DskipTests -Ddockerfile.skip=false -Dlicense.skip=true"
+        echo "runing build"
+    }
+    stage("push") {
+        echo "pushing project"
+    }
     stage("deploy"){
         def buildParameters = [
             [$class: 'StringParameterValue', name: 'tag', value: "${TAG}"],

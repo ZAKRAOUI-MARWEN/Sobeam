@@ -45,9 +45,7 @@ import java.util.UUID;
  */
 @Slf4j
 @SqlDao
-public abstract class JpaAbstractDao<E extends BaseEntity<D>, D>
-        extends JpaAbstractDaoListeningExecutorService
-        implements Dao<D> {
+public abstract class JpaAbstractDao<E extends BaseEntity<D>, D>  extends JpaAbstractDaoListeningExecutorService implements Dao<D> {
 
     @Autowired
     protected JdbcTemplate jdbcTemplate;

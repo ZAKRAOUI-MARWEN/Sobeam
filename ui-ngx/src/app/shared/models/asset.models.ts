@@ -56,6 +56,7 @@ export interface AssetInfo extends Asset {
   customerTitle: string;
   customerIsPublic: boolean;
   assetProfileName: string;
+  entityList : Array<any>;
 }
 
 export interface AssetSearchQuery extends EntitySearchQuery {

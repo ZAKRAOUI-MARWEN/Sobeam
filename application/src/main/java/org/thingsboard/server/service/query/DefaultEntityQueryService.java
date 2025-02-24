@@ -113,7 +113,8 @@ public class DefaultEntityQueryService implements EntityQueryService {
                     securityUser
             );
         }
-        return entityService.findEntityDataByQuery(securityUser.getTenantId(), securityUser.getCustomerId(), query);
+        PageData<EntityData> entityDataPageData = entityService.findEntityDataByQuery( securityUser.getId() , securityUser.getTenantId(), securityUser.getCustomerId(), query);
+        return  entityDataPageData;
     }
 
     private void resolveDynamicValuesInPredicates(List<KeyFilterPredicate> predicates, SecurityUser user) {
@@ -183,7 +184,7 @@ public class DefaultEntityQueryService implements EntityQueryService {
     @Override
     public PageData<AlarmData> findAlarmDataByQuery(SecurityUser securityUser, AlarmDataQuery query) {
         EntityDataQuery entityDataQuery = this.buildEntityDataQuery(query);
-        PageData<EntityData> entities = entityService.findEntityDataByQuery(securityUser.getTenantId(),
+        PageData<EntityData> entities = entityService.findEntityDataByQuery( securityUser.getId() , securityUser.getTenantId(),
                 securityUser.getCustomerId(), entityDataQuery);
         if (entities.getTotalElements() > 0) {
             LinkedHashMap<EntityId, EntityData> entitiesMap = new LinkedHashMap<>();

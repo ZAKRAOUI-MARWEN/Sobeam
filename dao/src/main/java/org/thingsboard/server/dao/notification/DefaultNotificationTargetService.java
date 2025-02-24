@@ -133,7 +133,7 @@ public class DefaultNotificationTargetService extends AbstractEntityService impl
             case TENANT_ADMINISTRATORS: {
                 TenantAdministratorsFilter filter = (TenantAdministratorsFilter) usersFilter;
                 if (!tenantId.equals(TenantId.SYS_TENANT_ID)) {
-                    return userService.findTenantAdmins(tenantId, pageLink);
+                    return userService.findTenantAdmins(null,tenantId, pageLink);
                 } else {
                     if (isNotEmpty(filter.getTenantsIds())) {
                         return userService.findTenantAdminsByTenantsIds(filter.getTenantsIds().stream()
@@ -150,7 +150,7 @@ public class DefaultNotificationTargetService extends AbstractEntityService impl
                 return userService.findSysAdmins(pageLink);
             case ALL_USERS: {
                 if (!tenantId.equals(TenantId.SYS_TENANT_ID)) {
-                    return userService.findUsersByTenantId(tenantId, pageLink);
+                    return userService.findUsersByTenantId(null ,tenantId, pageLink);
                 } else {
                     return userService.findAllUsers(pageLink);
                 }
@@ -168,7 +168,7 @@ public class DefaultNotificationTargetService extends AbstractEntityService impl
                 if (customerId != null && !customerId.isNullUid()) {
                     return userService.findCustomerUsers(tenantId, customerId, pageLink);
                 } else {
-                    return userService.findTenantAdmins(tenantId, pageLink);
+                    return userService.findTenantAdmins(null,tenantId, pageLink);
                 }
             }
             case AFFECTED_USER -> {
@@ -183,7 +183,7 @@ public class DefaultNotificationTargetService extends AbstractEntityService impl
                     affectedTenantId = tenantId;
                 }
                 if (!affectedTenantId.isNullUid()) {
-                    return userService.findTenantAdmins(affectedTenantId, pageLink);
+                    return userService.findTenantAdmins(null,affectedTenantId, pageLink);
                 }
             }
             default -> throw new IllegalArgumentException("Recipient type not supported");

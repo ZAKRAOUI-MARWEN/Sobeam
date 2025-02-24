@@ -16,6 +16,7 @@
 package org.thingsboard.server.service.security.permission;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.thingsboard.server.common.data.HasTenantId;
@@ -37,6 +38,8 @@ public class DefaultAccessControlService implements AccessControlService {
     private static final String YOU_DON_T_HAVE_PERMISSION_TO_PERFORM_THIS_OPERATION = "You don't have permission to perform this operation!";
 
     private final Map<Authority, Permissions> authorityPermissions = new HashMap<>();
+    @Autowired
+    private GuestChecker guestChecker;
 
     public DefaultAccessControlService(
             @Qualifier("sysAdminPermissions") Permissions sysAdminPermissions,
@@ -49,16 +52,23 @@ public class DefaultAccessControlService implements AccessControlService {
 
     @Override
     public void checkPermission(SecurityUser user, Resource resource, Operation operation) throws ThingsboardException {
+
         PermissionChecker permissionChecker = getPermissionChecker(user.getAuthority(), resource);
         if (!permissionChecker.hasPermission(user, operation)) {
             permissionDenied();
         }
     }
 
+
+
     @Override
     @SuppressWarnings("unchecked")
     public <I extends EntityId, T extends HasTenantId> void checkPermission(SecurityUser user, Resource resource,
                                                                                             Operation operation, I entityId, T entity) throws ThingsboardException {
+        if(!guestChecker.doCheck(user.getTenantId() ,user , resource , operation )){
+            permissionDenied();
+        }
+
         PermissionChecker permissionChecker = getPermissionChecker(user.getAuthority(), resource);
         if (!permissionChecker.hasPermission(user, operation, entityId, entity)) {
             permissionDenied();

@@ -16,6 +16,8 @@
 package org.thingsboard.server.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -41,10 +43,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.thingsboard.common.util.JacksonUtil;
 import org.thingsboard.rule.engine.api.MailService;
-import org.thingsboard.server.common.data.EntityType;
-import org.thingsboard.server.common.data.User;
-import org.thingsboard.server.common.data.UserActivationLink;
-import org.thingsboard.server.common.data.UserEmailInfo;
+import org.thingsboard.server.common.data.*;
 import org.thingsboard.server.common.data.alarm.Alarm;
 import org.thingsboard.server.common.data.exception.ThingsboardErrorCode;
 import org.thingsboard.server.common.data.exception.ThingsboardException;
@@ -87,6 +86,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static org.thingsboard.server.common.data.BaseData.mapper;
 import static org.thingsboard.server.common.data.query.EntityKeyType.ENTITY_FIELD;
 import static org.thingsboard.server.controller.ControllerConstants.ALARM_ID_PARAM_DESCRIPTION;
 import static org.thingsboard.server.controller.ControllerConstants.CUSTOMER_ID;
@@ -208,13 +208,93 @@ public class UserController extends BaseController {
             @Parameter(description = "A JSON value representing the User.", required = true)
             @RequestBody User user,
             @Parameter(description = "Send activation email (or use activation link)", schema = @Schema(defaultValue = "true"))
-            @RequestParam(required = false, defaultValue = "true") boolean sendActivationMail, HttpServletRequest request) throws ThingsboardException {
-        if (!Authority.SYS_ADMIN.equals(getCurrentUser().getAuthority())) {
-            user.setTenantId(getCurrentUser().getTenantId());
+            @RequestParam(required = false, defaultValue = "true") boolean sendActivationMail,
+            HttpServletRequest request) throws ThingsboardException {
+
+        User currentUser = getCurrentUser();
+        boolean isSysAdmin = Authority.SYS_ADMIN.equals(currentUser.getAuthority());
+        TenantId tenantId = isSysAdmin ? user.getTenantId() : currentUser.getTenantId();
+
+        user.setTenantId(tenantId);
+        long  numberUser = userService.countByTenantId(tenantId);
+
+        User userSaved = tbUserService.save(tenantId, currentUser.getCustomerId(), user, sendActivationMail, request, currentUser);
+        if(user.getAuthority().equals(Authority.TENANT_ADMIN)){
+            Role findRole  = roleService.findRoleByName("GenericRoleTenant");
+            if (numberUser > 0) {
+
+                Role role;
+                if (findRole!= null) {
+                    role = findRole ;
+                } else {
+                    role = new Role();
+                    role.setName("GenericRoleTenant");
+                    role.setType("PRIVATE");
+
+                    ObjectMapper mapper = new ObjectMapper();
+                    ObjectNode menuPermission = mapper.createObjectNode();
+                    ArrayNode permissionsArray = mapper.createArrayNode();
+                    ObjectNode permission = mapper.createObjectNode();
+                    permission.put("resource", "USER");
+
+                    ArrayNode operations = mapper.createArrayNode();
+                    operations.add("CREATE");
+                    operations.add("READ");
+                    operations.add("WRITE");
+                    permission.set("operations", operations);
+
+                    permissionsArray.add(permission);
+                    menuPermission.set("menuPermission", permissionsArray);
+
+                    role.setPermissions(menuPermission);
+                    role.setTenantId(tenantId);
+                    role = roleService.saveRole(tenantId, role);
+                }
+                roleService.assignRoleToUser(role.getId(), userSaved.getId());
+            }
         }
+        if(user.getAuthority().equals(Authority.CUSTOMER_USER)){
+            Role findRole  = roleService.findRoleByName( "SimpleCustomerTenant");
+            Role role;
+            if (findRole!= null) {
+                role = findRole;
+            } else {
+                role = new Role();
+                role.setName("SimpleCustomerTenant");
+                role.setType("PRIVATE");
+
+                ObjectMapper mapper = new ObjectMapper();
+                ObjectNode menuPermission = mapper.createObjectNode();
+                ArrayNode permissionsArray = mapper.createArrayNode();
+                ObjectNode permission = mapper.createObjectNode();
+                permission.put("resource", "USER");
+
+                ArrayNode operations = mapper.createArrayNode();
+                operations.add("CREATE");
+                operations.add("READ");
+                operations.add("WRITE");
+                permission.set("operations", operations);
+
+                permissionsArray.add(permission);
+                menuPermission.set("menuPermission", permissionsArray);
+
+                role.setPermissions(menuPermission);
+                role.setTenantId(tenantId);
+                role = roleService.saveRole(tenantId, role);
+            }
+          chekRoleApresSave(getCurrentUser() , userSaved.getId() );
+
+            roleService.assignRoleToUser(role.getId(), userSaved.getId());
+        }
+
         checkEntity(user.getId(), user, Resource.USER);
-        return tbUserService.save(getTenantId(), getCurrentUser().getCustomerId(), user, sendActivationMail, request, getCurrentUser());
+
+
+
+
+        return userSaved;
     }
+
 
     @ApiOperation(value = "Send or re-send the activation email",
             notes = "Force send the activation email to the user. Useful to resend the email if user has accidentally deleted it. " + SYSTEM_OR_TENANT_AUTHORITY_PARAGRAPH)
@@ -298,7 +378,7 @@ public class UserController extends BaseController {
         PageLink pageLink = createPageLink(pageSize, page, textSearch, sortProperty, sortOrder);
         SecurityUser currentUser = getCurrentUser();
         if (Authority.TENANT_ADMIN.equals(currentUser.getAuthority())) {
-            return checkNotNull(userService.findUsersByTenantId(currentUser.getTenantId(), pageLink));
+            return checkNotNull(userService.findUsersByTenantId(getCurrentUser() ,currentUser.getTenantId(), pageLink));
         } else {
             return checkNotNull(userService.findCustomerUsers(currentUser.getTenantId(), currentUser.getCustomerId(), pageLink));
         }
@@ -363,7 +443,7 @@ public class UserController extends BaseController {
         checkParameter("tenantId", strTenantId);
         TenantId tenantId = TenantId.fromUUID(toUUID(strTenantId));
         PageLink pageLink = createPageLink(pageSize, page, textSearch, sortProperty, sortOrder);
-        return checkNotNull(userService.findTenantAdmins(tenantId, pageLink));
+        return checkNotNull(userService.findTenantAdmins( getCurrentUser() ,tenantId, pageLink));
     }
 
     @ApiOperation(value = "Get Customer Users (getCustomerUsers)",
@@ -443,7 +523,7 @@ public class UserController extends BaseController {
         PageData<User> pageData;
         if (Authority.TENANT_ADMIN.equals(currentUser.getAuthority())) {
             if (alarm.getCustomerId() == null) {
-                pageData = userService.findTenantAdmins(tenantId, pageLink);
+                pageData = userService.findTenantAdmins(null ,tenantId, pageLink);
             } else {
                 ArrayList<CustomerId> customerIds = new ArrayList<>(Collections.singletonList(NULL_CUSTOMER_ID));
                 if (!CustomerId.NULL_UUID.equals(originatorCustomerId.getId())) {

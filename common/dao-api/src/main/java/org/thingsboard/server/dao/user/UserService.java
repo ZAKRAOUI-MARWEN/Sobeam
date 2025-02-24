@@ -67,9 +67,9 @@ public interface UserService extends EntityDaoService {
 
     void deleteUser(TenantId tenantId, User user);
 
-    PageData<User> findUsersByTenantId(TenantId tenantId, PageLink pageLink);
+    PageData<User> findUsersByTenantId( User user, TenantId tenantId, PageLink pageLink);
 
-    PageData<User> findTenantAdmins(TenantId tenantId, PageLink pageLink);
+    PageData<User> findTenantAdmins( User user , TenantId tenantId, PageLink pageLink);
 
     PageData<User> findSysAdmins(PageLink pageLink);
 
@@ -106,5 +106,7 @@ public interface UserService extends EntityDaoService {
     MobileSessionInfo findMobileSession(TenantId tenantId, UserId userId, String mobileToken);
 
     void removeMobileSession(TenantId tenantId, String mobileToken);
+
+
 
 }

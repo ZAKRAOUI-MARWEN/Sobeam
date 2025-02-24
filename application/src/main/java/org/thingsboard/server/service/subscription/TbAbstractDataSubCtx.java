@@ -64,7 +64,7 @@ public abstract class TbAbstractDataSubCtx<T extends AbstractDataQuery<? extends
     }
 
     protected PageData<EntityData> findEntityData() {
-        PageData<EntityData> result = entityService.findEntityDataByQuery(getTenantId(), getCustomerId(), buildEntityDataQuery());
+        PageData<EntityData> result = entityService.findEntityDataByQuery( getUserId() ,getTenantId(), getCustomerId(), buildEntityDataQuery());
         if (log.isTraceEnabled()) {
             result.getData().forEach(ed -> {
                 log.trace("[{}][{}] EntityData: {}", getSessionId(), getCmdId(), ed);

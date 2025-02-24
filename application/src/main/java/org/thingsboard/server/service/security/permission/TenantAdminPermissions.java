@@ -15,9 +15,11 @@
  */
 package org.thingsboard.server.service.security.permission;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.thingsboard.server.common.data.HasTenantId;
 import org.thingsboard.server.common.data.User;
+import org.thingsboard.server.common.data.exception.ThingsboardException;
 import org.thingsboard.server.common.data.id.EntityId;
 import org.thingsboard.server.common.data.id.UserId;
 import org.thingsboard.server.common.data.security.Authority;
@@ -25,7 +27,7 @@ import org.thingsboard.server.service.security.model.SecurityUser;
 
 @Component(value="tenantAdminPermissions")
 public class TenantAdminPermissions extends AbstractPermissions {
-
+  private static GuestChecker guestChecker;
     public TenantAdminPermissions() {
         super();
         put(Resource.ADMIN_SETTINGS, PermissionChecker.allowAllPermissionChecker);
@@ -51,17 +53,21 @@ public class TenantAdminPermissions extends AbstractPermissions {
         put(Resource.VERSION_CONTROL, PermissionChecker.allowAllPermissionChecker);
         put(Resource.NOTIFICATION, tenantEntityPermissionChecker);
         put(Resource.MOBILE_APP_SETTINGS, new PermissionChecker.GenericPermissionChecker(Operation.READ));
+        put(Resource.ROLE , tenantEntityPermissionChecker);
     }
 
     public static final PermissionChecker tenantEntityPermissionChecker = new PermissionChecker() {
 
         @Override
-        public boolean hasPermission(SecurityUser user, Operation operation, EntityId entityId, HasTenantId entity) {
+        public boolean hasPermission(SecurityUser user, Operation operation, EntityId entityId, HasTenantId entity)  {
 
             if (!user.getTenantId().equals(entity.getTenantId())) {
                 return false;
             }
-            return true;
+            //this method will check if the entity has the permission to perform the desired action
+            return  true;
+                    //guestChecker.doCheck(user.getTenantId(), user, operation);
+
         }
     };
 

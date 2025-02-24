@@ -29,6 +29,6 @@ public class TenantAdminUsersEdgeEventFetcher extends BaseUsersEdgeEventFetcher 
 
     @Override
     protected PageData<User> findUsers(TenantId tenantId, PageLink pageLink) {
-        return userService.findTenantAdmins(tenantId, pageLink);
+        return userService.findTenantAdmins(null ,tenantId, pageLink);
     }
 }

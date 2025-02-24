@@ -110,7 +110,7 @@ public class SystemInfoController extends BaseController {
             PageLink pageLink = new PageLink(100);
             List<DashboardInfo> dashboards;
             if (currentUser.isTenantAdmin()) {
-                dashboards = dashboardService.findDashboardsByTenantId(tenantId, pageLink).getData();
+                dashboards = dashboardService.findDashboardsByTenantId(tenantId, getCurrentUser() ,pageLink).getData();
             } else {
                 dashboards = dashboardService.findDashboardsByTenantIdAndCustomerId(tenantId, customerId, pageLink).getData();
             }

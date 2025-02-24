@@ -30,6 +30,7 @@ export interface User extends BaseData<UserId>, HasTenantId {
   firstName: string;
   lastName: string;
   additionalInfo: any;
+  roleId ?: any
 }
 
 export enum ActivationMethod {

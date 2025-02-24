@@ -15,9 +15,12 @@
  */
 package org.thingsboard.server.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.util.concurrent.ListenableFuture;
 import jakarta.mail.MessagingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolation;
 import lombok.Getter;
@@ -38,26 +41,7 @@ import org.springframework.web.context.request.async.AsyncRequestTimeoutExceptio
 import org.springframework.web.context.request.async.DeferredResult;
 import org.thingsboard.common.util.DonAsynchron;
 import org.thingsboard.server.cluster.TbClusterService;
-import org.thingsboard.server.common.data.Customer;
-import org.thingsboard.server.common.data.Dashboard;
-import org.thingsboard.server.common.data.DashboardInfo;
-import org.thingsboard.server.common.data.Device;
-import org.thingsboard.server.common.data.DeviceInfo;
-import org.thingsboard.server.common.data.DeviceProfile;
-import org.thingsboard.server.common.data.EntityType;
-import org.thingsboard.server.common.data.EntityView;
-import org.thingsboard.server.common.data.EntityViewInfo;
-import org.thingsboard.server.common.data.HasName;
-import org.thingsboard.server.common.data.HasTenantId;
-import org.thingsboard.server.common.data.OtaPackage;
-import org.thingsboard.server.common.data.OtaPackageInfo;
-import org.thingsboard.server.common.data.StringUtils;
-import org.thingsboard.server.common.data.TbResource;
-import org.thingsboard.server.common.data.TbResourceInfo;
-import org.thingsboard.server.common.data.Tenant;
-import org.thingsboard.server.common.data.TenantInfo;
-import org.thingsboard.server.common.data.TenantProfile;
-import org.thingsboard.server.common.data.User;
+import org.thingsboard.server.common.data.*;
 import org.thingsboard.server.common.data.alarm.Alarm;
 import org.thingsboard.server.common.data.alarm.AlarmComment;
 import org.thingsboard.server.common.data.alarm.AlarmInfo;
@@ -71,36 +55,10 @@ import org.thingsboard.server.common.data.edge.EdgeInfo;
 import org.thingsboard.server.common.data.exception.EntityVersionMismatchException;
 import org.thingsboard.server.common.data.exception.ThingsboardErrorCode;
 import org.thingsboard.server.common.data.exception.ThingsboardException;
-import org.thingsboard.server.common.data.id.AlarmCommentId;
-import org.thingsboard.server.common.data.id.AlarmId;
-import org.thingsboard.server.common.data.id.AssetId;
-import org.thingsboard.server.common.data.id.AssetProfileId;
-import org.thingsboard.server.common.data.id.CustomerId;
-import org.thingsboard.server.common.data.id.DashboardId;
-import org.thingsboard.server.common.data.id.DeviceId;
-import org.thingsboard.server.common.data.id.DeviceProfileId;
-import org.thingsboard.server.common.data.id.DomainId;
-import org.thingsboard.server.common.data.id.EdgeId;
-import org.thingsboard.server.common.data.id.EntityId;
-import org.thingsboard.server.common.data.id.EntityIdFactory;
-import org.thingsboard.server.common.data.id.EntityViewId;
-import org.thingsboard.server.common.data.id.HasId;
-import org.thingsboard.server.common.data.id.MobileAppId;
-import org.thingsboard.server.common.data.id.OAuth2ClientId;
-import org.thingsboard.server.common.data.id.OtaPackageId;
-import org.thingsboard.server.common.data.id.QueueId;
-import org.thingsboard.server.common.data.id.RpcId;
-import org.thingsboard.server.common.data.id.RuleChainId;
-import org.thingsboard.server.common.data.id.RuleNodeId;
-import org.thingsboard.server.common.data.id.TbResourceId;
-import org.thingsboard.server.common.data.id.TenantId;
-import org.thingsboard.server.common.data.id.TenantProfileId;
-import org.thingsboard.server.common.data.id.UUIDBased;
-import org.thingsboard.server.common.data.id.UserId;
-import org.thingsboard.server.common.data.id.WidgetTypeId;
-import org.thingsboard.server.common.data.id.WidgetsBundleId;
+import org.thingsboard.server.common.data.id.*;
 import org.thingsboard.server.common.data.mobile.MobileApp;
 import org.thingsboard.server.common.data.oauth2.OAuth2Client;
+import org.thingsboard.server.common.data.page.PageData;
 import org.thingsboard.server.common.data.page.PageLink;
 import org.thingsboard.server.common.data.page.SortOrder;
 import org.thingsboard.server.common.data.page.TimePageLink;
@@ -140,6 +98,7 @@ import org.thingsboard.server.dao.ota.OtaPackageService;
 import org.thingsboard.server.dao.queue.QueueService;
 import org.thingsboard.server.dao.relation.RelationService;
 import org.thingsboard.server.dao.resource.ResourceService;
+import org.thingsboard.server.dao.role.RoleService;
 import org.thingsboard.server.dao.rpc.RpcService;
 import org.thingsboard.server.dao.rule.RuleChainService;
 import org.thingsboard.server.dao.service.ConstraintValidator;
@@ -173,13 +132,7 @@ import org.thingsboard.server.service.telemetry.AlarmSubscriptionService;
 import org.thingsboard.server.service.telemetry.TelemetrySubscriptionService;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -338,6 +291,10 @@ public abstract class BaseController {
     @Autowired
     protected TbServiceInfoProvider serviceInfoProvider;
 
+
+    @Autowired
+    protected RoleService roleService;
+
     @Value("${server.log_controller_error_stack_trace}")
     @Getter
     private boolean logControllerErrorStackTrace;
@@ -369,13 +326,13 @@ public abstract class BaseController {
      * {@link ExceptionHandler} {@link BaseController#handleControllerException(Exception, HttpServletResponse)}
      * which basically acts like the following boilerplate:
      * {@code
-     *  try {
-     *      someExceptionThrowingMethod();
-     *  } catch (Exception e) {
-     *      throw handleException(e);
-     *  }
+     * try {
+     * someExceptionThrowingMethod();
+     * } catch (Exception e) {
+     * throw handleException(e);
      * }
-     * */
+     * }
+     */
     @Deprecated
     ThingsboardException handleException(Exception exception) {
         return handleException(exception, true);
@@ -418,7 +375,7 @@ public abstract class BaseController {
 
     /**
      * Handles validation error for controller method arguments annotated with @{@link jakarta.validation.Valid}
-     * */
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public void handleValidationError(MethodArgumentNotValidException validationError, HttpServletResponse response) {
         List<ConstraintViolation<Object>> constraintsViolations = validationError.getFieldErrors().stream()
@@ -666,7 +623,7 @@ public abstract class BaseController {
         return entity;
     }
 
-    Device checkDeviceId(DeviceId deviceId, Operation operation) throws ThingsboardException {
+    Device  checkDeviceId(DeviceId deviceId, Operation operation) throws ThingsboardException {
         return checkEntityId(deviceId, deviceService::findDeviceById, operation);
     }
 
@@ -688,6 +645,10 @@ public abstract class BaseController {
 
     Asset checkAssetId(AssetId assetId, Operation operation) throws ThingsboardException {
         return checkEntityId(assetId, assetService::findAssetById, operation);
+    }
+
+    Role checkRoleId(RoleId roleId, Operation operation) throws ThingsboardException {
+        return checkEntityId(roleId, roleService::findRoleById, operation);
     }
 
     AssetInfo checkAssetInfoId(AssetId assetId, Operation operation) throws ThingsboardException {
@@ -731,6 +692,7 @@ public abstract class BaseController {
     Dashboard checkDashboardId(DashboardId dashboardId, Operation operation) throws ThingsboardException {
         return checkEntityId(dashboardId, dashboardService::findDashboardById, operation);
     }
+
 
     Edge checkEdgeId(EdgeId edgeId, Operation operation) throws ThingsboardException {
         return checkEntityId(edgeId, edgeService::findEdgeById, operation);
@@ -938,10 +900,94 @@ public abstract class BaseController {
         List<OAuth2ClientId> oAuth2ClientIds = new ArrayList<>();
         for (UUID id : ids) {
             OAuth2ClientId oauth2ClientId = new OAuth2ClientId(id);
+
             checkOauth2ClientId(oauth2ClientId, Operation.READ);
             oAuth2ClientIds.add(oauth2ClientId);
         }
         return oAuth2ClientIds;
     }
 
-}
+
+    ///  lors de save entity check if simple user Tenant save les id de entity (Assets , Dashboard  , Devices );
+    /// save dans new role avec name de user teant dans le place specifique ;
+
+    protected void chekRoleApresSave(User user, EntityId entity) throws ThingsboardException {
+        if(roleService.hasUserRole(user)){
+
+            String  type = entity.getEntityType().getNormalName();
+            String permission = type.equals("Dashboard") ? "dashboardTenant" :
+                                type.equals("Device") ? "deviceTenant" :
+                                type.equals("Asset") ? "assetTenant" :
+                                type.equals("Customer") ? "customerTenant" :"unknownPermission";
+            ObjectMapper mapper = new ObjectMapper(); // ObjectMapper moved to the top
+            String expectedRoleName = user.getName() + "SimpleUserTenantEntity";
+
+            // Retrieve roles by tenantId
+            // get roles dans name de user
+            Role findRole = roleService.findRoleByName(expectedRoleName);
+                Role role;
+                if (findRole == null) {
+                    // Role creation
+                    role = new Role();
+                    role.setName(user.getName() + "SimpleUserTenantEntity");
+                    role.setType("PRIVATE");
+                    role.setTenantId(user.getTenantId());
+
+                    // Create new permissions structure
+                    ObjectNode newPermissions = mapper.createObjectNode();
+                    ObjectNode newDevicePermission = mapper.createObjectNode();
+                    ArrayNode resources = mapper.createArrayNode();
+                    resources.add(entity.getId().toString());
+
+                    newDevicePermission.set("resource", resources);
+                    newPermissions.set(permission, newDevicePermission);
+
+                    role.setPermissions(newPermissions);
+                } else {
+                    role = findRole;
+                    JsonNode permissionsNode = role.getPermissions();
+
+                    // Ensure permissionsNode is an ObjectNode
+                    ObjectNode permissions = (permissionsNode == null || permissionsNode.isNull())
+                            ? mapper.createObjectNode()
+                            : (ObjectNode) permissionsNode;
+
+                    // Get or create devicePermission
+                    JsonNode devicePermission = permissions.get(permission);
+                    ObjectNode updatedDevicePermission;
+
+                    if (devicePermission == null || devicePermission.isNull()) {
+                        updatedDevicePermission = mapper.createObjectNode();
+                        ArrayNode resources = mapper.createArrayNode();
+                        resources.add(entity.getId().toString());
+                        updatedDevicePermission.set("resource", resources);
+                    } else {
+                        updatedDevicePermission = (ObjectNode) devicePermission;
+                        ArrayNode resources = (ArrayNode) updatedDevicePermission.get("resource");
+
+                        boolean exists = false;
+                        for (JsonNode resource : resources) {
+                            if (resource.asText().equals(entity.getId().toString())) {
+                                exists = true;
+                                break;
+                            }
+                        }
+
+                        if (!exists) {
+                            resources.add(entity.getId().toString());
+                        }
+                    }
+
+                    // Update permissions object
+                    permissions.set(permission, updatedDevicePermission);
+                    role.setPermissions(permissions);
+                }
+
+                // Save and assign role
+                Role savedRole = roleService.saveRole(user.getTenantId(), role);
+                roleService.assignRoleToUser(savedRole.getId(), user.getId());
+            }
+    }
+    }
+
+

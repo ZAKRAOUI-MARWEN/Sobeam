@@ -16,13 +16,7 @@
 package org.thingsboard.server.dao.device;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import org.thingsboard.server.common.data.Device;
-import org.thingsboard.server.common.data.DeviceIdInfo;
-import org.thingsboard.server.common.data.DeviceInfo;
-import org.thingsboard.server.common.data.DeviceInfoFilter;
-import org.thingsboard.server.common.data.DeviceProfile;
-import org.thingsboard.server.common.data.DeviceTransportType;
-import org.thingsboard.server.common.data.EntitySubtype;
+import org.thingsboard.server.common.data.*;
 import org.thingsboard.server.common.data.device.DeviceSearchQuery;
 import org.thingsboard.server.common.data.id.CustomerId;
 import org.thingsboard.server.common.data.id.DeviceId;
@@ -69,7 +63,7 @@ public interface DeviceService extends EntityDaoService {
 
     PageData<Device> findDevicesByTenantId(TenantId tenantId, PageLink pageLink);
 
-    PageData<DeviceInfo> findDeviceInfosByFilter(DeviceInfoFilter filter, PageLink pageLink);
+    PageData<DeviceInfo> findDeviceInfosByFilter(DeviceInfoFilter filter, User user, PageLink pageLink);
 
     PageData<DeviceIdInfo> findDeviceIdInfos(PageLink pageLink);
 

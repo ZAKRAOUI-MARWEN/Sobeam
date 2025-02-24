@@ -21,6 +21,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -28,19 +29,7 @@ import org.springframework.util.CollectionUtils;
 import org.thingsboard.common.util.JacksonUtil;
 import org.thingsboard.server.cache.device.DeviceCacheEvictEvent;
 import org.thingsboard.server.cache.device.DeviceCacheKey;
-import org.thingsboard.server.common.data.DataConstants;
-import org.thingsboard.server.common.data.Device;
-import org.thingsboard.server.common.data.DeviceIdInfo;
-import org.thingsboard.server.common.data.DeviceInfo;
-import org.thingsboard.server.common.data.DeviceInfoFilter;
-import org.thingsboard.server.common.data.DeviceProfile;
-import org.thingsboard.server.common.data.DeviceProfileType;
-import org.thingsboard.server.common.data.DeviceTransportType;
-import org.thingsboard.server.common.data.EntitySubtype;
-import org.thingsboard.server.common.data.EntityType;
-import org.thingsboard.server.common.data.EntityView;
-import org.thingsboard.server.common.data.StringUtils;
-import org.thingsboard.server.common.data.Tenant;
+import org.thingsboard.server.common.data.*;
 import org.thingsboard.server.common.data.audit.ActionType;
 import org.thingsboard.server.common.data.device.DeviceSearchQuery;
 import org.thingsboard.server.common.data.device.credentials.BasicMqttCredentials;
@@ -78,15 +67,14 @@ import org.thingsboard.server.dao.eventsourcing.DeleteEntityEvent;
 import org.thingsboard.server.dao.eventsourcing.SaveEntityEvent;
 import org.thingsboard.server.dao.exception.DataValidationException;
 import org.thingsboard.server.dao.exception.IncorrectParameterException;
+import org.thingsboard.server.dao.role.RoleService;
 import org.thingsboard.server.dao.service.PaginatedRemover;
 import org.thingsboard.server.dao.service.validator.DeviceDataValidator;
 import org.thingsboard.server.dao.sql.JpaExecutorService;
 import org.thingsboard.server.dao.tenant.TenantService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.thingsboard.server.dao.DaoUtil.toUUIDs;
 import static org.thingsboard.server.dao.service.Validator.validateId;
@@ -113,6 +101,7 @@ public class DeviceServiceImpl extends CachedVersionedEntityService<DeviceCacheK
     private final DeviceDataValidator deviceValidator;
     private final EntityCountService countService;
     private final JpaExecutorService executor;
+    private final RoleService roleService;
 
     @Override
     public DeviceInfo findDeviceInfoById(TenantId tenantId, DeviceId deviceId) {
@@ -368,15 +357,35 @@ public class DeviceServiceImpl extends CachedVersionedEntityService<DeviceCacheK
     }
 
     @Override
-    public PageData<DeviceInfo> findDeviceInfosByFilter(DeviceInfoFilter filter, PageLink pageLink) {
+    public PageData<DeviceInfo> findDeviceInfosByFilter(DeviceInfoFilter filter, User user , PageLink pageLink) {
         log.trace("Executing findDeviceInfosByFilter, filter [{}], pageLink [{}]", filter, pageLink);
         if (filter == null) {
             throw new IncorrectParameterException("Filter is empty!");
         }
         validateId(filter.getTenantId(), id -> INCORRECT_TENANT_ID + id);
         validatePageLink(pageLink);
-        return deviceDao.findDeviceInfosByFilter(filter, pageLink);
+        Map<String, Map<String, Set<String>>> permissionsMap = roleService.findRolesByUserId(user);
+        Map<String, Set<String>> listPermissionDevices = permissionsMap.get("devicePermission");
+        Map<String, Set<String>> listDeviceTenant = permissionsMap.get("deviceTenant");
+        if(listPermissionDevices != null){
+            listDeviceTenant.putAll(listPermissionDevices);
+        }
+        PageData<DeviceInfo> listDevices = deviceDao.findDeviceInfosByFilter(filter, pageLink);
+        if (permissionsMap == null || permissionsMap.isEmpty() || permissionsMap.size()==0) {
+            return listDevices;
+        }
 
+        List<DeviceInfo> filteredDevices = listDevices.getData().stream()
+                .filter(deviceInfo -> {
+                    boolean contains = listDeviceTenant.containsKey(deviceInfo.getId().toString());
+                    if (!contains) {
+                        log.trace("Dashboard ID [{}] not found in listPermission"+ deviceInfo.getId());
+                    }
+                    return contains;
+                })
+                .collect(Collectors.toList());
+
+        return new PageData<>(filteredDevices, listDevices.getTotalPages(), filteredDevices.size(), listDevices.hasNext());
     }
 
     @Override

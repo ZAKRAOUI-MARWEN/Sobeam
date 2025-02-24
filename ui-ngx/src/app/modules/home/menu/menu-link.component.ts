@@ -28,17 +28,21 @@ import { AppState } from '@app/core/core.state';
 })
 export class MenuLinkComponent implements OnInit {
 
-  @Input() section: MenuSection;
-   private authUser: AuthUser;
+  @Input() 
+  section: MenuSection;
+
+  private authUser: AuthUser;
  
   constructor(private store: Store<AppState>) {
-    this.authUser = getCurrentAuthUser(this.store);
   }
 
   ngOnInit() {
+    this.authUser = getCurrentAuthUser(this.store);
+
     if (this.section.id === 'user_management') {
         this.section.path = `/tenants/${this.authUser.tenantId}/users`;
     }
+    
 }
 
 

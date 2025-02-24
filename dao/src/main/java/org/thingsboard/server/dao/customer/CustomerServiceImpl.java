@@ -26,9 +26,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import org.thingsboard.common.util.JacksonUtil;
 import org.thingsboard.server.cache.customer.CustomerCacheEvictEvent;
 import org.thingsboard.server.cache.customer.CustomerCacheKey;
-import org.thingsboard.server.common.data.Customer;
-import org.thingsboard.server.common.data.EntityType;
-import org.thingsboard.server.common.data.StringUtils;
+import org.thingsboard.server.common.data.*;
 import org.thingsboard.server.common.data.id.CustomerId;
 import org.thingsboard.server.common.data.id.EntityId;
 import org.thingsboard.server.common.data.id.HasId;
@@ -44,6 +42,7 @@ import org.thingsboard.server.dao.eventsourcing.DeleteEntityEvent;
 import org.thingsboard.server.dao.eventsourcing.SaveEntityEvent;
 import org.thingsboard.server.dao.exception.DataValidationException;
 import org.thingsboard.server.dao.exception.IncorrectParameterException;
+import org.thingsboard.server.dao.role.RoleService;
 import org.thingsboard.server.dao.service.DataValidator;
 import org.thingsboard.server.dao.service.PaginatedRemover;
 import org.thingsboard.server.dao.service.Validator;
@@ -51,9 +50,8 @@ import org.thingsboard.server.dao.sql.JpaExecutorService;
 import org.thingsboard.server.dao.usagerecord.ApiUsageStateService;
 import org.thingsboard.server.dao.user.UserService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.thingsboard.server.dao.service.Validator.validateId;
 
@@ -94,6 +92,9 @@ public class CustomerServiceImpl extends AbstractCachedEntityService<CustomerCac
 
     @Autowired
     private JpaExecutorService executor;
+
+    @Autowired
+    private RoleService roleService;
 
     @TransactionalEventListener(classes = CustomerCacheEvictEvent.class)
     @Override
@@ -236,11 +237,26 @@ public class CustomerServiceImpl extends AbstractCachedEntityService<CustomerCac
     }
 
     @Override
-    public PageData<Customer> findCustomersByTenantId(TenantId tenantId, PageLink pageLink) {
+    public PageData<Customer> findCustomersByTenantId(User user , TenantId tenantId, PageLink pageLink) {
         log.trace("Executing findCustomersByTenantId, tenantId [{}], pageLink [{}]", tenantId, pageLink);
         Validator.validateId(tenantId, id -> "Incorrect tenantId " + id);
         Validator.validatePageLink(pageLink);
-        return customerDao.findCustomersByTenantId(tenantId.getId(), pageLink);
+        Map<String, Map<String, Set<String>>> permissionsMap = roleService.findRolesByUserId(user);
+        PageData<Customer> listCustomers =  customerDao.findCustomersByTenantId(tenantId.getId(), pageLink);
+        if (permissionsMap.isEmpty()) {
+            return listCustomers;
+        }
+        Map<String, Set<String>> listCustomer = permissionsMap.get("customerTenant");
+        List<Customer> filteredCustomers = listCustomers.getData().stream()
+                .filter(customer -> {
+                    boolean contains = listCustomer.containsKey(customer.getId().toString());
+                    if (!contains) {
+                        System.err.print("Customer ID [{}] not found "+ customer.getId());
+                    }
+                    return contains;
+                })
+                .collect(Collectors.toList());
+        return new PageData<>(filteredCustomers, listCustomers.getTotalPages(), filteredCustomers.size(), listCustomers.hasNext());
     }
 
     @Override

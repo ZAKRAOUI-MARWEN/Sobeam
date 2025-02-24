@@ -18,6 +18,7 @@ package org.thingsboard.server.dao.dashboard;
 import com.google.common.util.concurrent.ListenableFuture;
 import org.thingsboard.server.common.data.Dashboard;
 import org.thingsboard.server.common.data.DashboardInfo;
+import org.thingsboard.server.common.data.User;
 import org.thingsboard.server.common.data.id.CustomerId;
 import org.thingsboard.server.common.data.id.DashboardId;
 import org.thingsboard.server.common.data.id.EdgeId;
@@ -50,9 +51,9 @@ public interface DashboardService extends EntityDaoService {
 
     void deleteDashboard(TenantId tenantId, DashboardId dashboardId);
 
-    PageData<DashboardInfo> findDashboardsByTenantId(TenantId tenantId, PageLink pageLink);
+    PageData<DashboardInfo> findDashboardsByTenantId(TenantId tenantId, User user , PageLink pageLink);
 
-    PageData<DashboardInfo> findMobileDashboardsByTenantId(TenantId tenantId, PageLink pageLink);
+    PageData<DashboardInfo> findMobileDashboardsByTenantId(User user ,TenantId tenantId, PageLink pageLink);
 
     void deleteDashboardsByTenantId(TenantId tenantId);
 

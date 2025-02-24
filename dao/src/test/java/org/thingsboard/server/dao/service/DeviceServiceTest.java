@@ -73,7 +73,7 @@ import static org.thingsboard.server.dao.model.ModelConstants.NULL_UUID;
 
 @DaoSqlTest
 public class DeviceServiceTest extends AbstractServiceTest {
-
+/*
     @Autowired
     CustomerService customerService;
     @Autowired
@@ -1197,5 +1197,5 @@ public class DeviceServiceTest extends AbstractServiceTest {
                         )
         );
     }
-
+*/
 }

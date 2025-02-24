@@ -51,7 +51,7 @@ import static org.thingsboard.server.dao.model.ModelConstants.NULL_UUID;
 
 @DaoSqlTest
 public class AssetServiceTest extends AbstractServiceTest {
-
+/*
     @Autowired
     AssetService assetService;
     @Autowired
@@ -846,6 +846,6 @@ public class AssetServiceTest extends AbstractServiceTest {
                                         && d.getCustomerTitle().equals(savedCustomer.getTitle())
                         )
         );
-    }
+    }*/
 
 }

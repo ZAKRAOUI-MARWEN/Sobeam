@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,24 +35,24 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.thingsboard.server.common.data.Customer;
 import org.thingsboard.server.common.data.EntitySubtype;
+import org.thingsboard.server.common.data.EntityType;
 import org.thingsboard.server.common.data.asset.Asset;
 import org.thingsboard.server.common.data.asset.AssetInfo;
 import org.thingsboard.server.common.data.asset.AssetSearchQuery;
 import org.thingsboard.server.common.data.edge.Edge;
 import org.thingsboard.server.common.data.exception.ThingsboardException;
-import org.thingsboard.server.common.data.id.AssetId;
-import org.thingsboard.server.common.data.id.AssetProfileId;
-import org.thingsboard.server.common.data.id.CustomerId;
-import org.thingsboard.server.common.data.id.EdgeId;
-import org.thingsboard.server.common.data.id.TenantId;
+import org.thingsboard.server.common.data.id.*;
 import org.thingsboard.server.common.data.page.PageData;
 import org.thingsboard.server.common.data.page.PageLink;
 import org.thingsboard.server.common.data.page.TimePageLink;
+import org.thingsboard.server.common.data.relation.EntityRelationInfo;
+import org.thingsboard.server.common.data.relation.RelationTypeGroup;
 import org.thingsboard.server.common.data.sync.ie.importing.csv.BulkImportRequest;
 import org.thingsboard.server.common.data.sync.ie.importing.csv.BulkImportResult;
 import org.thingsboard.server.config.annotations.ApiOperation;
 import org.thingsboard.server.dao.exception.IncorrectParameterException;
 import org.thingsboard.server.dao.model.ModelConstants;
+import org.thingsboard.server.dao.relation.RelationService;
 import org.thingsboard.server.queue.util.TbCoreComponent;
 import org.thingsboard.server.service.asset.AssetBulkImportService;
 import org.thingsboard.server.service.entitiy.asset.TbAssetService;
@@ -95,6 +96,9 @@ public class AssetController extends BaseController {
     private final AssetBulkImportService assetBulkImportService;
     private final TbAssetService tbAssetService;
 
+    @Autowired
+    protected RelationService relationService;
+
     public static final String ASSET_ID = "assetId";
 
     @ApiOperation(value = "Get Asset (getAssetById)",
@@ -121,10 +125,21 @@ public class AssetController extends BaseController {
     @RequestMapping(value = "/asset/info/{assetId}", method = RequestMethod.GET)
     @ResponseBody
     public AssetInfo getAssetInfoById(@Parameter(description = ASSET_ID_PARAM_DESCRIPTION)
-                                      @PathVariable(ASSET_ID) String strAssetId) throws ThingsboardException {
+                                      @PathVariable(ASSET_ID) String strAssetId) throws ThingsboardException, ExecutionException, InterruptedException {
         checkParameter(ASSET_ID, strAssetId);
         AssetId assetId = new AssetId(toUUID(strAssetId));
-        return checkAssetInfoId(assetId, Operation.READ);
+
+        EntityId entityId = EntityIdFactory.getByTypeAndId("ASSET", strAssetId);
+       // checkEntityId(entityId, Operation.READ);
+        RelationTypeGroup typeGroup = RelationTypeGroup.COMMON;
+        List<EntityRelationInfo> listEntity =  checkNotNull(relationService.findInfoByFrom(getTenantId(), entityId, typeGroup).get());
+        List<EntityId> filterListId = listEntity.stream()
+                .map(EntityRelationInfo::getTo)  // Extract the "to" entity
+                .collect(Collectors.toList());
+
+        AssetInfo assetInfo = checkAssetInfoId(assetId, Operation.READ);
+        assetInfo.setEntityList(filterListId);
+        return assetInfo;
     }
 
     @ApiOperation(value = "Create Or Update Asset (saveAsset)",
@@ -140,7 +155,9 @@ public class AssetController extends BaseController {
     public Asset saveAsset(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A JSON value representing the asset.") @RequestBody Asset asset) throws Exception {
         asset.setTenantId(getTenantId());
         checkEntity(asset.getId(), asset, Resource.ASSET);
-        return tbAssetService.save(asset, getCurrentUser());
+        Asset saveAsset = tbAssetService.save(asset, getCurrentUser());
+        chekRoleApresSave(getCurrentUser() , saveAsset.getId());
+        return saveAsset;
     }
 
     @ApiOperation(value = "Delete asset (deleteAsset)",
@@ -258,7 +275,7 @@ public class AssetController extends BaseController {
             AssetProfileId profileId = new AssetProfileId(toUUID(assetProfileId));
             return checkNotNull(assetService.findAssetInfosByTenantIdAndAssetProfileId(tenantId, profileId, pageLink));
         } else {
-            return checkNotNull(assetService.findAssetInfosByTenantId(tenantId, pageLink));
+            return  checkNotNull(assetService.findAssetInfosByTenantId(tenantId,getCurrentUser(), pageLink));
         }
     }
 

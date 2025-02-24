@@ -24,9 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
-import org.thingsboard.server.common.data.EntitySubtype;
-import org.thingsboard.server.common.data.EntityType;
-import org.thingsboard.server.common.data.StringUtils;
+import org.thingsboard.server.common.data.*;
 import org.thingsboard.server.common.data.asset.Asset;
 import org.thingsboard.server.common.data.asset.AssetInfo;
 import org.thingsboard.server.common.data.asset.AssetProfile;
@@ -51,14 +49,12 @@ import org.thingsboard.server.dao.eventsourcing.ActionEntityEvent;
 import org.thingsboard.server.dao.eventsourcing.DeleteEntityEvent;
 import org.thingsboard.server.dao.eventsourcing.SaveEntityEvent;
 import org.thingsboard.server.dao.exception.DataValidationException;
+import org.thingsboard.server.dao.role.RoleService;
 import org.thingsboard.server.dao.service.DataValidator;
 import org.thingsboard.server.dao.service.PaginatedRemover;
 import org.thingsboard.server.dao.sql.JpaExecutorService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.thingsboard.server.dao.DaoUtil.toUUIDs;
@@ -91,6 +87,9 @@ public class BaseAssetService extends AbstractCachedEntityService<AssetCacheKey,
 
     @Autowired
     private JpaExecutorService executor;
+
+    @Autowired
+    private RoleService roleService;
 
     @TransactionalEventListener(classes = AssetCacheEvictEvent.class)
     @Override
@@ -251,11 +250,32 @@ public class BaseAssetService extends AbstractCachedEntityService<AssetCacheKey,
     }
 
     @Override
-    public PageData<AssetInfo> findAssetInfosByTenantId(TenantId tenantId, PageLink pageLink) {
+    public PageData<AssetInfo> findAssetInfosByTenantId(TenantId tenantId, User user, PageLink pageLink) {
         log.trace("Executing findAssetInfosByTenantId, tenantId [{}], pageLink [{}]", tenantId, pageLink);
         validateId(tenantId, id -> INCORRECT_TENANT_ID + id);
         validatePageLink(pageLink);
-        return assetDao.findAssetInfosByTenantId(tenantId.getId(), pageLink);
+        Map<String, Map<String, Set<String>>> permissionsMap = roleService.findRolesByUserId(user);
+        PageData<AssetInfo> listAsset = assetDao.findAssetInfosByTenantId(tenantId.getId(), pageLink);
+
+        if (permissionsMap.isEmpty()) {
+            return listAsset;
+        }
+
+        Map<String, Set<String>> listPermissionAsset = permissionsMap.get("assetPermission");
+        Map<String, Set<String>> listAssetTenant = permissionsMap.get("assetTenant");
+        listAssetTenant.putAll(listPermissionAsset);
+        List<AssetInfo> filteredAsset = listAsset.getData().stream()
+                .filter(assetnfo -> {
+                    boolean contains = listAssetTenant.containsKey(assetnfo.getId().toString());
+                    if (!contains) {
+                        log.trace("Dashboard ID [{}] not found in listPermission"+ assetnfo.getId());
+                    }
+                    return contains;
+                })
+                .collect(Collectors.toList());
+
+
+        return new PageData<>(filteredAsset, listAsset.getTotalPages(), filteredAsset.size(), listAsset.hasNext());
     }
 
     @Override

@@ -17,6 +17,7 @@ package org.thingsboard.server.dao.asset;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import org.thingsboard.server.common.data.EntitySubtype;
+import org.thingsboard.server.common.data.User;
 import org.thingsboard.server.common.data.asset.Asset;
 import org.thingsboard.server.common.data.asset.AssetInfo;
 import org.thingsboard.server.common.data.asset.AssetSearchQuery;
@@ -55,7 +56,7 @@ public interface AssetService extends EntityDaoService {
 
     PageData<Asset> findAssetsByTenantId(TenantId tenantId, PageLink pageLink);
 
-    PageData<AssetInfo> findAssetInfosByTenantId(TenantId tenantId, PageLink pageLink);
+    PageData<AssetInfo> findAssetInfosByTenantId(TenantId tenantId, User user , PageLink pageLink);
 
     PageData<Asset> findAssetsByTenantIdAndType(TenantId tenantId, String type, PageLink pageLink);
 

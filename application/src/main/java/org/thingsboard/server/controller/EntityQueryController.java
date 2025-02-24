@@ -77,7 +77,8 @@ public class EntityQueryController extends BaseController {
             @Parameter(description = "A JSON value representing the entity data query. See API call notes above for more details.")
             @RequestBody EntityDataQuery query) throws ThingsboardException {
         checkNotNull(query);
-        return this.entityQueryService.findEntityDataByQuery(getCurrentUser(), query);
+        PageData<EntityData> entityData = this.entityQueryService.findEntityDataByQuery(getCurrentUser(), query);
+        return entityData;
     }
 
     @ApiOperation(value = "Find Alarms by Query", notes = ALARM_DATA_QUERY_DESCRIPTION)

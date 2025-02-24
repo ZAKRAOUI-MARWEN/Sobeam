@@ -33,8 +33,7 @@ export class SideMenuComponent implements OnInit {
 
   constructor(private router: Router,
     private store: Store<AppState>,
-    private menuService: MenuService,
-    private dashboardService: DashboardService) {
+    private menuService: MenuService) {
   }
 
   trackByMenuSection(index: number, section: MenuSection){
@@ -42,11 +41,13 @@ export class SideMenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    /*
     this.menuService.refresh$.subscribe(value => {
-      this.menuService = new MenuService(this.store, this.router, this.dashboardService);
+      this.menuService = new MenuService(this.store, this.router);
       this.menuSections$ = null;
-      this.menuSections$ = this.menuService.menuSections();
 
-    });
+    });*/
+    this.menuSections$ = this.menuService.menuSections();
+
   }
   }

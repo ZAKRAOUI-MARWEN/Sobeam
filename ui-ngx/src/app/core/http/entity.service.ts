@@ -97,6 +97,7 @@ import { UserId } from '@shared/models/id/user-id';
 import { AlarmService } from '@core/http/alarm.service';
 import { ResourceService } from '@core/http/resource.service';
 import { OAuth2Service } from '@core/http/oauth2.service';
+import { RoleService } from './role.service';
 
 @Injectable({
   providedIn: 'root'
@@ -127,7 +128,8 @@ export class EntityService {
     private notificationService: NotificationService,
     private alarmService: AlarmService,
     private resourceService: ResourceService,
-    private oauth2Service: OAuth2Service
+    private oauth2Service: OAuth2Service,
+    private roleService: RoleService
   ) { }
 
   private getEntityObservable(entityType: EntityType, entityId: string,
@@ -216,6 +218,9 @@ export class EntityService {
       case EntityType.DEVICE:
         observable = this.deviceService.getDevices(entityIds, config);
         break;
+        case EntityType.ROLE:
+        observable = this.roleService.getRoles(entityIds, config);
+        break;
       case EntityType.ASSET:
         observable = this.assetService.getAssets(entityIds, config);
         break;
@@ -276,6 +281,7 @@ export class EntityService {
         break;
       case EntityType.OAUTH2_CLIENT:
         observable = this.oauth2Service.findTenantOAuth2ClientInfosByIds(entityIds, config);
+  
         break;
     }
     return observable;
@@ -462,6 +468,10 @@ export class EntityService {
         pageLink.sortOrder.property = 'title';
         entitiesObservable = this.oauth2Service.findTenantOAuth2ClientInfos(pageLink, config);
         break;
+        case EntityType.ROLE:
+          pageLink.sortOrder.property = 'createdTime';
+          entitiesObservable = this.roleService.getTenantRoles(pageLink, config);
+          break;
     }
     return entitiesObservable;
   }
@@ -758,6 +768,20 @@ export class EntityService {
           entityTypes.push(AliasEntityType.CURRENT_CUSTOMER);
         }
         break;
+
+          entityTypes.push(EntityType.DEVICE);
+          entityTypes.push(EntityType.ASSET);
+          entityTypes.push(EntityType.ENTITY_VIEW);
+          entityTypes.push(EntityType.CUSTOMER);
+          entityTypes.push(EntityType.USER);
+          entityTypes.push(EntityType.DASHBOARD);
+          if (authState.edgesSupportEnabled) {
+            entityTypes.push(EntityType.EDGE);
+          }
+          if (useAliasEntityTypes) {
+            entityTypes.push(AliasEntityType.CURRENT_CUSTOMER);
+          }
+          break;
     }
     if (useAliasEntityTypes) {
       entityTypes.push(AliasEntityType.CURRENT_USER);

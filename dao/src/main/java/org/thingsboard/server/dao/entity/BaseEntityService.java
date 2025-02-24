@@ -20,18 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.thingsboard.server.common.data.EntityType;
-import org.thingsboard.server.common.data.HasCustomerId;
-import org.thingsboard.server.common.data.HasEmail;
-import org.thingsboard.server.common.data.HasLabel;
-import org.thingsboard.server.common.data.HasName;
-import org.thingsboard.server.common.data.HasTitle;
-import org.thingsboard.server.common.data.StringUtils;
-import org.thingsboard.server.common.data.id.CustomerId;
-import org.thingsboard.server.common.data.id.EntityId;
-import org.thingsboard.server.common.data.id.HasId;
-import org.thingsboard.server.common.data.id.NameLabelAndCustomerDetails;
-import org.thingsboard.server.common.data.id.TenantId;
+import org.thingsboard.server.common.data.*;
+import org.thingsboard.server.common.data.asset.AssetInfo;
+import org.thingsboard.server.common.data.id.*;
 import org.thingsboard.server.common.data.page.PageData;
 import org.thingsboard.server.common.data.query.EntityCountQuery;
 import org.thingsboard.server.common.data.query.EntityData;
@@ -43,13 +34,9 @@ import org.thingsboard.server.common.data.query.EntityListFilter;
 import org.thingsboard.server.common.data.query.KeyFilter;
 import org.thingsboard.server.common.data.query.RelationsQueryFilter;
 import org.thingsboard.server.dao.exception.IncorrectParameterException;
+import org.thingsboard.server.dao.role.RoleService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -79,6 +66,9 @@ public class BaseEntityService extends AbstractEntityService implements EntitySe
     @Lazy
     EntityServiceRegistry entityServiceRegistry;
 
+    @Autowired
+    RoleService roleService ;
+
     @Override
     public long countEntitiesByQuery(TenantId tenantId, CustomerId customerId, EntityCountQuery query) {
         log.trace("Executing countEntitiesByQuery, tenantId [{}], customerId [{}], query [{}]", tenantId, customerId, query);
@@ -89,7 +79,7 @@ public class BaseEntityService extends AbstractEntityService implements EntitySe
     }
 
     @Override
-    public PageData<EntityData> findEntityDataByQuery(TenantId tenantId, CustomerId customerId, EntityDataQuery query) {
+    public PageData<EntityData> findEntityDataByQuery(UserId userId , TenantId tenantId, CustomerId customerId, EntityDataQuery query) {
         log.trace("Executing findEntityDataByQuery, tenantId [{}], customerId [{}], query [{}]", tenantId, customerId, query);
         validateId(tenantId, id -> INCORRECT_TENANT_ID + id);
         validateId(customerId, id -> INCORRECT_CUSTOMER_ID + id);
@@ -107,7 +97,44 @@ public class BaseEntityService extends AbstractEntityService implements EntitySe
 
         // 2 step - find entity data by entity ids from the 1st step
         List<EntityData> result = fetchEntityDataByIdsFromInitialQuery(tenantId, customerId, query, entityDataByQuery.getData());
-        return new PageData<>(result, entityDataByQuery.getTotalPages(), entityDataByQuery.getTotalElements(), entityDataByQuery.hasNext());
+          User user = new User();
+          user.setId(userId);
+          Map<String, Map<String, Set<String>>> permissionsMap = roleService.findRolesByUserId(user);
+        if (permissionsMap.isEmpty()) {
+            return new PageData<>(result, entityDataByQuery.getTotalPages(), entityDataByQuery.getTotalElements(), entityDataByQuery.hasNext());
+        }
+        String type = query.getEntityFilter().getType().toString();
+        if (type.equals("ASSET_TYPE")){
+            Map<String, Set<String>> listPermissionAsset = permissionsMap.get("assetPermission");
+            Map<String, Set<String>> listAssetTenant = permissionsMap.get("assetTenant");
+            listAssetTenant.putAll(listPermissionAsset);
+
+            List<EntityData> filteredResult = result.stream()
+                    .filter(item -> {
+                        boolean contains = listAssetTenant.containsKey(item.getEntityId().getId().toString());
+                        if (!contains) {
+                            log.trace("Entity ID [{}] not found"+ item.getEntityId().getId());
+                        }
+                        return contains;
+                    })
+                    .collect(Collectors.toList());
+            return new PageData<>(filteredResult, entityDataByQuery.getTotalPages(), entityDataByQuery.getTotalElements(), entityDataByQuery.hasNext());
+        }
+
+        Map<String, Set<String>> listPermissionDevice = permissionsMap.get("devicePermission");
+          Map<String, Set<String>> listDeviceTenant = permissionsMap.get("deviceTenant");
+          listDeviceTenant.putAll(listPermissionDevice);
+
+        List<EntityData> filteredResult = result.stream()
+                .filter(item -> {
+                    boolean contains = listDeviceTenant.containsKey(item.getEntityId().getId().toString());
+                    if (!contains) {
+                        log.trace("Entity ID [{}] not found"+ item.getEntityId().getId());
+                    }
+                    return contains;
+                })
+                .collect(Collectors.toList());
+        return new PageData<>(filteredResult, entityDataByQuery.getTotalPages(), entityDataByQuery.getTotalElements(), entityDataByQuery.hasNext());
     }
 
     @Override

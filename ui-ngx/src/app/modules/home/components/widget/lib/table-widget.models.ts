@@ -33,6 +33,8 @@ type ColumnSelectionOptions = 'enabled' | 'disabled';
 
 export interface TableWidgetSettings {
   enableSearch: boolean;
+  enableExportXlsx : boolean;
+  enableFilter : boolean;
   enableSelectColumnDisplay: boolean;
   enableStickyAction: boolean;
   showCellActionsMenu: boolean;

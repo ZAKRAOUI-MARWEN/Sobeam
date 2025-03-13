@@ -96,7 +96,11 @@ import {
   EntityDataPageLink,
   entityDataPageLinkSortDirection,
   EntityKeyType,
-  KeyFilter
+  EntityKeyValueType,
+  FilterPredicateType,
+  KeyFilter,
+  StringFilterPredicate,
+  StringOperation
 } from '@shared/models/query/query.models';
 import { sortItems } from '@shared/models/page/page-link';
 import { entityFields } from '@shared/models/entity.models';
@@ -106,7 +110,7 @@ import { hidePageSizePixelValue } from '@shared/models/constants';
 import { AggregationType } from '@shared/models/time/time.models';
 import { FormBuilder } from '@angular/forms';
 import { DEFAULT_OVERLAY_POSITIONS } from '@shared/models/overlay.models';
-
+import * as XLSX from 'xlsx';
 interface EntitiesTableWidgetSettings extends TableWidgetSettings {
   entitiesTitle: string;
   enableSelectColumnDisplay: boolean;
@@ -132,7 +136,8 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  textSearch = this.fb.control('', {nonNullable: true});
+
+  textSearch = this.fb.control('', { nonNullable: true });
 
   public displayPagination = true;
   public enableStickyHeader = true;
@@ -148,6 +153,7 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
   public entityDatasource: EntityDatasource;
   public noDataDisplayMessageText: string;
   public hasRowAction: boolean;
+  public showFilter : boolean;
   private setCellButtonAction: boolean;
 
   private cellContentCache: Array<any> = [];
@@ -163,14 +169,16 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
   private defaultPageSize = 10;
   private defaultSortOrder = 'entityName';
 
-  private contentsInfo: {[key: string]: CellContentInfo} = {};
-  private stylesInfo: {[key: string]: CellStyleInfo} = {};
-  private columnWidth: {[key: string]: string} = {};
-  private columnDefaultVisibility: {[key: string]: boolean} = {};
-  private columnSelectionAvailability: {[key: string]: boolean} = {};
+  private contentsInfo: { [key: string]: CellContentInfo } = {};
+  private stylesInfo: { [key: string]: CellStyleInfo } = {};
+  private columnWidth: { [key: string]: string } = {};
+  private columnDefaultVisibility: { [key: string]: boolean } = {};
+  private columnSelectionAvailability: { [key: string]: boolean } = {};
   private columnsWithCellClick: Array<number> = [];
 
   private rowStylesInfo: RowStyleInfo;
+  private columnFilters: { [columnDef: string]: Set<any> } = {};
+  public uniqueColumnValues: { [columnDef: string]: any[] } = {};
 
   private searchAction: WidgetAction = {
     name: 'action.search',
@@ -190,17 +198,37 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
     }
   };
 
+  private exportExelAction: WidgetAction = {
+    name: 'Export Exel',
+    show: true,
+    icon: 'mdi:export',
+    onAction: ($event) => {
+      this.exportExel($event);
+    }
+  };
+
+
+
+  private clearFilter : WidgetAction = {
+    name : 'clear filter' ,
+    show : true ,
+    icon : 'filter_list_off',
+    onAction: ($event) =>{
+      this.clearFilterApp($event);
+    }
+  }
+
   constructor(protected store: Store<AppState>,
-              private elementRef: ElementRef,
-              private ngZone: NgZone,
-              private overlay: Overlay,
-              private viewContainerRef: ViewContainerRef,
-              private utils: UtilsService,
-              private datePipe: DatePipe,
-              private translate: TranslateService,
-              private domSanitizer: DomSanitizer,
-              private cd: ChangeDetectorRef,
-              private fb: FormBuilder) {
+    private elementRef: ElementRef,
+    private ngZone: NgZone,
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
+    private utils: UtilsService,
+    private datePipe: DatePipe,
+    private translate: TranslateService,
+    private domSanitizer: DomSanitizer,
+    private cd: ChangeDetectorRef,
+    private fb: FormBuilder) {
     super(store);
     this.pageLink = {
       page: 0,
@@ -234,7 +262,7 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
 
   private isActionsConfigured(actionSourceIds: Array<string>): boolean {
     let configured = false;
-    actionSourceIds.forEach(id => configured = configured || this.ctx.actionsApi.getActionDescriptors(id).length > 0 );
+    actionSourceIds.forEach(id => configured = configured || this.ctx.actionsApi.getActionDescriptors(id).length > 0);
     return configured;
   }
 
@@ -270,10 +298,33 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
 
   public onDataUpdated() {
     this.entityDatasource.dataUpdated();
+    this.updateColumnFilters();
     this.clearCache();
     this.ctx.detectChanges();
   }
+  private updateColumnFilters(): void {
+    this.columns.forEach(column => {
+      const values = this.entityDatasource.getEntities()
+        .map(entity => getEntityValue(entity, column))
+        .filter((v, i, a) => a.indexOf(v) === i); // Récupérer les valeurs uniques
+      this.uniqueColumnValues[column.def] = values;
+    });
+  }
+  public getFilterValues(columnDef: string): any[] {
+    return this.uniqueColumnValues[columnDef] || [];
+  }
 
+  public isFilterSelected(columnDef: string, value: any): boolean {
+    return this.columnFilters[columnDef]?.has(value) || false;
+  }
+
+  public toggleFilter(columnDef: string, value: any, checked: boolean): void {
+    if (!this.columnFilters[columnDef]) {
+      this.columnFilters[columnDef] = new Set();
+    }
+    checked ? this.columnFilters[columnDef].add(value): this.columnFilters[columnDef].delete(value);
+    this.updateData();
+  }
   public onEditModeChanged() {
     if (this.textSearchMode) {
       this.ctx.hideTitlePanel = !this.ctx.isEdit;
@@ -286,7 +337,7 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
   }
 
   private initializeConfig() {
-    this.ctx.widgetActions = [this.searchAction, this.columnDisplayAction];
+    this.ctx.widgetActions = [this.searchAction, this.columnDisplayAction , this.exportExelAction , this.clearFilter] ;
 
     this.setCellButtonAction = !!this.ctx.actionsApi.getActionDescriptors('actionCellButton').length;
 
@@ -306,6 +357,9 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
     this.enableStickyAction = isDefined(this.settings.enableStickyAction) ? this.settings.enableStickyAction : true;
     this.showCellActionsMenu = isDefined(this.settings.showCellActionsMenu) ? this.settings.showCellActionsMenu : true;
     this.columnDisplayAction.show = isDefined(this.settings.enableSelectColumnDisplay) ? this.settings.enableSelectColumnDisplay : true;
+    this.exportExelAction.show = isDefined(this.settings.enableExportXlsx) ? this.settings.enableExportXlsx : true;
+    this.clearFilter.show = isDefined(this.settings.enableFilter) ? this.settings.enableFilter : true;
+    this.showFilter  =  isDefined(this.settings.enableFilter) ? this.settings.enableFilter : true
 
     this.rowStylesInfo = getRowStyleInfo(this.settings, 'entity, ctx');
 
@@ -525,7 +579,7 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
       }
     ];
 
-    const injector = Injector.create({parent: this.viewContainerRef.injector, providers});
+    const injector = Injector.create({ parent: this.viewContainerRef.injector, providers });
     const componentRef = overlayRef.attach(new ComponentPortal(DisplayColumnsPanelComponent,
       this.viewContainerRef, injector));
 
@@ -547,6 +601,67 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
       this.searchInputField.nativeElement.focus();
       this.searchInputField.nativeElement.setSelectionRange(0, 0);
     }, 10);
+  }
+
+ private exportExel($event: Event): void {
+    // Récupérer les données du tableau
+    const data = this.entityDatasource.getEntities();
+
+    // Préparer les données pour l'exportation
+    const worksheetData = this.prepareWorksheetData(data);
+
+    // Créer un fichier Excel
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(worksheetData);
+    const workbook: XLSX.WorkBook = { Sheets: { 'Data': worksheet }, SheetNames: ['Data'] };
+
+    // Générer le fichier Excel
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+    // Télécharger le fichier
+    this.saveAsExcelFile(excelBuffer, 'entities_export');
+  }
+
+private prepareWorksheetData(data: any[]): any[] {
+  return data.map(entity => {
+    const row: any = {};
+    this.columns.forEach(column => {
+      row[column.title] = getEntityValue(entity, column); // Utilisez votre méthode pour récupérer la valeur
+    });
+    return row;
+  });
+}
+
+private saveAsExcelFile(buffer: any, fileName: string): void {
+  const data: Blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const url: string = window.URL.createObjectURL(data);
+
+  // Créer un lien pour le téléchargement
+  const link: HTMLAnchorElement = document.createElement('a');
+  link.href = url;
+  link.download = `${fileName}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+  link.click();
+
+  // Libérer l'URL
+  setTimeout(() => {
+    window.URL.revokeObjectURL(url);
+    link.remove();
+  }, 100);
+}
+
+  private clearFilterApp($event : Event){
+    // Effacer tous les filtres
+  for (const columnDef of Object.keys(this.columnFilters)) {
+    this.columnFilters[columnDef].clear();
+  }
+
+  // Réinitialiser les valeurs uniques
+  this.uniqueColumnValues = {};
+
+  // Mettre à jour les données du tableau
+  this.updateData();
+
+  // Détecter les changements pour mettre à jour l'interface utilisateur
+  this.ctx.detectChanges();
   }
 
   exitFilterMode() {
@@ -573,7 +688,41 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
       this.pageLink.sortOrder = null;
     }
     const sortOrderLabel = fromEntityColumnDef(this.sort.active, this.columns);
-    const keyFilters: KeyFilter[] = null; // TODO:
+
+    // Construire les KeyFilters
+    const keyFilters: KeyFilter[] = [];
+    for (const columnDef of Object.keys(this.columnFilters)) {
+      const selectedValues = Array.from(this.columnFilters[columnDef]);
+      if (selectedValues.length) {
+        const key = findEntityKeyByColumnDef(columnDef, this.columns);
+        if (key) {
+          // Déterminer le type de données de la colonne
+          const column = this.columns.find(c => c.def === columnDef);
+          let valueType = EntityKeyValueType.STRING;    
+          // Créer le prédicat de filtre
+          const predicate: StringFilterPredicate = {
+            type: FilterPredicateType.STRING, // Type de prédicat
+            operation: StringOperation.IN,     // Opération IN pour les checkbox
+            value: {
+              defaultValue: selectedValues.join(','), // Valeurs sélectionnées
+              userValue: undefined,
+              dynamicValue: undefined
+            },
+            ignoreCase: false // Ignorer la casse ou non
+          };
+
+          // Créer le KeyFilter
+          const keyFilter: KeyFilter = {
+            key: key,
+            valueType: valueType,
+            predicate: predicate
+          };
+
+          keyFilters.push(keyFilter);
+        }
+      }
+    }
+
     this.entityDatasource.loadEntities(this.pageLink, sortOrderLabel, keyFilters);
     this.ctx.detectChanges();
   }
@@ -722,7 +871,7 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
         entityName = entity.entityName;
         entityLabel = entity.entityLabel;
       }
-      this.ctx.actionsApi.handleWidgetAction($event, descriptor, entityId, entityName, {entity, key}, entityLabel);
+      this.ctx.actionsApi.handleWidgetAction($event, descriptor, entityId, entityName, { entity, key }, entityLabel);
     }
   }
 
@@ -748,7 +897,7 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
         entityName = entity.entityName;
         entityLabel = entity.entityLabel;
       }
-      this.ctx.actionsApi.handleWidgetAction($event, descriptors[0], entityId, entityName, {entity}, entityLabel);
+      this.ctx.actionsApi.handleWidgetAction($event, descriptors[0], entityId, entityName, { entity }, entityLabel);
     }
   }
 
@@ -764,7 +913,7 @@ export class EntitiesTableWidgetComponent extends PageComponent implements OnIni
       entityName = entity.entityName;
       entityLabel = entity.entityLabel;
     }
-    this.ctx.actionsApi.handleWidgetAction($event, actionDescriptor, entityId, entityName, {entity}, entityLabel);
+    this.ctx.actionsApi.handleWidgetAction($event, actionDescriptor, entityId, entityName, { entity }, entityLabel);
   }
 
   private clearCache() {
@@ -792,19 +941,21 @@ class EntityDatasource implements DataSource<EntityData> {
   private readonly usedShowCellActionFunction: boolean;
 
   constructor(
-       private translate: TranslateService,
-       private dataKeys: Array<DataKey>,
-       private subscription: IWidgetSubscription,
-       private ngZone: NgZone,
-       private widgetContext: WidgetContext
-    ) {
+    private translate: TranslateService,
+    private dataKeys: Array<DataKey>,
+    private subscription: IWidgetSubscription,
+    private ngZone: NgZone,
+    private widgetContext: WidgetContext
+  ) {
     this.cellButtonActions = getTableCellButtonActions(widgetContext);
     this.usedShowCellActionFunction = this.cellButtonActions.some(action => action.useShowActionCellButtonFunction);
     if (this.widgetContext.settings.reserveSpaceForHiddenAction) {
       this.reserveSpaceForHiddenAction = coerceBooleanProperty(this.widgetContext.settings.reserveSpaceForHiddenAction);
     }
   }
-
+  public getEntities(): EntityData[] {
+    return this.entitiesSubject.value;
+  }
   connect(collectionViewer: CollectionViewer): Observable<EntityData[] | ReadonlyArray<EntityData>> {
     return this.entitiesSubject.asObservable();
   }
@@ -889,7 +1040,7 @@ class EntityDatasource implements DataSource<EntityData> {
     if (this.cellButtonActions.length) {
       if (this.usedShowCellActionFunction) {
         entity.actionCellButtons = prepareTableCellButtonActions(this.widgetContext, this.cellButtonActions,
-                                                                 entity, this.reserveSpaceForHiddenAction);
+          entity, this.reserveSpaceForHiddenAction);
         entity.hasActions = checkHasActions(entity.actionCellButtons);
       } else {
         entity.actionCellButtons = this.cellButtonActions;

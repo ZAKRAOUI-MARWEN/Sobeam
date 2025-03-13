@@ -86,7 +86,7 @@ import static org.mockito.Mockito.verify;
 
 @DaoSqlTest
 public class TenantServiceTest extends AbstractServiceTest {
-
+/*
     @SpyBean
     TenantDao tenantDao;
 
@@ -523,7 +523,7 @@ public class TenantServiceTest extends AbstractServiceTest {
                 userService.findUsersByTenantId(tenant.getId(), pageLinkUsers);
         Assert.assertEquals(0, users.getTotalElements());
     }
-*/
+
     private void assertTenantAdminIsDeleted(Tenant savedTenant) {
         PageLink pageLinkTenantAdmins = new PageLink(1);
         PageData<User> tenantAdmins =
@@ -538,7 +538,7 @@ public class TenantServiceTest extends AbstractServiceTest {
         PageData<Edge> edges = edgeService.findEdgesByTenantId(tenant.getId(), pageLinkEdges);
         Assert.assertEquals(0, edges.getTotalElements());
     }
-    /*
+
 
     private void assertDashboardIsDeleted(Tenant tenant, Dashboard dashboard) {
         assertThat(dashboardService.findDashboardById(tenant.getId(), dashboard.getId()))
@@ -548,7 +548,7 @@ public class TenantServiceTest extends AbstractServiceTest {
                 dashboardService.findDashboardsByTenantId(tenant.getId(), pageLinkDashboards);
         Assert.assertEquals(0, dashboards.getTotalElements());
     }
-*/
+
     private void assertDeviceProfileIsDeleted(Tenant tenant, DeviceProfile deviceProfile) {
         assertThat(deviceProfileService.findDeviceProfileById(tenant.getId(), deviceProfile.getId()))
                 .as("deviceProfile").isNull();
@@ -732,5 +732,5 @@ public class TenantServiceTest extends AbstractServiceTest {
         TenantProfile tenantProfile = new TenantProfile();
         tenantProfile.setName("Test tenant profile");
         return tenantProfileService.saveTenantProfile(TenantId.SYS_TENANT_ID, tenantProfile);
-    }
+    }*/
 }

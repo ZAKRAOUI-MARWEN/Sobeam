@@ -151,7 +151,7 @@ public class RoleController extends  BaseController{
     @ApiOperation(value = "Get Roles  by user (getRoleById)",
             notes = "Fetch the Role object based on the provided Role Id. " +
                     "The server checks that the role  is owned by the same tenant. " + TENANT_AUTHORITY_PARAGRAPH)
-    @PreAuthorize("hasAnyAuthority('TENANT_ADMIN' , 'CUSTOMER_USER')")
+    @PreAuthorize("hasAnyAuthority('SYS_ADMIN','TENANT_ADMIN' , 'CUSTOMER_USER')")
     @RequestMapping(value = "/roles/user/{userId}", method = RequestMethod.GET)
     @ResponseBody
     public List<Role> getRolesByUser(

@@ -14,40 +14,120 @@
 /// limitations under the License.
 ///
 
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuService } from '@core/services/menu.service';
 import { MenuSection } from '@core/services/menu.models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@core/core.state';
 import { DashboardService } from '@core/http/dashboard.service';
 import { Router } from '@angular/router';
+import { RoleService } from '@core/http/role.service';
+import { Authority } from '@shared/models/authority.enum';
+import { selectAuthState } from '@core/auth/auth.selectors';
+import { forkJoin, Observable, of, Subject } from 'rxjs';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
+import { AuthState } from '@core/auth/auth.models';
+
 @Component({
   selector: 'tb-side-menu',
   templateUrl: './side-menu.component.html',
   styleUrls: ['./side-menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SideMenuComponent implements OnInit {
-
+export class SideMenuComponent implements OnInit, OnDestroy {
   menuSections$ = this.menuService.menuSections();
+  private destroy$ = new Subject<void>();
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private store: Store<AppState>,
-    private menuService: MenuService) {
-  }
+    private menuService: MenuService,
+    private roleService: RoleService,
+    private dashboardService: DashboardService
+  ) {}
 
-  trackByMenuSection(index: number, section: MenuSection){
+  trackByMenuSection(index: number, section: MenuSection) {
     return section.id;
   }
 
   ngOnInit() {
-    /*
-    this.menuService.refresh$.subscribe(value => {
-      this.menuService = new MenuService(this.store, this.router);
-      this.menuSections$ = null;
+    this.menuSections$ = this.store.select(selectAuthState).pipe(
+      switchMap(authState => {
+        if (!authState || !authState.authUser || authState.authUser.authority !== Authority.TENANT_ADMIN) {
+          return this.menuService.menuSections();
+        }
 
-    });*/
-    this.menuSections$ = this.menuService.menuSections();
+        const authUser = authState.authUser;
+
+        return this.roleService.getUserTenantRole(authUser.userId).pipe(
+          switchMap(dashboardPermissions => {
+            if (!dashboardPermissions || !dashboardPermissions.dashboardPermission) {
+              return this.menuService.menuSections();
+            }
+
+            return this.menuService.menuSections().pipe(
+              switchMap(sections => {
+                const dashboardSectionIndex = sections.findIndex(section => section.id === 'dashboards');
+
+                if (dashboardSectionIndex === -1) {
+                  return of(sections);
+                }
+
+                // 🔹 Extraire TOUS les dashboardIds
+                var dashboardUserIds = Object.keys(dashboardPermissions.dashboardTenant);
+                var dashboardIds = Object.keys(dashboardPermissions.dashboardPermission);
+                var listDashboard = [... dashboardUserIds , ...dashboardIds ]
+                if( listDashboard.length == 0){
+                  return of(sections);
+
+                }else {
+                return forkJoin(listDashboard.map(id => this.dashboardService.getDashboardInfo(id))).pipe(
+                  map(dashboardsInfoArray => {
+                    const newSections = [...sections];
+
+                    // ❌ Supprimer l'ancien menu "dashboards"
+                    newSections.splice(dashboardSectionIndex, 1);
+
+                    // 🔹 Construire les nouveaux items dashboard
+                    const dashboardItems = dashboardsInfoArray.map(info =>
+                      this.createDashboardMenuItem(info, authState)
+                    );
+
+                    // 🔹 Ajouter les nouveaux items
+                    newSections.splice(dashboardSectionIndex, 0, ...dashboardItems);
+
+                    return newSections;
+                  })
+                );}
+              })
+            );
+          })
+        );
+      }),
+      takeUntil(this.destroy$)
+    );
 
   }
+
+
+
+  /**
+   * Creates menu items from dashboard info
+   */
+  private createDashboardMenuItem(dashboardInfo: any, authState: AuthState): any {
+    return {
+      id: "dashboards",
+      name: dashboardInfo.name || `Dashboard ${dashboardInfo.id}`,
+      type: "link",
+      path: `/dashboards/${dashboardInfo.id.id}`,
+      icon: "dashboards",
+    };
   }
+
+
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+}

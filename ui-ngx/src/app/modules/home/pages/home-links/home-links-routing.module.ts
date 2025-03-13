@@ -16,7 +16,6 @@
 
 import { inject, NgModule } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
-
 import { HomeLinksComponent } from './home-links.component';
 import { Authority } from '@shared/models/authority.enum';
 import { mergeMap, Observable, of } from 'rxjs';
@@ -24,7 +23,7 @@ import { HomeDashboard } from '@shared/models/dashboard.models';
 import { DashboardService } from '@core/http/dashboard.service';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '@core/core.state';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import {
   getCurrentAuthUser,
   selectHomeDashboardParams,
@@ -35,34 +34,51 @@ import { EntityKeyType } from '@shared/models/query/query.models';
 import { ResourcesService } from '@core/services/resources.service';
 import { isDefinedAndNotNull } from '@core/utils';
 import { MenuId } from '@core/services/menu.models';
+import { RoleService } from '@app/core/http/role.service';
 
 const sysAdminHomePageJson = '/assets/dashboard/sys_admin_home_page.json';
 const tenantAdminHomePageJson = '/assets/dashboard/tenant_admin_home_page.json';
 const customerUserHomePageJson = '/assets/dashboard/customer_user_home_page.json';
+const tenantUserPageJson = '/assets/dashboard/tenant_user_home_page.json';
 
-const getHomeDashboard = (store: Store<AppState>, resourcesService: ResourcesService) => {
-  const authority = getCurrentAuthUser(store).authority;
-  switch (authority) {
-    case Authority.SYS_ADMIN:
-      return applySystemParametersToHomeDashboard(store, resourcesService.loadJsonResource(sysAdminHomePageJson), authority);
-    case Authority.TENANT_ADMIN:
-      return applySystemParametersToHomeDashboard(store, resourcesService.loadJsonResource(tenantAdminHomePageJson), authority);
-    case Authority.CUSTOMER_USER:
-      return applySystemParametersToHomeDashboard(store, resourcesService.loadJsonResource(customerUserHomePageJson), authority);
-    default:
-      return of(null);
-  }
+const getHomeDashboard = (store: Store<AppState>, resourcesService: ResourcesService, roleService: RoleService): Observable<HomeDashboard> => {
+  const currentUser = getCurrentAuthUser(store);
+
+  return roleService.getUserRole(currentUser.userId).pipe(
+    switchMap(role => {
+      let authority = currentUser.authority;
+      if (role != 0) {
+        authority = Authority.TENANT_USER;
+      }
+
+      switch (authority) {
+        case Authority.SYS_ADMIN:
+          return applySystemParametersToHomeDashboard(store, resourcesService.loadJsonResource(sysAdminHomePageJson), authority);
+        case Authority.TENANT_ADMIN:
+          return applySystemParametersToHomeDashboard(store, resourcesService.loadJsonResource(tenantAdminHomePageJson), authority);
+        case Authority.TENANT_USER:
+          return applySystemParametersToHomeDashboard(store, resourcesService.loadJsonResource(tenantUserPageJson), authority);
+        case Authority.CUSTOMER_USER:
+          return applySystemParametersToHomeDashboard(store, resourcesService.loadJsonResource(customerUserHomePageJson), authority);
+        default:
+          return of(null);
+      }
+    })
+  );
 };
 
 const applySystemParametersToHomeDashboard = (store: Store<AppState>,
-                                              dashboard$: Observable<HomeDashboard>,
-                                              authority: Authority): Observable<HomeDashboard> => {
-  let selectParams$: Observable<{persistDeviceStateToTelemetry?: boolean, mobileQrEnabled?: boolean}>;
+  dashboard$: Observable<HomeDashboard>,
+  authority: Authority): Observable<HomeDashboard> => {
+  if (authority === Authority.TENANT_USER) {
+    return dashboard$;
+  }
+  let selectParams$: Observable<{ persistDeviceStateToTelemetry?: boolean, mobileQrEnabled?: boolean }>;
   switch (authority) {
     case Authority.SYS_ADMIN:
       selectParams$ = store.pipe(
         select(selectMobileQrEnabled),
-        map(mobileQrEnabled => ({mobileQrEnabled}))
+        map(mobileQrEnabled => ({ mobileQrEnabled }))
       );
       break;
     case Authority.TENANT_ADMIN:
@@ -71,10 +87,14 @@ const applySystemParametersToHomeDashboard = (store: Store<AppState>,
     case Authority.CUSTOMER_USER:
       selectParams$ = store.pipe(
         select(selectPersistDeviceStateToTelemetry),
-        map(persistDeviceStateToTelemetry => ({persistDeviceStateToTelemetry}))
+        map(persistDeviceStateToTelemetry => ({ persistDeviceStateToTelemetry }))
       );
       break;
+    default:
+      selectParams$ = of({});
+      break;
   }
+
   return selectParams$.pipe(
     mergeMap((params) => dashboard$.pipe(
       map((dashboard) => {
@@ -107,12 +127,13 @@ export const homeDashboardResolver: ResolveFn<HomeDashboard> = (
   state: RouterStateSnapshot,
   dashboardService = inject(DashboardService),
   resourcesService = inject(ResourcesService),
+  roleService = inject(RoleService),
   store: Store<AppState> = inject(Store<AppState>)
 ): Observable<HomeDashboard> =>
   dashboardService.getHomeDashboard().pipe(
     mergeMap((dashboard) => {
       if (!dashboard) {
-        return getHomeDashboard(store, resourcesService);
+        return getHomeDashboard(store, resourcesService, roleService);
       }
       return of(dashboard);
     })

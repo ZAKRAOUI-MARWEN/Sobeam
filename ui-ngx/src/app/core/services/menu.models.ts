@@ -951,7 +951,7 @@ export const buildUserMenu = (authState: AuthState, res: any): Array<MenuSection
       const permissionKeys = Object.keys(res.menuPermission).map(key => {
         switch (key) {
           case "ALARM": return "alarms";
-     
+
           case "DASHBOARD": return "dashboards";
           case "DEVICE": return "devices";
           case "ASSET": return "assets";
@@ -960,10 +960,45 @@ export const buildUserMenu = (authState: AuthState, res: any): Array<MenuSection
           case "RULE_CHAIN": return "rule_chains"
           case "API_USAGE_STATE": return "api_usage"
 
-          case "EDGE" : return "edge_management"
-          case "TB_RESOURCE" : return "resources"
+          case "EDGE": return "edge_management"
+          case "TB_RESOURCE": return "resources"
 
-          case "CUSTOMER" : return "customers"
+          case "CUSTOMER": return "customers"
+          default: return key.toLowerCase();
+        }
+      });
+      const hasEntitiesPermission = permissionKeys.includes("devices") ||
+        permissionKeys.includes("assets") ||
+        permissionKeys.includes("entity_views");
+
+      const filteredReferences = references.map(menu => {
+        if (permissionKeys.includes(menu.id) || menu.id === "home" || (menu.id === "entities" && hasEntitiesPermission)) {
+          if (menu.id === "entities") {
+            let filteredPages = menu.pages.filter(page => permissionKeys.includes(page.id));
+            return { ...menu, pages: filteredPages };
+          }
+          return menu;
+        }
+        return null;
+      }).filter(menu => menu !== null);
+
+      return filteredReferences.map(ref => referenceToMenuSection(authState, ref)).filter(section => !!section);
+    }
+    else {
+      return references.map(ref => referenceToMenuSection(authState, ref)).filter(section => !!section);
+
+    }
+  }
+  if (authState.authUser.authority == Authority.CUSTOMER_USER) {
+    if (res.menuPermission !== undefined) {
+      const permissionKeys = Object.keys(res.menuPermission).map(key => {
+        switch (key) {
+          case "ALARM": return "alarms";
+          case "DASHBOARD": return "dashboards";
+          case "DEVICE": return "devices";
+          case "ASSET": return "assets";
+          case "ENTITY_VIEW": return "entity_views"
+
           default: return key.toLowerCase();
         }
       });
@@ -981,45 +1016,11 @@ export const buildUserMenu = (authState: AuthState, res: any): Array<MenuSection
         }
         return null;
       }).filter(menu => menu !== null);
-
       return filteredReferences.map(ref => referenceToMenuSection(authState, ref)).filter(section => !!section);
     }
     else {
       return references.map(ref => referenceToMenuSection(authState, ref)).filter(section => !!section);
-
     }
-  }
-  if (authState.authUser.authority == Authority.CUSTOMER_USER) {
-
-    const permissionKeys = Object.keys(res.menuPermission).map(key => {
-      switch (key) {
-        case "ALARM": return "alarms";
-        case "DASHBOARD": return "dashboards";
-        case "DEVICE": return "devices";
-        case "ASSET": return "assets";
-        case "ENTITY_VIEW": return "entity_views"
-
-        default: return key.toLowerCase();
-      }
-    });
-    const hasEntitiesPermission = permissionKeys.includes("devices") ||
-    permissionKeys.includes("assets") ||
-    permissionKeys.includes("entity_views");
-
-  const filteredReferences = references.map(menu => {
-    if (permissionKeys.includes(menu.id) || menu.id === "home" || (menu.id === "entities" && hasEntitiesPermission)) {
-      if (menu.id === "entities") {
-        let filteredPages = menu.pages.filter(page => permissionKeys.includes(page.id));
-        return { ...menu, pages: filteredPages }; // Met à jour le menu avec les pages filtrées
-      }
-      return menu;
-    }
-    return null;
-  }).filter(menu => menu !== null);
-
-    return filteredReferences.map(ref => referenceToMenuSection(authState, ref)).filter(section => !!section);
-
-
   }
   return references.map(ref => referenceToMenuSection(authState, ref)).filter(section => !!section);
 

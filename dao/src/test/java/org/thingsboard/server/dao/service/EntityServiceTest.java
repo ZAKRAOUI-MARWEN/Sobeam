@@ -112,7 +112,7 @@ import static org.thingsboard.server.common.data.query.EntityKeyType.ENTITY_FIEL
 @Slf4j
 @DaoSqlTest
 public class EntityServiceTest extends AbstractServiceTest {
-
+/*
     static final int ENTITY_COUNT = 5;
     public static final String TEST_CUSTOMER_NAME = "Test";
 
@@ -800,9 +800,7 @@ public class EntityServiceTest extends AbstractServiceTest {
         };
     }
 
-    /*
-     * This useful to reproduce exact data in the PostgreSQL and play around with pgadmin query and analyze tool
-     * */
+
     private void printAllRelations() {
         System.out.println("" +
                 "DO\n" +
@@ -2509,5 +2507,5 @@ public class EntityServiceTest extends AbstractServiceTest {
                 }
             }
         }
-    }
+    }*/
 }

@@ -267,7 +267,7 @@ public PageData<DashboardInfo> findDashboardsByTenantId(TenantId tenantId, User 
             .filter(dashboardInfo -> {
                 boolean contains = listDashboard.containsKey(dashboardInfo.getId().toString());
                 if (!contains) {
-                    System.err.print("Dashboard ID [{}] not found in listPermissionDashboard"+ dashboardInfo.getId());
+                    log.trace("Dashboard ID [{}] not found in listPermissionDashboard"+ dashboardInfo.getId());
                 }
                 return contains;
             })
@@ -294,7 +294,7 @@ public PageData<DashboardInfo> findDashboardsByTenantId(TenantId tenantId, User 
                 .filter(dashboardInfo -> {
                     boolean contains = listDashboard.containsKey(dashboardInfo.getId().toString());
                     if (!contains) {
-                        System.err.print("Dashboard ID [{}] not found in listPermissionDashboard"+ dashboardInfo.getId());
+                        log.trace("Dashboard ID [{}] not found in listPermissionDashboard"+ dashboardInfo.getId());
                     }
                     return contains;
                 })

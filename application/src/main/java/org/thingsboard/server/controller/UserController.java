@@ -219,16 +219,49 @@ public class UserController extends BaseController {
         long  numberUser = userService.countByTenantId(tenantId);
 
         User userSaved = tbUserService.save(tenantId, currentUser.getCustomerId(), user, sendActivationMail, request, currentUser);
-        if(user.getAuthority().equals(Authority.TENANT_ADMIN)){
-            Role findRole  = roleService.findRoleByName("GenericRoleTenant");
-            if (numberUser > 0) {
+        if(user.getId() == null) {
+            if (user.getAuthority().equals(Authority.TENANT_ADMIN)) {
+                Role findRole = roleService.findRoleByName("GenericRoleTenant");
+                if (numberUser > 0) {
 
+                    Role role;
+                    if (findRole != null) {
+                        role = findRole;
+                    } else {
+                        role = new Role();
+                        role.setName("GenericRoleTenant");
+                        role.setType("PRIVATE");
+
+                        ObjectMapper mapper = new ObjectMapper();
+                        ObjectNode menuPermission = mapper.createObjectNode();
+                        ArrayNode permissionsArray = mapper.createArrayNode();
+                        ObjectNode permission = mapper.createObjectNode();
+                        permission.put("resource", "USER");
+
+                        ArrayNode operations = mapper.createArrayNode();
+                        operations.add("CREATE");
+                        operations.add("READ");
+                        operations.add("WRITE");
+                        permission.set("operations", operations);
+
+                        permissionsArray.add(permission);
+                        menuPermission.set("menuPermission", permissionsArray);
+
+                        role.setPermissions(menuPermission);
+                        role.setTenantId(tenantId);
+                        role = roleService.saveRole(tenantId, role);
+                    }
+                    roleService.assignRoleToUser(role.getId(), userSaved.getId());
+                }
+            }
+            if (user.getAuthority().equals(Authority.CUSTOMER_USER)) {
+                Role findRole = roleService.findRoleByName("SimpleCustomerTenant");
                 Role role;
-                if (findRole!= null) {
-                    role = findRole ;
+                if (findRole != null) {
+                    role = findRole;
                 } else {
                     role = new Role();
-                    role.setName("GenericRoleTenant");
+                    role.setName("SimpleCustomerTenant");
                     role.setType("PRIVATE");
 
                     ObjectMapper mapper = new ObjectMapper();
@@ -250,48 +283,12 @@ public class UserController extends BaseController {
                     role.setTenantId(tenantId);
                     role = roleService.saveRole(tenantId, role);
                 }
+                chekRoleApresSave(getCurrentUser(), userSaved.getId());
+
                 roleService.assignRoleToUser(role.getId(), userSaved.getId());
             }
         }
-        if(user.getAuthority().equals(Authority.CUSTOMER_USER)){
-            Role findRole  = roleService.findRoleByName( "SimpleCustomerTenant");
-            Role role;
-            if (findRole!= null) {
-                role = findRole;
-            } else {
-                role = new Role();
-                role.setName("SimpleCustomerTenant");
-                role.setType("PRIVATE");
-
-                ObjectMapper mapper = new ObjectMapper();
-                ObjectNode menuPermission = mapper.createObjectNode();
-                ArrayNode permissionsArray = mapper.createArrayNode();
-                ObjectNode permission = mapper.createObjectNode();
-                permission.put("resource", "USER");
-
-                ArrayNode operations = mapper.createArrayNode();
-                operations.add("CREATE");
-                operations.add("READ");
-                operations.add("WRITE");
-                permission.set("operations", operations);
-
-                permissionsArray.add(permission);
-                menuPermission.set("menuPermission", permissionsArray);
-
-                role.setPermissions(menuPermission);
-                role.setTenantId(tenantId);
-                role = roleService.saveRole(tenantId, role);
-            }
-          chekRoleApresSave(getCurrentUser() , userSaved.getId() );
-
-            roleService.assignRoleToUser(role.getId(), userSaved.getId());
-        }
-
         checkEntity(user.getId(), user, Resource.USER);
-
-
-
-
         return userSaved;
     }
 

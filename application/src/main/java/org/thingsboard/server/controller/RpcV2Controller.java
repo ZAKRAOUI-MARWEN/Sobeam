@@ -132,6 +132,8 @@ public class RpcV2Controller extends AbstractRpcController {
         return handleDeviceRPCRequest(true, new DeviceId(UUID.fromString(deviceIdStr)), requestBody, HttpStatus.GATEWAY_TIMEOUT, HttpStatus.GATEWAY_TIMEOUT);
     }
 
+
+
     @ApiOperation(value = "Send two-way RPC request", notes = TWO_WAY_RPC_REQUEST_DESCRIPTION)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Persistent RPC request was saved to the database or lightweight RPC response received."),

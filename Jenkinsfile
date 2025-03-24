@@ -22,7 +22,9 @@ node("master") {
             )
         }
         stage("tag") {
+
 			def version = sh(script: "grep -m1 '<version>' pom.xml | sed 's/.*<version>\\(.*\\)<\\/version>.*/\\1/'", returnStdout: true).trim()	
+
             if (params.branch == "development") {
                 TAG = "${version}-${env.BUILD_NUMBER}"
             } else if (params.branch == "main"){
@@ -46,7 +48,9 @@ node("master") {
     }
 
     stage("build") {
-        //sh "mvn clean install -DskipTests -Ddockerfile.skip=false -Dlicense.skip=true"
+
+        sh "mvn clean install -DskipTests -Ddockerfile.skip=false -Dlicense.skip=true"
+
         echo "runing build"
     }
     stage("push") {

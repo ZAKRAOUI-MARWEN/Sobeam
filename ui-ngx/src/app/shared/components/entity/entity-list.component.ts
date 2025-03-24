@@ -47,6 +47,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { SubscriptSizing } from '@angular/material/form-field';
 import { coerceBoolean } from '@shared/decorators/coercion';
 import { isArray } from 'lodash';
+import { Authority } from '@app/shared/public-api';
 
 @Component({
   selector: 'tb-entity-list',
@@ -73,6 +74,9 @@ export class EntityListComponent implements ControlValueAccessor, OnInit, AfterV
 
   @Input()
   entityType: EntityType;
+
+  @Input()
+  entityFilter : string;
 
   @Input()
   subType: string;
@@ -258,7 +262,7 @@ export class EntityListComponent implements ControlValueAccessor, OnInit, AfterV
   public displayEntityFn(entity?: BaseData<EntityId>): string | undefined {
     return entity ? entity.name : undefined;
   }
-
+/*
   private fetchEntities(searchText?: string): Observable<Array<BaseData<EntityId>>> {
     this.searchText = searchText;
 
@@ -266,6 +270,36 @@ export class EntityListComponent implements ControlValueAccessor, OnInit, AfterV
       50, this.subType ? this.subType : '', {ignoreLoading: true}).pipe(
       map((data) => data ? data : []));
   }
+*/
+ private fetchEntities(searchText?: string): Observable<Array<BaseData<EntityId>>> {
+    this.searchText = searchText;
+
+    return this.entityService.getEntitiesByNameFilter(
+        this.entityType, searchText, 50, this.subType || '', { ignoreLoading: true }
+    ).pipe(
+        map((data) => {
+            if (!data) {
+                return [];
+            }
+
+            // Appliquer le filtre en fonction de this.entityFilter
+            switch (this.entityFilter) {
+
+                case 'GENERIC':
+                    return data.filter(entity => (entity as any).authority === Authority.TENANT_ADMIN);
+                case 'GROUP':
+                    return data.filter(entity => (entity as any).authority === Authority.CUSTOMER_USER);
+
+                case 'TENANT_ADMIN':
+                    return data.filter(entity => (entity as any).type === 'GENERIC');
+                case 'CUSTOMER_USER':
+                    return data.filter(entity => (entity as any).type === 'GROUP');
+                default:
+                    return data;
+            }
+        })
+    );
+}
 
   public onFocus() {
     if (this.dirty) {

@@ -47,7 +47,8 @@ export enum EntityType {
   NOTIFICATION_TEMPLATE = 'NOTIFICATION_TEMPLATE',
   OAUTH2_CLIENT = 'OAUTH2_CLIENT',
   DOMAIN = 'DOMAIN',
-  MOBILE_APP = 'MOBILE_APP'
+  MOBILE_APP = 'MOBILE_APP',
+  ROLE = 'ROLE'
 }
 
 export enum AliasEntityType {
@@ -88,6 +89,20 @@ export const entityTypeTranslations = new Map<EntityType | AliasEntityType, Enti
         noEntities: 'tenant.no-tenants-text',
         search: 'tenant.search',
         selectedEntities: 'tenant.selected-tenants'
+      }
+    ],
+    [
+      EntityType.ROLE,
+      {
+        type: 'entity.type-role',
+        typePlural: 'entity.type-role',
+        list: 'entity.list-of-role',
+        nameStartsWith: 'entity.role-name-starts-with',
+        details: 'role.role-details',
+        add: 'role.add',
+        noEntities: 'role.no-role-text',
+        search: 'role.search',
+        selectedEntities: 'role.selected-role'
       }
     ],
     [
@@ -475,6 +490,12 @@ export const entityTypeResources = new Map<EntityType, EntityTypeResource<BaseDa
       }
     ],
     [
+      EntityType.ROLE,
+      {
+        helpLinkId: 'roles'
+      }
+    ],
+    [
       EntityType.TENANT_PROFILE,
       {
         helpLinkId: 'tenantProfiles'
@@ -597,6 +618,8 @@ export const baseDetailsPageByEntityType = new Map<EntityType, string>([
   [EntityType.CUSTOMER, '/customers'],
   [EntityType.USER, '/users'],
   [EntityType.DASHBOARD, '/dashboards'],
+  [EntityType.ROLE, '/roles'],
+
   [EntityType.ASSET, '/entities/assets'],
   [EntityType.DEVICE, '/entities/devices'],
   [EntityType.DEVICE_PROFILE, '/profiles/deviceProfiles'],

@@ -117,7 +117,7 @@ export class UsersTableConfigResolver implements Resolve<EntityTableConfig<User>
           this.customerId = routeParams.customerId;
           this.config.entitiesFetchFunction = pageLink => this.userService.getCustomerUsers(this.customerId, pageLink);
         }
-        this.updateActionCellDescriptors(auth);
+          this.updateActionCellDescriptors(auth);
       }),
       mergeMap(() => {
         if (this.authority === Authority.TENANT_ADMIN) {

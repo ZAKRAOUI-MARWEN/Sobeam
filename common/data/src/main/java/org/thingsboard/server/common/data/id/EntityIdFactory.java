@@ -61,6 +61,8 @@ public class EntityIdFactory {
                 return new DashboardId(uuid);
             case DEVICE:
                 return new DeviceId(uuid);
+            case ROLE:
+                return new RoleId(uuid);
             case ASSET:
                 return new AssetId(uuid);
             case ALARM:
@@ -127,6 +129,8 @@ public class EntityIdFactory {
                 return new DashboardId(uuid);
             case DEVICE:
                 return new DeviceId(uuid);
+            case ROLE:
+                return new RoleId(uuid);
             case ASSET:
                 return new AssetId(uuid);
             case ALARM:

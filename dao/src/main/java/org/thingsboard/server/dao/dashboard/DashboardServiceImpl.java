@@ -25,10 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.thingsboard.server.cache.TbTransactionalCache;
-import org.thingsboard.server.common.data.Customer;
-import org.thingsboard.server.common.data.Dashboard;
-import org.thingsboard.server.common.data.DashboardInfo;
-import org.thingsboard.server.common.data.EntityType;
+import org.thingsboard.server.common.data.*;
 import org.thingsboard.server.common.data.audit.ActionType;
 import org.thingsboard.server.common.data.edge.Edge;
 import org.thingsboard.server.common.data.id.CustomerId;
@@ -50,14 +47,14 @@ import org.thingsboard.server.dao.eventsourcing.DeleteEntityEvent;
 import org.thingsboard.server.dao.eventsourcing.SaveEntityEvent;
 import org.thingsboard.server.dao.exception.DataValidationException;
 import org.thingsboard.server.dao.resource.ImageService;
+import org.thingsboard.server.dao.role.RoleService;
 import org.thingsboard.server.dao.service.DataValidator;
 import org.thingsboard.server.dao.service.PaginatedRemover;
 import org.thingsboard.server.dao.service.Validator;
 import org.thingsboard.server.dao.sql.JpaExecutorService;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.thingsboard.server.dao.service.Validator.validateId;
 
@@ -97,6 +94,9 @@ public class DashboardServiceImpl extends AbstractEntityService implements Dashb
 
     @Autowired
     private JpaExecutorService executor;
+
+    @Autowired
+    private RoleService roleService;
 
     protected void publishEvictEvent(DashboardTitleEvictEvent event) {
         if (TransactionSynchronizationManager.isActualTransactionActive()) {
@@ -250,20 +250,84 @@ public class DashboardServiceImpl extends AbstractEntityService implements Dashb
         deleteDashboard(tenantId, (DashboardId) id);
     }
 
-    @Override
-    public PageData<DashboardInfo> findDashboardsByTenantId(TenantId tenantId, PageLink pageLink) {
-        log.trace("Executing findDashboardsByTenantId, tenantId [{}], pageLink [{}]", tenantId, pageLink);
-        Validator.validateId(tenantId, id -> INCORRECT_TENANT_ID + id);
-        Validator.validatePageLink(pageLink);
-        return dashboardInfoDao.findDashboardsByTenantId(tenantId.getId(), pageLink);
+@Override
+public PageData<DashboardInfo> findDashboardsByTenantId(TenantId tenantId, User user, PageLink pageLink) {
+    log.trace("Executing findDashboardsByTenantId, tenantId [{}], pageLink [{}]", tenantId, pageLink);
+
+    Validator.validateId(tenantId, id -> INCORRECT_TENANT_ID + id);
+    Validator.validatePageLink(pageLink);
+
+    Map<String, Map<String, Set<String>>> permissionsMap = roleService.findRolesByUserId(user);
+    PageData<DashboardInfo> listDashboards = dashboardInfoDao.findDashboardsByTenantId(tenantId.getId(), pageLink);
+
+    if (permissionsMap.isEmpty()) {
+        return listDashboards;
     }
 
+    // Initialisation sécurisée des maps
+    Map<String, Set<String>> listPermissionDashboard = permissionsMap.getOrDefault("dashboardPermission", Collections.emptyMap());
+    Map<String, Set<String>> listDashboard =  new HashMap<>(permissionsMap.getOrDefault("dashboardTenant", Collections.emptyMap()));
+
+    // Fusionner les permissions sans modifier la map originale
+    listPermissionDashboard.forEach((key, value) ->
+            listDashboard.merge(key, value, (v1, v2) -> {
+                Set<String> merged = new HashSet<>(v1);
+                merged.addAll(v2);
+                return merged;
+            })
+    );
+
+    // Convertir en Set pour un accès rapide
+    Set<String> dashboardIds = new HashSet<>(listDashboard.keySet());
+
+    // Filtrage des dashboards autorisés
+    List<DashboardInfo> filteredDashboards = listDashboards.getData().stream()
+            .filter(dashboardInfo -> {
+                boolean contains = dashboardIds.contains(dashboardInfo.getId().toString());
+                if (!contains) {
+                    log.trace("Dashboard ID [{}] not found in listPermissionDashboard", dashboardInfo.getId());
+                }
+                return contains;
+            })
+            .collect(Collectors.toList());
+
+    // Recalcul du nombre total de pages après filtrage
+    int totalElements = filteredDashboards.size();
+    int pageSize = pageLink.getPageSize();
+    int totalPages = (pageSize > 0) ? (int) Math.ceil((double) totalElements / pageSize) : 1;
+
+    // Recalcul de hasNext
+    boolean hasNext = (pageLink.getPage() + 1) < totalPages;
+
+    return new PageData<>(filteredDashboards, totalPages, totalElements, hasNext);
+}
+
+
     @Override
-    public PageData<DashboardInfo> findMobileDashboardsByTenantId(TenantId tenantId, PageLink pageLink) {
+    public PageData<DashboardInfo> findMobileDashboardsByTenantId(User user ,TenantId tenantId, PageLink pageLink) {
         log.trace("Executing findMobileDashboardsByTenantId, tenantId [{}], pageLink [{}]", tenantId, pageLink);
         Validator.validateId(tenantId, id -> INCORRECT_TENANT_ID + id);
         Validator.validatePageLink(pageLink);
-        return dashboardInfoDao.findMobileDashboardsByTenantId(tenantId.getId(), pageLink);
+        Map<String, Map<String, Set<String>>> permissionsMap = roleService.findRolesByUserId(user);
+        PageData<DashboardInfo> listDashboards = dashboardInfoDao.findMobileDashboardsByTenantId(tenantId.getId(), pageLink);
+        if (permissionsMap.isEmpty()) {
+            return listDashboards;
+        }
+        Map<String, Set<String>> listPermissionDashboard = permissionsMap.get("dashboardPermission");
+        Map<String, Set<String>> listDashboard = permissionsMap.get("dashboardTenant");
+        listDashboard.putAll(listPermissionDashboard);
+
+        List<DashboardInfo> filteredDashboards = listDashboards.getData().stream()
+                .filter(dashboardInfo -> {
+                    boolean contains = listDashboard.containsKey(dashboardInfo.getId().toString());
+                    if (!contains) {
+                        log.trace("Dashboard ID [{}] not found in listPermissionDashboard"+ dashboardInfo.getId());
+                    }
+                    return contains;
+                })
+                .collect(Collectors.toList());
+
+        return new PageData<>(filteredDashboards, listDashboards.getTotalPages(), filteredDashboards.size(), listDashboards.hasNext());
     }
 
     @Override

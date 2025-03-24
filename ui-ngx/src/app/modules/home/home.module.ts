@@ -34,7 +34,7 @@ import { ShowNotificationPopoverComponent } from '@home/components/notification/
       MenuToggleComponent,
       SideMenuComponent,
       NotificationBellComponent,
-      ShowNotificationPopoverComponent
+      ShowNotificationPopoverComponent,
     ],
   imports: [
     CommonModule,

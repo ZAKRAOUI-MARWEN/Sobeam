@@ -4656,6 +4656,11 @@
         "user-list": "Lista de usuarios",
         "user-list-required": "Se requiere lista de usuarios"
     },
+    "role":{
+        "management" : "Roles Management",
+        "role" : "Roles" ,
+        "type" : "Type"
+    },
     "value": {
         "type": "Tipo de valor",
         "string": "Cadena de texto",

@@ -182,6 +182,7 @@ import {
   SelectDashboardBreakpointComponent
 } from '@home/components/dashboard-page/layout/select-dashboard-breakpoint.component';
 import { EntityChipsComponent } from '@home/components/entity/entity-chips.component';
+import { RoleComponent } from '@home/components/role/role.component';
 
 @NgModule({
   declarations:
@@ -324,7 +325,8 @@ import { EntityChipsComponent } from '@home/components/entity/entity-chips.compo
       RateLimitsTextComponent,
       RateLimitsDetailsDialogComponent,
       SendNotificationButtonComponent,
-      EntityChipsComponent
+      EntityChipsComponent,
+      RoleComponent
     ],
   imports: [
     CommonModule,

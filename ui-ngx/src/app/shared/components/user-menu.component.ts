@@ -76,6 +76,7 @@ export class UserMenuComponent implements OnInit, OnDestroy {
         case Authority.CUSTOMER_USER:
           name = 'user.customer';
           break;
+   
       }
     }
     return name;

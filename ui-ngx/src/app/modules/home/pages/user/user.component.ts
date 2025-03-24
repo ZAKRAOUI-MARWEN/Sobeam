@@ -27,6 +27,7 @@ import { isDefinedAndNotNull } from '@core/utils';
 import { EntityTableConfig } from '@home/models/entity/entities-table-config.models';
 import { ActionNotificationShow } from '@app/core/notification/notification.actions';
 import { TranslateService } from '@ngx-translate/core';
+import { EntityType } from '@app/shared/models/public-api';
 
 @Component({
   selector: 'tb-user',
@@ -34,9 +35,9 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent extends EntityComponent<User> {
-
+    
   authority = Authority;
-
+  entityType = EntityType;
   loginAsUserEnabled$ = this.store.pipe(
     select(selectAuth),
     map((auth) => auth.userTokenAccessEnabled)
@@ -83,7 +84,8 @@ export class UserComponent extends EntityComponent<User> {
             homeDashboardHideToolbar: [entity && entity.additionalInfo &&
             isDefinedAndNotNull(entity.additionalInfo.homeDashboardHideToolbar) ? entity.additionalInfo.homeDashboardHideToolbar : true]
           }
-        )
+        ),
+        roles : [entity ? entity.roleId : ''] 
       }
     );
   }

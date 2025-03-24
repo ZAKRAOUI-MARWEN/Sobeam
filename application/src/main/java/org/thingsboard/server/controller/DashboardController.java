@@ -179,7 +179,9 @@ public class DashboardController extends BaseController {
             @RequestBody Dashboard dashboard) throws Exception {
         dashboard.setTenantId(getTenantId());
         checkEntity(dashboard.getId(), dashboard, Resource.DASHBOARD);
-        return tbDashboardService.save(dashboard, getCurrentUser());
+        Dashboard savedDashboard = tbDashboardService.save(dashboard, getCurrentUser());
+        chekRoleApresSave(getCurrentUser() , savedDashboard.getId() );
+        return savedDashboard ;
     }
 
     @ApiOperation(value = "Delete the Dashboard (deleteDashboard)",
@@ -349,7 +351,7 @@ public class DashboardController extends BaseController {
         TenantId tenantId = TenantId.fromUUID(toUUID(strTenantId));
         checkTenantId(tenantId, Operation.READ);
         PageLink pageLink = createPageLink(pageSize, page, textSearch, sortProperty, sortOrder);
-        return checkNotNull(dashboardService.findDashboardsByTenantId(tenantId, pageLink));
+        return checkNotNull(dashboardService.findDashboardsByTenantId(tenantId,getCurrentUser(), pageLink));
     }
 
     @ApiOperation(value = "Get Tenant Dashboards (getTenantDashboards)",
@@ -374,9 +376,9 @@ public class DashboardController extends BaseController {
         TenantId tenantId = getCurrentUser().getTenantId();
         PageLink pageLink = createPageLink(pageSize, page, textSearch, sortProperty, sortOrder);
         if (mobile != null && mobile) {
-            return checkNotNull(dashboardService.findMobileDashboardsByTenantId(tenantId, pageLink));
+            return checkNotNull(dashboardService.findMobileDashboardsByTenantId(getCurrentUser() ,tenantId, pageLink));
         } else {
-            return checkNotNull(dashboardService.findDashboardsByTenantId(tenantId, pageLink));
+            return checkNotNull(dashboardService.findDashboardsByTenantId(tenantId, getCurrentUser() , pageLink));
         }
     }
 

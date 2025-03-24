@@ -335,9 +335,8 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
   }
 */
   .tb-entity-table-content,
-     .tb-widget-container {
-      
-    background: if($is-tb-theme, $colorLocalLight1 !important, $colorLocalDark1 !important);
+   tb-widget-container:not(:has(tb-scada-symbol-widget)) {
+  background: if($is-tb-theme, $colorLocalLight1 !important, $colorLocalDark1 !important);
     border-radius: 14px !important;
     border: none !important;
   }
@@ -452,7 +451,7 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
   .leaflet-popup-content-wrapper {
     background-color: if($is-tb-theme, $colorLocalLight !important, $colorLocalDark1 !important);
   }
-   
+
    input[type="text"],
   .mat-mdc-select-arrow {
     &:after {
@@ -476,6 +475,15 @@ $tb-dark-theme: map_merge($tb-dark-theme, $color);
     background-color: if($is-tb-theme, $colorLocalLight !important, $colorLocalDark2 !important);
 
   }
+
+   tb-widget {
+  div ,span , p , td ,mat-cell , tb-icon{
+    @if not $is-tb-theme {
+      color:  #e3dfda !important;
+    }
+
+  }
+}
 
   tb-asset-profile .mat-padding {
     background-color: if($is-tb-theme, $colorLocalLight !important, $colorLocalDark2 !important);

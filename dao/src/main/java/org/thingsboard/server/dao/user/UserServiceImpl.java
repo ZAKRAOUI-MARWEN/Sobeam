@@ -74,6 +74,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static org.thingsboard.server.common.data.StringUtils.generateSafeToken;
 import static org.thingsboard.server.dao.service.Validator.validateId;
@@ -344,19 +345,35 @@ public class UserServiceImpl extends AbstractCachedEntityService<UserCacheKey, U
     }
 
     @Override
-    public PageData<User> findUsersByTenantId(TenantId tenantId, PageLink pageLink) {
+    public PageData<User> findUsersByTenantId(User user, TenantId tenantId, PageLink pageLink) {
         log.trace("Executing findUsersByTenantId, tenantId [{}], pageLink [{}]", tenantId, pageLink);
         validateId(tenantId, id -> INCORRECT_TENANT_ID + id);
         validatePageLink(pageLink);
-        return userDao.findByTenantId(tenantId.getId(), pageLink);
+
+        PageData<User> listUserTenant = userDao.findByTenantId(tenantId.getId(), pageLink);
+if (user != null){
+    List<User> filteredUsers = listUserTenant.getData().stream()
+            .filter(u -> !u.getId().equals(user.getId()))
+            .collect(Collectors.toList());
+
+    return new PageData<>(filteredUsers, listUserTenant.getTotalPages(), filteredUsers.size(), listUserTenant.hasNext());
+}
+      return  listUserTenant ;
     }
 
+
     @Override
-    public PageData<User> findTenantAdmins(TenantId tenantId, PageLink pageLink) {
+    public PageData<User> findTenantAdmins( User user ,TenantId tenantId, PageLink pageLink) {
         log.trace("Executing findTenantAdmins, tenantId [{}], pageLink [{}]", tenantId, pageLink);
         validateId(tenantId, id -> INCORRECT_TENANT_ID + id);
         validatePageLink(pageLink);
-        return userDao.findTenantAdmins(tenantId.getId(), pageLink);
+        PageData<User> listUserTenant = userDao.findTenantAdmins(tenantId.getId(), pageLink);
+
+        List<User> filteredUsers = listUserTenant.getData().stream()
+                .filter(u -> !u.getId().equals(user.getId()))
+                .collect(Collectors.toList());
+
+        return new PageData<>(filteredUsers, listUserTenant.getTotalPages(), filteredUsers.size(), listUserTenant.hasNext());
     }
 
     @Override
@@ -495,6 +512,7 @@ public class UserServiceImpl extends AbstractCachedEntityService<UserCacheKey, U
         }
     }
 
+
     private Optional<UserMobileInfo> findMobileInfo(TenantId tenantId, UserId userId) {
         return Optional.ofNullable(userSettingsService.findUserSettings(tenantId, userId, UserSettingsType.MOBILE))
                 .map(UserSettings::getSettings).map(settings -> JacksonUtil.treeToValue(settings, UserMobileInfo.class));
@@ -569,7 +587,7 @@ public class UserServiceImpl extends AbstractCachedEntityService<UserCacheKey, U
     private final PaginatedRemover<TenantId, User> usersRemover = new PaginatedRemover<>() {
         @Override
         protected PageData<User> findEntities(TenantId tenantId, TenantId id, PageLink pageLink) {
-            return findUsersByTenantId(tenantId, pageLink);
+            return findUsersByTenantId( null ,tenantId, pageLink);
         }
 
         @Override

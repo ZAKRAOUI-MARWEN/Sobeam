@@ -213,7 +213,7 @@ public class UserServiceTest extends AbstractServiceTest {
     @Test
     public void testFindTenantAdmins() {
         User tenantAdminUser = userService.findUserByEmail(tenantId, "tenant@thingsboard.org");
-        PageData<User> pageData = userService.findTenantAdmins(tenantAdminUser.getTenantId(), new PageLink(10));
+        PageData<User> pageData = userService.findTenantAdmins(null ,tenantAdminUser.getTenantId(), new PageLink(10));
         Assert.assertFalse(pageData.hasNext());
         List<User> users = pageData.getData();
         Assert.assertEquals(1, users.size());
@@ -233,7 +233,7 @@ public class UserServiceTest extends AbstractServiceTest {
         List<User> loadedTenantAdmins = new ArrayList<>();
         PageLink pageLink = new PageLink(33);
         do {
-            pageData = userService.findTenantAdmins(secondTenantId, pageLink);
+            pageData = userService.findTenantAdmins(null,secondTenantId, pageLink);
             loadedTenantAdmins.addAll(pageData.getData());
             if (pageData.hasNext()) {
                 pageLink = pageLink.nextPageLink();
@@ -248,7 +248,7 @@ public class UserServiceTest extends AbstractServiceTest {
         tenantService.deleteTenant(secondTenantId);
 
         pageLink = new PageLink(33);
-        pageData = userService.findTenantAdmins(secondTenantId, pageLink);
+        pageData = userService.findTenantAdmins(null,secondTenantId, pageLink);
         Assert.assertFalse(pageData.hasNext());
         Assert.assertTrue(pageData.getData().isEmpty());
 
@@ -288,7 +288,7 @@ public class UserServiceTest extends AbstractServiceTest {
         PageLink pageLink = new PageLink(33, 0, email1);
         PageData<User> pageData = null;
         do {
-            pageData = userService.findTenantAdmins(tenantId, pageLink);
+            pageData = userService.findTenantAdmins(null,tenantId, pageLink);
             loadedTenantAdminsEmail1.addAll(pageData.getData());
             if (pageData.hasNext()) {
                 pageLink = pageLink.nextPageLink();
@@ -303,7 +303,7 @@ public class UserServiceTest extends AbstractServiceTest {
         List<User> loadedTenantAdminsEmail2 = new ArrayList<>();
         pageLink = new PageLink(16, 0, email2);
         do {
-            pageData = userService.findTenantAdmins(tenantId, pageLink);
+            pageData = userService.findTenantAdmins(null ,tenantId, pageLink);
             loadedTenantAdminsEmail2.addAll(pageData.getData());
             if (pageData.hasNext()) {
                 pageLink = pageLink.nextPageLink();
@@ -320,7 +320,7 @@ public class UserServiceTest extends AbstractServiceTest {
         }
 
         pageLink = new PageLink(4, 0, email1);
-        pageData = userService.findTenantAdmins(tenantId, pageLink);
+        pageData = userService.findTenantAdmins(null , tenantId, pageLink);
         Assert.assertFalse(pageData.hasNext());
         Assert.assertEquals(0, pageData.getData().size());
 
@@ -329,7 +329,7 @@ public class UserServiceTest extends AbstractServiceTest {
         }
 
         pageLink = new PageLink(4, 0, email2);
-        pageData = userService.findTenantAdmins(tenantId, pageLink);
+        pageData = userService.findTenantAdmins(null,tenantId, pageLink);
         Assert.assertFalse(pageData.hasNext());
         Assert.assertEquals(0, pageData.getData().size());
     }

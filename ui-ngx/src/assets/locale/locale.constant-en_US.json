@@ -5757,6 +5757,24 @@
         "user-list": "User list",
         "user-list-required": "User list is required"
     },
+    "role":{
+        "management" : "Roles Management",
+        "role" :"Roles",
+        "add" : "Add Role",
+        "name" : "Name" ,
+        "role-details" :"Détails role",
+        "name-required" : "Name is required",
+        "description" :"Description",
+        "no-role-text": "No roles found",
+        "search" : "Search roles",
+        "type" :"Type",
+        "select-role" : "Select Role",
+        "name-required " : "Role Name is Required",
+        "delete-role-title": "Are you sure you want to delete the role '{{roleName}}'?",
+        "delete-role-text": "Be careful, after the confirmation the role and all related data will become unrecoverable.",
+        "delete-roles-title": "Are you sure you want to delete { count, plural, =1 {1 role} other {# role} }?",
+        "delete-roles-text": "Be careful, after the confirmation all selected roles will be removed and all related data will become unrecoverable."
+    },
     "value": {
         "type": "Value type",
         "string": "String",
@@ -7651,6 +7669,8 @@
             "latest-data-column-order": "Latest data column order",
             "entities-table-title": "Entities table title",
             "enable-select-column-display": "Enable select columns to display",
+            "enable-xlsx" : "Enable export",
+            "enable-filter" : "Enable filter",
             "display-entity-name": "Display entity name column",
             "entity-name-column-title": "Entity name column title",
             "display-entity-label": "Display entity label column",

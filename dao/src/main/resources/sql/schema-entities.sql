@@ -870,6 +870,28 @@ CREATE TABLE IF NOT EXISTS user_settings (
     CONSTRAINT user_settings_pkey PRIMARY KEY (user_id, type)
 );
 
+
+CREATE TABLE IF NOT EXISTS role (
+    id UUID NOT NULL CONSTRAINT role_key PRIMARY KEY,
+    name VARCHAR(255),
+    description VARCHAR,
+    type VARCHAR(50) NOT NULL,
+    permissions JSONB,
+    tenant_id UUID NOT NULL,
+    created_time BIGINT NOT NULL,
+    version BIGINT DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS role_user (
+    user_id uuid NOT NULL,
+    role_id uuid NOT NULL,
+    CONSTRAINT pk_user_role PRIMARY KEY (user_id, role_id),
+    CONSTRAINT fk_user_role_user FOREIGN KEY (user_id) REFERENCES tb_user(id) ON DELETE CASCADE,
+    CONSTRAINT fk_user_role_role FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+
+
 CREATE TABLE IF NOT EXISTS alarm_types (
     tenant_id uuid NOT NULL,
     type varchar(255) NOT NULL,

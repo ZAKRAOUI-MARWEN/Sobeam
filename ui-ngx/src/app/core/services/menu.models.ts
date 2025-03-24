@@ -19,7 +19,6 @@ import { Authority } from '@shared/models/authority.enum';
 import { deepClone } from '@core/utils';
 
 export declare type MenuSectionType = 'link' | 'toggle';
-
 export interface MenuSection {
   id: MenuId | string;
   name: string;
@@ -100,7 +99,10 @@ export enum MenuId {
   features = 'features',
   otaUpdates = 'otaUpdates',
   version_control = 'version_control',
-  api_usage = 'api_usage'
+  api_usage = 'api_usage',
+  user_management = 'user_management',
+  role_management = 'role_management',
+
 }
 
 declare type MenuFilter = (authState: AuthState) => boolean;
@@ -640,9 +642,28 @@ export const menuSectionMap = new Map<MenuId, MenuSection>([
       path: '/usage',
       icon: 'insert_chart'
     }
+  ],
+  [
+    MenuId.user_management,
+    {
+      id: MenuId.user_management,
+      name: 'Users Management',
+      type: 'link',
+      path: '/tenants',
+      icon: 'mdi:account-group'
+    }
+  ],
+  [
+    MenuId.role_management,
+    {
+      id: MenuId.role_management,
+      name: 'role.management',
+      type: 'link',
+      path: '/roles',
+      icon: 'schema'
+    }
   ]
 ]);
-
 const menuFilters = new Map<MenuId, MenuFilter>([
   [
     MenuId.edges, (authState) => authState.edgesSupportEnabled
@@ -659,55 +680,55 @@ const defaultUserMenuMap = new Map<Authority, MenuReference[]>([
   [
     Authority.SYS_ADMIN,
     [
-      {id: MenuId.home},
-      {id: MenuId.tenants},
-      {id: MenuId.tenant_profiles},
+      { id: MenuId.home },
+      { id: MenuId.tenants },
+      { id: MenuId.tenant_profiles },
       {
         id: MenuId.resources,
         pages: [
           {
             id: MenuId.widget_library,
             pages: [
-              {id: MenuId.widget_types},
-              {id: MenuId.widgets_bundles}
+              { id: MenuId.widget_types },
+              { id: MenuId.widgets_bundles }
             ]
           },
-          {id: MenuId.images},
-          {id: MenuId.scada_symbols},
-          {id: MenuId.resources_library}
+          { id: MenuId.images },
+          { id: MenuId.scada_symbols },
+          { id: MenuId.resources_library }
         ]
       },
       {
         id: MenuId.notifications_center,
         pages: [
-          {id: MenuId.notification_inbox},
-          {id: MenuId.notification_sent},
-          {id: MenuId.notification_recipients},
-          {id: MenuId.notification_templates},
-          {id: MenuId.notification_rules}
+          { id: MenuId.notification_inbox },
+          { id: MenuId.notification_sent },
+          { id: MenuId.notification_recipients },
+          { id: MenuId.notification_templates },
+          { id: MenuId.notification_rules }
         ]
       },
       {
         id: MenuId.settings,
         pages: [
-          {id: MenuId.general},
-          {id: MenuId.mail_server},
-          {id: MenuId.notification_settings},
-          {id: MenuId.queues},
-          {id: MenuId.mobile_app_settings}
+          { id: MenuId.general },
+          { id: MenuId.mail_server },
+          { id: MenuId.notification_settings },
+          { id: MenuId.queues },
+          { id: MenuId.mobile_app_settings }
         ]
       },
       {
         id: MenuId.security_settings,
         pages: [
-          {id: MenuId.security_settings_general},
-          {id: MenuId.two_fa},
+          { id: MenuId.security_settings_general },
+          { id: MenuId.two_fa },
           {
             id: MenuId.oauth2,
             pages: [
-              {id: MenuId.domains},
-              {id: MenuId.mobile_apps},
-              {id: MenuId.clients}
+              { id: MenuId.domains },
+              { id: MenuId.mobile_apps },
+              { id: MenuId.clients }
             ]
           }
         ]
@@ -717,38 +738,40 @@ const defaultUserMenuMap = new Map<Authority, MenuReference[]>([
   [
     Authority.TENANT_ADMIN,
     [
-      {id: MenuId.home},
-      {id: MenuId.alarms},
-      {id: MenuId.dashboards},
+      { id: MenuId.home },
+      { id: MenuId.alarms },
+      { id: MenuId.dashboards },
       {
         id: MenuId.entities,
         pages: [
-          {id: MenuId.devices},
-          {id: MenuId.assets},
-          {id: MenuId.entity_views}
+          { id: MenuId.devices },
+          { id: MenuId.assets },
+          { id: MenuId.entity_views }
         ]
       },
       {
         id: MenuId.profiles,
         pages: [
-          {id: MenuId.device_profiles},
-          {id: MenuId.asset_profiles}
+          { id: MenuId.device_profiles },
+          { id: MenuId.asset_profiles }
         ]
       },
-      {id: MenuId.customers},
-      {id: MenuId.rule_chains},
+      { id: MenuId.customers },
+      { id: MenuId.user_management },
+      { id: MenuId.role_management },
+      { id: MenuId.rule_chains },
       {
         id: MenuId.edge_management,
         pages: [
-          {id: MenuId.edges},
-          {id: MenuId.rulechain_templates}
+          { id: MenuId.edges },
+          { id: MenuId.rulechain_templates }
         ]
       },
       {
         id: MenuId.features,
         pages: [
-          {id: MenuId.otaUpdates},
-          {id: MenuId.version_control}
+          { id: MenuId.otaUpdates },
+          { id: MenuId.version_control }
         ]
       },
       {
@@ -757,39 +780,39 @@ const defaultUserMenuMap = new Map<Authority, MenuReference[]>([
           {
             id: MenuId.widget_library,
             pages: [
-              {id: MenuId.widget_types},
-              {id: MenuId.widgets_bundles}
+              { id: MenuId.widget_types },
+              { id: MenuId.widgets_bundles }
             ]
           },
-          {id: MenuId.images},
-          {id: MenuId.scada_symbols},
-          {id: MenuId.resources_library}
+          { id: MenuId.images },
+          { id: MenuId.scada_symbols },
+          { id: MenuId.resources_library }
         ]
       },
       {
         id: MenuId.notifications_center,
         pages: [
-          {id: MenuId.notification_inbox},
-          {id: MenuId.notification_sent},
-          {id: MenuId.notification_recipients},
-          {id: MenuId.notification_templates},
-          {id: MenuId.notification_rules}
+          { id: MenuId.notification_inbox },
+          { id: MenuId.notification_sent },
+          { id: MenuId.notification_recipients },
+          { id: MenuId.notification_templates },
+          { id: MenuId.notification_rules }
         ]
       },
-      {id: MenuId.api_usage},
+      { id: MenuId.api_usage },
       {
         id: MenuId.settings,
         pages: [
-          {id: MenuId.home_settings},
-          {id: MenuId.notification_settings},
-          {id: MenuId.repository_settings},
-          {id: MenuId.auto_commit_settings}
+          { id: MenuId.home_settings },
+          { id: MenuId.notification_settings },
+          { id: MenuId.repository_settings },
+          { id: MenuId.auto_commit_settings }
         ]
       },
       {
         id: MenuId.security_settings,
         pages: [
-          {id: MenuId.audit_log}
+          { id: MenuId.audit_log }
         ]
       }
     ]
@@ -797,28 +820,27 @@ const defaultUserMenuMap = new Map<Authority, MenuReference[]>([
   [
     Authority.CUSTOMER_USER,
     [
-      {id: MenuId.home},
-      {id: MenuId.alarms},
-      {id: MenuId.dashboards},
+      { id: MenuId.home },
+      { id: MenuId.alarms },
+      { id: MenuId.dashboards },
       {
         id: MenuId.entities,
         pages: [
-          {id: MenuId.devices},
-          {id: MenuId.assets},
-          {id: MenuId.entity_views}
+          { id: MenuId.devices },
+          { id: MenuId.assets },
+          { id: MenuId.entity_views }
         ]
       },
-      {id: MenuId.edge_instances},
+      { id: MenuId.edge_instances },
       {
         id: MenuId.notifications_center,
         pages: [
-          {id: MenuId.notification_inbox}
+          { id: MenuId.notification_inbox }
         ]
       }
     ]
   ]
 ]);
-
 const defaultHomeSectionMap = new Map<Authority, HomeSectionReference[]>([
   [
     Authority.SYS_ADMIN,
@@ -834,8 +856,8 @@ const defaultHomeSectionMap = new Map<Authority, HomeSectionReference[]>([
       {
         name: 'admin.system-settings',
         places: [MenuId.general, MenuId.mail_server,
-          MenuId.notification_settings, MenuId.security_settings, MenuId.oauth2, MenuId.domains, MenuId.mobile_apps,
-          MenuId.clients, MenuId.two_fa, MenuId.resources_library, MenuId.queues]
+        MenuId.notification_settings, MenuId.security_settings, MenuId.oauth2, MenuId.domains, MenuId.mobile_apps,
+        MenuId.clients, MenuId.two_fa, MenuId.resources_library, MenuId.queues]
       }
     ]
   ],
@@ -849,6 +871,14 @@ const defaultHomeSectionMap = new Map<Authority, HomeSectionReference[]>([
       {
         name: 'customer.management',
         places: [MenuId.customers]
+      },
+      {
+        name: 'User Management',
+        places: [MenuId.user_management]
+      },
+      {
+        name: 'role.management',
+        places: [MenuId.role_management]
       },
       {
         name: 'asset.management',
@@ -911,10 +941,91 @@ const defaultHomeSectionMap = new Map<Authority, HomeSectionReference[]>([
   ]
 ]);
 
-export const buildUserMenu = (authState: AuthState): Array<MenuSection> => {
+export const buildUserMenu = (authState: AuthState, res: any): Array<MenuSection> => {
   const references = defaultUserMenuMap.get(authState.authUser.authority);
-  return (references || []).map(ref => referenceToMenuSection(authState, ref)).filter(section => !!section);
-};
+  if (authState.authUser.authority === Authority.TENANT_ADMIN) {
+
+    if (res.menuPermission !== undefined) {
+
+
+      const permissionKeys = Object.keys(res.menuPermission).map(key => {
+        switch (key) {
+          case "ALARM": return "alarms";
+
+          case "DASHBOARD": return "dashboards";
+          case "DEVICE": return "devices";
+          case "ASSET": return "assets";
+          case "ENTITY_VIEW": return "entity_views"
+
+          case "RULE_CHAIN": return "rule_chains"
+          case "API_USAGE_STATE": return "api_usage"
+
+          case "EDGE": return "edge_management"
+          case "TB_RESOURCE": return "resources"
+
+          case "CUSTOMER": return "customers"
+          default: return key.toLowerCase();
+        }
+      });
+      const hasEntitiesPermission = permissionKeys.includes("devices") ||
+        permissionKeys.includes("assets") ||
+        permissionKeys.includes("entity_views");
+
+      const filteredReferences = references.map(menu => {
+        if (permissionKeys.includes(menu.id) || menu.id === "home" || (menu.id === "entities" && hasEntitiesPermission)) {
+          if (menu.id === "entities") {
+            let filteredPages = menu.pages.filter(page => permissionKeys.includes(page.id));
+            return { ...menu, pages: filteredPages };
+          }
+          return menu;
+        }
+        return null;
+      }).filter(menu => menu !== null);
+
+      return filteredReferences.map(ref => referenceToMenuSection(authState, ref)).filter(section => !!section);
+    }
+    else {
+      return references.map(ref => referenceToMenuSection(authState, ref)).filter(section => !!section);
+
+    }
+  }
+  if (authState.authUser.authority == Authority.CUSTOMER_USER) {
+    if (res.menuPermission !== undefined) {
+      const permissionKeys = Object.keys(res.menuPermission).map(key => {
+        switch (key) {
+          case "ALARM": return "alarms";
+          case "DASHBOARD": return "dashboards";
+          case "DEVICE": return "devices";
+          case "ASSET": return "assets";
+          case "ENTITY_VIEW": return "entity_views"
+
+          default: return key.toLowerCase();
+        }
+      });
+      const hasEntitiesPermission = permissionKeys.includes("devices") ||
+        permissionKeys.includes("assets") ||
+        permissionKeys.includes("entity_views");
+
+      const filteredReferences = references.map(menu => {
+        if (permissionKeys.includes(menu.id) || menu.id === "home" || (menu.id === "entities" && hasEntitiesPermission)) {
+          if (menu.id === "entities") {
+            let filteredPages = menu.pages.filter(page => permissionKeys.includes(page.id));
+            return { ...menu, pages: filteredPages }; // Met à jour le menu avec les pages filtrées
+          }
+          return menu;
+        }
+        return null;
+      }).filter(menu => menu !== null);
+      return filteredReferences.map(ref => referenceToMenuSection(authState, ref)).filter(section => !!section);
+    }
+    else {
+      return references.map(ref => referenceToMenuSection(authState, ref)).filter(section => !!section);
+    }
+  }
+  return references.map(ref => referenceToMenuSection(authState, ref)).filter(section => !!section);
+
+}
+  ;
 
 export const buildUserHome = (authState: AuthState, availableMenuSections: MenuSection[]): Array<HomeSection> => {
   const references = defaultHomeSectionMap.get(authState.authUser.authority);

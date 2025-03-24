@@ -19,6 +19,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.thingsboard.server.common.data.id.AssetId;
+import org.thingsboard.server.common.data.id.EntityId;
+
+import java.util.List;
 
 @Schema
 @Data
@@ -35,6 +38,7 @@ public class AssetInfo extends Asset {
     @Schema(description = "Name of the corresponding Asset Profile.", accessMode = Schema.AccessMode.READ_ONLY)
     private String assetProfileName;
 
+    List<EntityId> entityList ;
 
     public AssetInfo() {
         super();
@@ -49,5 +53,13 @@ public class AssetInfo extends Asset {
         this.customerTitle = customerTitle;
         this.customerIsPublic = customerIsPublic;
         this.assetProfileName = assetProfileName;
+
+    }
+    public AssetInfo(Asset asset, String customerTitle, boolean customerIsPublic, String assetProfileName , List<EntityId> entityList) {
+        super(asset);
+        this.customerTitle = customerTitle;
+        this.customerIsPublic = customerIsPublic;
+        this.assetProfileName = assetProfileName;
+        this.entityList = entityList;
     }
 }

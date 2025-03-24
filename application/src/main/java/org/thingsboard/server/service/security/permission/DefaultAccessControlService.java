@@ -16,6 +16,7 @@
 package org.thingsboard.server.service.security.permission;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.thingsboard.server.common.data.HasTenantId;
@@ -38,10 +39,14 @@ public class DefaultAccessControlService implements AccessControlService {
 
     private final Map<Authority, Permissions> authorityPermissions = new HashMap<>();
 
+    private final GuestChecker guestChecker;
+
     public DefaultAccessControlService(
             @Qualifier("sysAdminPermissions") Permissions sysAdminPermissions,
             @Qualifier("tenantAdminPermissions") Permissions tenantAdminPermissions,
-            @Qualifier("customerUserPermissions") Permissions customerUserPermissions) {
+            @Qualifier("customerUserPermissions") Permissions customerUserPermissions ,
+            GuestChecker guestChecker) {
+        this.guestChecker = guestChecker;
         authorityPermissions.put(Authority.SYS_ADMIN, sysAdminPermissions);
         authorityPermissions.put(Authority.TENANT_ADMIN, tenantAdminPermissions);
         authorityPermissions.put(Authority.CUSTOMER_USER, customerUserPermissions);
@@ -49,17 +54,25 @@ public class DefaultAccessControlService implements AccessControlService {
 
     @Override
     public void checkPermission(SecurityUser user, Resource resource, Operation operation) throws ThingsboardException {
-        PermissionChecker permissionChecker = getPermissionChecker(user.getAuthority(), resource);
+         PermissionChecker permissionChecker = getPermissionChecker(user.getAuthority(), resource);
         if (!permissionChecker.hasPermission(user, operation)) {
             permissionDenied();
         }
     }
 
+
+
     @Override
     @SuppressWarnings("unchecked")
     public <I extends EntityId, T extends HasTenantId> void checkPermission(SecurityUser user, Resource resource,
                                                                                             Operation operation, I entityId, T entity) throws ThingsboardException {
+        // check permissions for resource
+        if(!guestChecker.doCheck(user , resource , operation , entityId)){
+            permissionDenied();
+        }
+
         PermissionChecker permissionChecker = getPermissionChecker(user.getAuthority(), resource);
+
         if (!permissionChecker.hasPermission(user, operation, entityId, entity)) {
             permissionDenied();
         }

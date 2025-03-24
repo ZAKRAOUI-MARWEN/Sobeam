@@ -21,10 +21,8 @@
     (click)="sidenavClicked()" [mode]="sidenavMode" [opened]="sidenavOpened && !forceFullscreen">
     <header class="tb-nav-header">
       <mat-toolbar class="tb-nav-header-toolbar">
-        <div fxFlex="auto" fxLayout="row" style="padding-right: 60px;">
-          <img [src]="logo"  aria-label="logo" class="tb-logo-title" style="width: 65%; height: 80%;" />
-           <!-- <h6 class="tb-logo-title" style="color:#e3be87;font-size: 36px;
-            font-weight: bold;"> ThingsBoard</h6> -->
+        <div fxFlex="auto" fxLayout="row" >
+          <img [src]="logo"  aria-label="logo" class="tb-logo-title" style="width: 80%; height: 55%;" />
         </div>
         </mat-toolbar>
     </header>
@@ -63,9 +61,11 @@
         <button mat-icon-button (click)="changeMode()">
           <mat-icon class="material-icons"> {{icon}}</mat-icon>
         </button>
+        <!--
         <button mat-icon-button (click)="changeColor()">
           <mat-icon class="material-icons">palette</mat-icon>
         </button>
+        -->
         <button *ngIf="fullscreenEnabled" [fxShow]="!displaySearchMode()" mat-icon-button fxHide.lt-md
           (click)="toggleFullscreen()">
           <mat-icon class="material-icons">{{ isFullscreen() ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>

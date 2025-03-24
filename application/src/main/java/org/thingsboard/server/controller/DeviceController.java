@@ -184,7 +184,11 @@ public class DeviceController extends BaseController {
         } else {
             checkEntity(null, device, Resource.DEVICE);
         }
-        return tbDeviceService.save(device, accessToken, getCurrentUser());
+
+        Device savedDevice = tbDeviceService.save(device, accessToken, getCurrentUser());
+        chekRoleApresSave(getCurrentUser() , savedDevice.getId() );
+
+        return savedDevice;
     }
 
     @ApiOperation(value = "Create Device (saveDevice) with credentials ",
@@ -389,7 +393,7 @@ public class DeviceController extends BaseController {
         } else if (deviceProfileId != null && deviceProfileId.length() > 0) {
             filter.deviceProfileId(new DeviceProfileId(toUUID(deviceProfileId)));
         }
-        return checkNotNull(deviceService.findDeviceInfosByFilter(filter.build(), pageLink));
+        return checkNotNull(deviceService.findDeviceInfosByFilter(filter.build(), getCurrentUser(), pageLink));
     }
 
     @ApiOperation(value = "Get Tenant Device (getTenantDevice)",
@@ -477,7 +481,7 @@ public class DeviceController extends BaseController {
         } else if (deviceProfileId != null && deviceProfileId.length() > 0) {
             filter.deviceProfileId(new DeviceProfileId(toUUID(deviceProfileId)));
         }
-        return checkNotNull(deviceService.findDeviceInfosByFilter(filter.build(), pageLink));
+        return checkNotNull(deviceService.findDeviceInfosByFilter(filter.build(), getCurrentUser() ,pageLink));
     }
 
     @ApiOperation(value = "Get Devices By Ids (getDevicesByIds)",
@@ -750,7 +754,7 @@ public class DeviceController extends BaseController {
         } else if (deviceProfileId != null && deviceProfileId.length() > 0) {
             filter.deviceProfileId(new DeviceProfileId(toUUID(deviceProfileId)));
         }
-        return checkNotNull(deviceService.findDeviceInfosByFilter(filter.build(), pageLink));
+        return checkNotNull(deviceService.findDeviceInfosByFilter(filter.build(), getCurrentUser(), pageLink));
     }
 
     @ApiOperation(value = "Count devices by device profile  (countByDeviceProfileAndEmptyOtaPackage)",

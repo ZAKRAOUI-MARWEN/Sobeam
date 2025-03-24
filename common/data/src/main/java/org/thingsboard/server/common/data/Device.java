@@ -129,7 +129,7 @@ public class Device extends BaseDataWithAdditionalInfo<DeviceId> implements HasL
         return tenantId;
     }
 
-    public void setTenantId(TenantId tenantId) {
+    public  void setTenantId(TenantId tenantId) {
         this.tenantId = tenantId;
     }
 

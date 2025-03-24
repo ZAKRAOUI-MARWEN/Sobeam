@@ -133,7 +133,9 @@ public class CustomerController extends BaseController {
     public Customer saveCustomer(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A JSON value representing the customer.") @RequestBody Customer customer) throws Exception {
         customer.setTenantId(getTenantId());
         checkEntity(customer.getId(), customer, Resource.CUSTOMER);
-        return tbCustomerService.save(customer, getCurrentUser());
+        Customer savedCustomer = tbCustomerService.save(customer, getCurrentUser());
+        chekRoleApresSave(getCurrentUser() , savedCustomer.getId() );
+        return savedCustomer;
     }
 
     @ApiOperation(value = "Delete Customer (deleteCustomer)",
@@ -170,7 +172,7 @@ public class CustomerController extends BaseController {
             @RequestParam(required = false) String sortOrder) throws ThingsboardException {
         PageLink pageLink = createPageLink(pageSize, page, textSearch, sortProperty, sortOrder);
         TenantId tenantId = getCurrentUser().getTenantId();
-        return checkNotNull(customerService.findCustomersByTenantId(tenantId, pageLink));
+        return checkNotNull(customerService.findCustomersByTenantId( getCurrentUser() ,tenantId, pageLink));
     }
 
     @ApiOperation(value = "Get Tenant Customer by Customer title (getTenantCustomer)",

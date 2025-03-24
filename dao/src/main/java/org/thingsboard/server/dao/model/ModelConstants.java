@@ -66,6 +66,8 @@ public class ModelConstants {
     public static final String USER_TENANT_ID_PROPERTY = TENANT_ID_PROPERTY;
     public static final String USER_CUSTOMER_ID_PROPERTY = CUSTOMER_ID_PROPERTY;
     public static final String USER_EMAIL_PROPERTY = "email";
+    public static final String USER_CHECK_PROPERTY = "super_admin";
+
     public static final String USER_AUTHORITY_PROPERTY = "authority";
     public static final String USER_FIRST_NAME_PROPERTY = "first_name";
     public static final String USER_LAST_NAME_PROPERTY = "last_name";
@@ -680,6 +682,24 @@ public class ModelConstants {
     public static final String NOTIFICATION_TEMPLATE_TABLE_NAME = "notification_template";
     public static final String NOTIFICATION_TEMPLATE_NOTIFICATION_TYPE_PROPERTY = "notification_type";
     public static final String NOTIFICATION_TEMPLATE_CONFIGURATION_PROPERTY = "configuration";
+
+
+    /**
+     * role constant
+     */
+    public static final String ROLE_TABLE_NAME = "role";
+    public static final String USER_ROLE_USER_ID_PROPERTY = TENANT_ID_PROPERTY;
+    public static final String ROLE_NAME_PROPERTY = "name";
+    public static final String ROLE_DESCRIPTION_PROPERTY = "description";
+    public static final String ROLE_PERMISSION_PROPERTY = "permissions";
+    public static final String ROLE_TYPE_PROPERTY = "type";
+    public static final String ROLE_CHECK = "display";
+    public static final String ROLE_USER_TABLE_NAME = "role_user";
+
+
+
+
+
 
     /**
      * Mobile application settings constants.

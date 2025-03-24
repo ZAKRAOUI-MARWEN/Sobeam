@@ -76,7 +76,7 @@ const routes: Routes = [
             path: '',
             component: EntitiesTableComponent,
             data: {
-              auth: [Authority.SYS_ADMIN],
+              auth: [Authority.SYS_ADMIN ,Authority.TENANT_ADMIN],
               title: 'user.tenant-admins'
             },
             resolve: {

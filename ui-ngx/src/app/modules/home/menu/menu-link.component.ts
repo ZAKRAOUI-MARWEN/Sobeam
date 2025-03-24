@@ -16,7 +16,10 @@
 
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MenuSection } from '@core/services/menu.models';
-
+import { getCurrentAuthUser } from '@core/auth/auth.selectors';
+import { AuthUser } from '@shared/models/user.model';
+import { Store } from '@ngrx/store';
+import { AppState } from '@app/core/core.state';
 @Component({
   selector: 'tb-menu-link',
   templateUrl: './menu-link.component.html',
@@ -25,12 +28,22 @@ import { MenuSection } from '@core/services/menu.models';
 })
 export class MenuLinkComponent implements OnInit {
 
-  @Input() section: MenuSection;
+  @Input() 
+  section: MenuSection;
 
-  constructor() {
+  private authUser: AuthUser;
+ 
+  constructor(private store: Store<AppState>) {
   }
 
   ngOnInit() {
-  }
+    this.authUser = getCurrentAuthUser(this.store);
+
+    if (this.section.id === 'user_management') {
+        this.section.path = `/tenants/${this.authUser.tenantId}/users`;
+    }
+    
+}
+
 
 }

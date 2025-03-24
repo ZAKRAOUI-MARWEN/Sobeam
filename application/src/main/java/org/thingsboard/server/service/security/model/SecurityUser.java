@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SecurityUser extends User {
-
     private static final long serialVersionUID = -797397440703066079L;
 
     private Collection<GrantedAuthority> authorities;
@@ -36,7 +35,9 @@ public class SecurityUser extends User {
     private boolean enabled;
     @Getter @Setter
     private UserPrincipal userPrincipal;
+
     @Getter @Setter
+
     private String sessionId = UUID.randomUUID().toString();
 
     public SecurityUser() {

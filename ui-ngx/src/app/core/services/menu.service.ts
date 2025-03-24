@@ -18,13 +18,14 @@ import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../core.state';
 import { getCurrentOpenedMenuSections, selectAuth, selectIsAuthenticated } from '../auth/auth.selectors';
-import { filter, map, take } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { buildUserHome, buildUserMenu, HomeSection, MenuId, MenuSection } from '@core/services/menu.models';
 import { Observable,BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 import { AuthState } from '@core/auth/auth.models';
 import { NavigationEnd, Router } from '@angular/router';
 import { DashboardService } from '@core/http/dashboard.service';
 import { Direction, PageLink } from '@app/shared/public-api';
+import { RoleService } from '../http/role.service';
 
 
 @Injectable({
@@ -43,11 +44,11 @@ export class MenuService {
   );
   tenantDashboards: any;
   pages: Array<MenuSection> = [];
-
+  listPermission : any;
 
   constructor(private store: Store<AppState>,
               private router: Router,
-              private dashboardService: DashboardService,
+              private roleService : RoleService
             ) {
     this.store.pipe(select(selectIsAuthenticated)).subscribe(
       (authenticated: boolean) => {
@@ -67,19 +68,29 @@ export class MenuService {
   }
 
   private buildMenu() {
-    this.store.pipe(select(selectAuth), take(1)).subscribe(
-      (authState: AuthState) => {
-        if (authState.authUser) {
-          this.currentMenuSections = buildUserMenu(authState);
-          this.updateOpenedMenuSections();
-          this.menuSections$.next(this.currentMenuSections);
-          const availableMenuSections = this.allMenuSections(this.currentMenuSections);
-          this.availableMenuSections$.next(availableMenuSections);
-          const homeSections = buildUserHome(authState, availableMenuSections);
-          this.homeSections$.next(homeSections);
-        }
-      }
-    );
+    this.store.pipe(
+      select(selectAuth),
+      take(1),
+      filter(authState => !!authState.authUser),
+      switchMap(authState => 
+        this.roleService.getUserTenantRole(authState.authUser.userId).pipe(
+          tap(res => {
+            this.listPermission = res;          
+            this.currentMenuSections = buildUserMenu(authState , res);
+            this.updateOpenedMenuSections();
+            this.menuSections$.next(this.currentMenuSections);
+            
+            const availableMenuSections = this.allMenuSections(this.currentMenuSections);
+            this.availableMenuSections$.next(availableMenuSections);
+            
+            const homeSections = buildUserHome(authState, availableMenuSections);
+            this.homeSections$.next(homeSections);
+          })
+        )
+      )
+    ).subscribe({
+      error: (error) => console.error('Error in menu building process:', error)
+    });
   }
 
   private updateOpenedMenuSections() {

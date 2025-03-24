@@ -1,0 +1,241 @@
+<!--
+
+    Copyright © 2016-2024 The Sobeam Authors
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<div class="tb-details-buttons" fxLayout.xs="column" *ngIf="!standalone"></div>
+
+<div class="mat-padding" fxLayout="column">
+  <form [formGroup]="entityForm">
+    <fieldset [disabled]="(isLoading$ | async) || !isEdit">
+      <!-- Name -->
+      <mat-form-field class="mat-block" appearance="fill">
+        <mat-label translate>role.name</mat-label>
+        <input matInput formControlName="name" required />
+        <mat-error *ngIf="entityForm.get('name').hasError('required')">
+          {{ 'role.name-required' | translate }}
+        </mat-error>
+        <mat-error *ngIf="entityForm.get('name').hasError('maxlength')">
+          {{ 'role.name-max-length' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Description -->
+      <mat-form-field class="mat-block">
+        <mat-label translate>role.description</mat-label>
+        <textarea matInput formControlName="description" rows="2"></textarea>
+      </mat-form-field>
+
+      <!-- Role Type -->
+      <mat-form-field class="mat-block" subscriptSizing="dynamic">
+        <mat-label translate>role.type</mat-label>
+        <mat-select formControlName="type" (selectionChange)="onRoleTypeChange($event)">
+          <mat-option *ngFor="let type of roleTypes" [value]="type.value">
+            {{ type.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Available and Assigned Roles -->
+      <fieldset class="tb-form-panel stroked" style="margin: 35px 0 25px 0;" *ngIf="entityForm.get('type').value">
+        <legend>
+          <h6>Menu Permission</h6>
+        </legend>
+
+        <div class="containers-wrapper">
+          <!-- Available Roles Container -->
+          <div class="container first-child">
+
+            <div cdkDropList #availableRoleList="cdkDropList" [cdkDropListData]="availableRole"
+              [cdkDropListConnectedTo]="[assignedRoleList]" class="list" (cdkDropListDropped)="drop($event)">
+              <div class="box" *ngFor="let item of availableRole" cdkDrag>
+                {{getFormattedOperationName(item.resource)}}
+              </div>
+            </div>
+          </div>
+
+          <!-- Assigned Roles Container -->
+          <div class="container ">
+
+
+            <div cdkDropList #assignedRoleList="cdkDropList" [cdkDropListData]="assignedRole"
+              [cdkDropListConnectedTo]="[availableRoleList]" class="list"   [ngClass]="{'message': assignedRole.length === 0}"  (cdkDropListDropped)="drop($event)">
+
+              <!-- Show this message ONLY if assignedRole is empty -->
+              <div *ngIf="assignedRole.length === 0">
+                <h6>No permission is dragged</h6>
+                <h6><strong>Drag</strong> and <strong>Drop</strong> here</h6>
+              </div>
+
+              <div class="box" *ngFor="let item of assignedRole" cdkDrag>
+                <div class="role-header block">
+                  <span class="role-title">{{getFormattedOperationName(item.resource)}}</span>
+                  <div class="operation-icons">
+                    <button mat-icon-button *ngFor="let op of resourceOperations[item.resource]"
+                      (click)="toggleOperation(item, op)" [ngStyle]="getOperationStyle(item, op)"
+                      class="operation-button"
+                      matTooltip="{{getOperationTooltip(op)}}" 
+                      matTooltipPosition="above">
+                      <mat-icon style="font-size: 20px;">{{getOperationIcon(op)}}</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <!-- Specific Permissions Tabs -->
+      <fieldset class="tb-form-panel stroked" *ngIf="entityForm.get('type').value === 'GENERIC'"
+        formGroupName="permissions">
+        <legend>
+          <h6>Entity Affected</h6>
+        </legend>
+
+
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+
+          <!-- Dashboard Tab -->
+          <mat-tab label="Dashboard">
+            <div class="permission-container">
+              <div class="operations-container">
+                <button mat-icon-button class="operation-button" [disabled]="isListEmpty('dashboard')"
+                  (click)="toggleOperationDashboard('all')"
+                  [ngStyle]="getOperationStyle1('dashboardPermission', 'all')"
+                  matTooltip="{{getOperationTooltip('select_all')}}" 
+                  matTooltipPosition="above">
+                  <mat-icon style="font-size: 20px;">select_all</mat-icon>
+                </button>
+                <button mat-icon-button class="operation-button" [disabled]="isListEmpty('dashboard')"
+                  (click)="toggleOperationDashboard('edit')"
+                  [ngStyle]="getOperationStyle1('dashboardPermission', 'edit')"
+                  matTooltip="{{getOperationTooltip('edit')}}" 
+                  matTooltipPosition="above">
+                  <mat-icon style="font-size: 20px;" >edit</mat-icon>
+                </button>
+                <button mat-icon-button class="operation-button" [disabled]="isListEmpty('dashboard')"
+                  (click)="toggleOperationDashboard('view')"
+                  [ngStyle]="getOperationStyle1('dashboardPermission', 'view')"
+                  matTooltip="{{getOperationTooltip('visibility')}}" 
+                  matTooltipPosition="above">
+                  <mat-icon style="font-size: 20px;">visibility</mat-icon>
+                </button>
+                <button mat-icon-button class="operation-button" [disabled]="isListEmpty('dashboard')"
+                  (click)="toggleOperationDashboard('delete')"
+                  [ngStyle]="getOperationStyle1('dashboardPermission', 'delete')"
+                  matTooltip="{{getOperationTooltip('delete')}}" 
+                  matTooltipPosition="above">
+                  <mat-icon style="font-size: 20px;">delete</mat-icon>
+                </button>
+              </div>
+              <div class="entity-list-container">
+                <tb-entity-list [formControl]="entityForm.get('permissions.dashboardPermission.resource')"
+                  [entityType]="entityType.DASHBOARD" labelText="{{ 'dashboard.select-dashboard' | translate }}">
+                </tb-entity-list>
+              </div>
+
+
+            </div>
+          </mat-tab>
+
+          <!-- Devices Tab -->
+          <mat-tab label="Devices">
+            <div class="permission-container">
+              <div class="operations-container">
+                <button mat-icon-button class="operation-button" [disabled]="isListEmpty('device')"
+                  (click)="toggleOperationDevice('all')" [ngStyle]="getOperationStyle1('devicePermission', 'all')"
+                  matTooltip="{{getOperationTooltip('select_all')}}" 
+                  matTooltipPosition="above">
+                  <mat-icon style="font-size: 20px;">select_all</mat-icon>
+                </button>
+                <button mat-icon-button class="operation-button" [disabled]="isListEmpty('device')"
+                  (click)="toggleOperationDevice('edit')" [ngStyle]="getOperationStyle1('devicePermission', 'edit')"
+                  matTooltip="{{getOperationTooltip('edit')}}" 
+                  matTooltipPosition="above">
+                  <mat-icon style="font-size: 20px;">edit</mat-icon>
+                </button>
+                <button mat-icon-button class="operation-button" [disabled]="isListEmpty('device')"
+                  (click)="toggleOperationDevice('view')" [ngStyle]="getOperationStyle1('devicePermission', 'view')"
+                  matTooltip="{{getOperationTooltip('visibility')}}" 
+                  matTooltipPosition="above">
+                  <mat-icon style="font-size: 20px;">visibility</mat-icon>
+                </button>
+                <button mat-icon-button class="operation-button" [disabled]="isListEmpty('device')"
+                  (click)="toggleOperationDevice('delete')"
+                  [ngStyle]="getOperationStyle1('devicePermission', 'delete')"
+                  matTooltip="{{getOperationTooltip('delete')}}" 
+                  matTooltipPosition="above">
+                  <mat-icon style="font-size: 20px;">delete</mat-icon>
+                </button>
+              </div>
+              <div class="entity-list-container">
+                <tb-entity-list [formControl]="entityForm.get('permissions.devicePermission.resource')"
+                  [entityType]="entityType.DEVICE" labelText="{{ 'device.select-device' | translate }}">
+                </tb-entity-list>
+              </div>
+
+
+            </div>
+          </mat-tab>
+
+          <!-- Assets Tab -->
+          <mat-tab label="Assets">
+            <div class="permission-container">
+              <div class="operations-container">
+                <button mat-icon-button class="operation-button" [disabled]="isListEmpty('asset')"
+                  (click)="toggleOperationAsset('all')" [ngStyle]="getOperationStyle1('assetPermission', 'all')"
+                  matTooltip="{{getOperationTooltip('select_all')}}" 
+                  matTooltipPosition="above">
+                  <mat-icon style="font-size: 20px;">select_all</mat-icon>
+                </button>
+                <button mat-icon-button class="operation-button" [disabled]="isListEmpty('asset')"
+                  (click)="toggleOperationAsset('edit')" [ngStyle]="getOperationStyle1('assetPermission', 'edit')"
+                  matTooltip="{{getOperationTooltip('edit')}}" 
+                  matTooltipPosition="above">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button class="operation-button" [disabled]="isListEmpty('asset')"
+                  (click)="toggleOperationAsset('view')" [ngStyle]="getOperationStyle1('assetPermission', 'view')"
+                  matTooltip="{{getOperationTooltip('visibility')}}" 
+                  matTooltipPosition="above">
+                  <mat-icon style="font-size: 20px;">visibility</mat-icon>
+                </button>
+                <button mat-icon-button class="operation-button" [disabled]="isListEmpty('asset')"
+                  (click)="toggleOperationAsset('delete')" [ngStyle]="getOperationStyle1('assetPermission', 'delete')"
+                  matTooltip="{{getOperationTooltip('delete')}}" 
+                  matTooltipPosition="above">
+                  <mat-icon style="font-size: 20px;">delete</mat-icon>
+                </button>
+              </div>
+              <div class="entity-list-container">
+                <tb-entity-list [formControl]="entityForm.get('permissions.assetPermission.resource')"
+                  [entityType]="entityType.ASSET" labelText="{{ 'asset.select-asset' | translate }}">
+                </tb-entity-list>
+              </div>
+
+
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </fieldset>
+
+      <!-- Assigned Users -->
+      <tb-entity-list *ngIf="entityForm.get('type').value" formControlName="assignedUserIds"
+        [entityType]="entityType.USER" [entityFilter]="entityForm.get('type').value" labelText="{{ 'user.select-user' | translate }}">
+      </tb-entity-list>
+
+    </fieldset>
+  </form>
+</div>

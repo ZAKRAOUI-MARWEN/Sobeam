@@ -96,10 +96,7 @@ public class AssetController extends BaseController {
     private final AssetBulkImportService assetBulkImportService;
     private final TbAssetService tbAssetService;
 
-    @Autowired
-    protected RelationService relationService;
-
-    public static final String ASSET_ID = "assetId";
+   public static final String ASSET_ID = "assetId";
 
     @ApiOperation(value = "Get Asset (getAssetById)",
             notes = "Fetch the Asset object based on the provided Asset Id. " +

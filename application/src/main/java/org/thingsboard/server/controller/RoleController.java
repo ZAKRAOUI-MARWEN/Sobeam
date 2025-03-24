@@ -33,6 +33,7 @@ import org.thingsboard.server.queue.util.TbCoreComponent;
 import org.thingsboard.server.service.entitiy.role.SbRoleService;
 import org.thingsboard.server.service.security.model.SecurityUser;
 import org.thingsboard.server.service.security.permission.Operation;
+import org.thingsboard.server.service.security.permission.Resource;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -44,14 +45,6 @@ import static org.thingsboard.server.controller.ControllerConstants.*;
 @TbCoreComponent
 @RequestMapping("/api")
 public class RoleController extends  BaseController{
-// this controller is responsible for
-
-    // getting the role by tenant
-    // saving/updating the role
-    // deleting the role
-    // removing users from roles
-    // adding role to users
-    public static final String ROLE_ID = "roleId";
 
     private final SbRoleService sbRoleService;
 
@@ -77,17 +70,15 @@ public class RoleController extends  BaseController{
              return checkNotNull(sbRoleService.getRolesByTenantId(tenantId , pageLink));
     }
 
-    @ApiOperation(value = "Get Roles by user (getRoleByUserTenant)",
-            notes = "Returns a list of roles associated with a specific user tenant. " +
+    @ApiOperation(value = "Get Roles by current user (getUserRoles)",
+            notes = "Returns a map of roles associated with the current user making the request. " +
                     "The scope depends on the authority of the user that performs the request.")
     @PreAuthorize("hasAnyAuthority('SYS_ADMIN', 'TENANT_ADMIN' ,'CUSTOMER_USER')")
     @RequestMapping(value = "/user/role/{userId}", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Map<String, Set<String>>> getUserTenantRole(
+    public Map<String, Map<String, Set<String>>> getCurrentUserRoles(
             @Parameter(description = "User ID")
             @PathVariable("userId") String strUserId) throws ThingsboardException {
-        System.err.print("Getting");
-        // chek id user
         return roleService.findRolesByUserId(getCurrentUser());
     }
 
@@ -100,18 +91,17 @@ public class RoleController extends  BaseController{
                     "\n\nRole name is unique for entire platform setup." +
                     "Remove 'id' and 'tenantId' from the request body example (below) to create new Role entity." +
                     "\n\nAvailable for users with 'SYS_ADMIN' or 'TENANT_ADMIN' authority.")
-  //  @PreAuthorize("hasAnyAuthority('SYS_ADMIN', 'TENANT_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SYS_ADMIN', 'TENANT_ADMIN')")
     @RequestMapping(value = "/role", method = RequestMethod.POST)
     @ResponseBody
     public Role saveRole(
             @Parameter(description = "A JSON value representing the Role.")
             @RequestBody Role role) throws Exception {
-           // checkEntity(role.getId(), role, Resource.ROLE);
             role.setTenantId(getCurrentUser().getTenantId());
+       //     checkEntity(role.getId(), role, Resource.ROLE);
             return sbRoleService.saveRole(getCurrentUser().getTenantId(), role);
     }
 
-    // delete role by id
     @ApiOperation(value = "Delete Role (deleteRole)",
             notes = "Removes the Role from the system. " +
                     "The scope depends on the authority of the user that performs the request.")
@@ -137,19 +127,17 @@ public class RoleController extends  BaseController{
     @ResponseBody
     public Role getRoleById(
             @PathVariable("roleId") String strRoleId ) throws ThingsboardException {
-          //checkParameter(ASSET_PROFILE_ID, strAssetProfileId);
-          //   AssetProfileId assetProfileId = new AssetProfileId(toUUID(strAssetProfileId));
-          //   var result = checkAssetProfileId(assetProfileId, Operation.READ);
-        RoleId roleId = new RoleId(toUUID(strRoleId));
-        // get the user associated with the role
-        Role userRole = roleService.findRoleById(getCurrentUser().getTenantId() , roleId);
-        List<String> listUsers = roleService.findUsersByRoleId(roleId);
-        userRole.setAssignedUserIds(listUsers);
+            checkParameter(ROLE_ID, strRoleId);
+            RoleId roleId = new RoleId(toUUID(strRoleId));
+            var result = checkRoleId(roleId, Operation.READ);
+           Role userRole = roleService.findRoleById(getCurrentUser().getTenantId() , roleId);
+           List<String> listUsers = roleService.findUsersByRoleId(roleId);
+           userRole.setAssignedUserIds(listUsers);
         return userRole;
     }
 
-    @ApiOperation(value = "Get Roles  by user (getRoleById)",
-            notes = "Fetch the Role object based on the provided Role Id. " +
+    @ApiOperation(value = "Get Roles by user ",
+            notes = "Fetch the Role object based on the provided user Id. " +
                     "The server checks that the role  is owned by the same tenant. " + TENANT_AUTHORITY_PARAGRAPH)
     @PreAuthorize("hasAnyAuthority('SYS_ADMIN','TENANT_ADMIN' , 'CUSTOMER_USER')")
     @RequestMapping(value = "/roles/user/{userId}", method = RequestMethod.GET)
@@ -166,7 +154,6 @@ public class RoleController extends  BaseController{
     }
 
 
-    // ansign role to list of users
     @ApiOperation(value = "Assign Roles to User (assignRolesToUsers)",
             notes = "Assigns the specified roles to the given user(s). " +
                     "The scope depends on the authority of the user that performs the request.")
@@ -178,12 +165,10 @@ public class RoleController extends  BaseController{
             @PathVariable("userId") String strUserId,
             @Parameter(description = "JSON array with the list of users ids")
             @RequestBody String[] strRoleIds) throws ThingsboardException {
-
-
-       // checkParameter(DASHBOARD_ID, strDashboardId);
-         UserId userId = new UserId(toUUID(strUserId));
-      //  Role role = checkRoleId(roleId, Operation.ASSIGN_TO_CUSTOMER);
-        List<RoleId> roleIds = roleIdFromStr(strRoleIds);
+          // checkParameter(DASHBOARD_ID, strDashboardId);
+          UserId userId = new UserId(toUUID(strUserId));
+          //  Role role = checkRoleId(roleId, Operation.ASSIGN_TO_CUSTOMER);
+           List<RoleId> roleIds = roleIdFromStr(strRoleIds);
         return sbRoleService.assignRolesToUser(roleIds, userId);
     }
 

@@ -27,7 +27,6 @@ import org.thingsboard.server.service.security.model.SecurityUser;
 
 @Component(value="tenantAdminPermissions")
 public class TenantAdminPermissions extends AbstractPermissions {
-  private static GuestChecker guestChecker;
     public TenantAdminPermissions() {
         super();
         put(Resource.ADMIN_SETTINGS, PermissionChecker.allowAllPermissionChecker);
@@ -60,14 +59,10 @@ public class TenantAdminPermissions extends AbstractPermissions {
 
         @Override
         public boolean hasPermission(SecurityUser user, Operation operation, EntityId entityId, HasTenantId entity)  {
-
             if (!user.getTenantId().equals(entity.getTenantId())) {
                 return false;
             }
-            //this method will check if the entity has the permission to perform the desired action
             return  true;
-                    //guestChecker.doCheck(user.getTenantId(), user, operation);
-
         }
     };
 

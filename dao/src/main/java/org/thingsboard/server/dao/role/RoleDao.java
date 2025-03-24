@@ -45,8 +45,8 @@ public interface RoleDao extends Dao<Role> {
 
      RoleUser assignRole(RoleUser roleUser);
 
-
      void removeRoleWithUser (RoleId roleId) ;
+
      void removeUserWithRole (UserId userId) ;
 
      List<Role> findRolesByUserId(UserId userId);
@@ -58,6 +58,5 @@ public interface RoleDao extends Dao<Role> {
      boolean hasUserRole(UserId userId);
 
      ListenableFuture<List<Role>> findRolesByTenantIdAndIdsAsync(UUID tenantId, List<UUID> roleIds);
-
 
 }

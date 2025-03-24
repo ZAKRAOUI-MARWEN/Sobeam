@@ -179,8 +179,6 @@ public class DashboardController extends BaseController {
             @RequestBody Dashboard dashboard) throws Exception {
         dashboard.setTenantId(getTenantId());
         checkEntity(dashboard.getId(), dashboard, Resource.DASHBOARD);
-        //check if les role est null ne faire rien if les il exist roles add new role avec name de user_creation qui contient tout les
-       // id des daschboard cree .
         Dashboard savedDashboard = tbDashboardService.save(dashboard, getCurrentUser());
         chekRoleApresSave(getCurrentUser() , savedDashboard.getId() );
         return savedDashboard ;
